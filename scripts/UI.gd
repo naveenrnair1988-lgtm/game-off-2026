@@ -31,6 +31,7 @@ var choices: VBoxContainer
 var board: PanelContainer
 var board_list: VBoxContainer
 var title: CenterContainer
+var title_dim: ColorRect
 var portrait: TextureRect
 var portrait_cache: Dictionary = {}
 var font_serif: Font
@@ -333,6 +334,11 @@ func _tl_pick(id: String) -> void:
 
 
 func _build_title() -> void:
+	title_dim = ColorRect.new()
+	title_dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	title_dim.color = Color(0.02, 0.015, 0.01, 0.72)
+	title_dim.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(title_dim)
 	title = CenterContainer.new()
 	title.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(title)
@@ -378,6 +384,7 @@ func _build_title() -> void:
 func show_title() -> void:
 	title_visible = true
 	title.visible = true
+	title_dim.visible = true
 	panel.visible = false
 	board.visible = false
 	tl.visible = false
@@ -397,6 +404,7 @@ func show_title() -> void:
 func _start() -> void:
 	title_visible = false
 	title.visible = false
+	title_dim.visible = false
 	choice_made.emit({"next": "ch1_wake", "shiftTo": ""})
 
 
