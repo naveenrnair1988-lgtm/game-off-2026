@@ -40,7 +40,7 @@ const MODEL_SLOTS := {
 	"body":        [Vector3(1.0, 0.0, -3.1), 0.0, 1.8, "long"],
 	"stool":       [Vector3(0.0, 0.0, -1.9), 0.0, 0.8, "y"],
 	"frank":       [Vector3(0.0, 0.0, 1.9), 180.0, 1.8, "y"],
-	"mira":        [Vector3(0.2, 0.0, -3.1), 90.0, 1.2, "y"],
+	"mira":        [Vector3(0.0, 0.0, -3.25), 90.0, 1.2, "y"],
 	"theo":        [Vector3(0.0, 0.0, 3.6), 180.0, 1.78, "y"],
 	"lenny":       [Vector3(-2.0, 0.0, 0.4), 40.0, 1.75, "y"],
 	"connie":      [Vector3(3.0, 0.0, -1.9), -30.0, 1.45, "y"],
@@ -50,10 +50,10 @@ const MODEL_SLOTS := {
 const STATIONS := {
 	"hub":    [Vector3(0.0, 1.7, 2.6),  Vector3(0.0, 1.1, -2.5)],
 	"booth":  [Vector3(-2.2, 1.5, 2.4), Vector3(-4.2, 0.9, 2.5)],
-	"bar":    [Vector3(-0.4, 1.75, -0.6), Vector3(1.0, 0.45, -3.1)],
+	"bar":    [Vector3(2.9, 2.0, -3.3), Vector3(1.0, 0.15, -3.1)],
 	"floor":  [Vector3(2.0, 1.5, -0.2), Vector3(3.2, 0.5, -2.2)],
 	"office": [Vector3(3.2, 1.6, -1.0), Vector3(4.6, 1.2, -1.0)],
-	"mira":   [Vector3(-1.2, 1.65, -0.9), Vector3(0.3, 0.8, -3.0)],
+	"mira":   [Vector3(3.3, 1.55, -3.35), Vector3(0.5, 0.55, -3.15)],
 	"theo":   [Vector3(0.0, 1.6, 1.2),  Vector3(0.0, 1.3, 3.9)],
 	"lenny":  [Vector3(-0.3, 1.6, 2.0), Vector3(-2.0, 1.3, 0.4)],
 	"connie": [Vector3(1.6, 1.6, -0.4), Vector3(3.0, 1.1, -1.9)],
@@ -643,6 +643,7 @@ func _build_room() -> void:
 	# jukebox, left wall
 	_tbox(Vector3(-4.8, 0.75, -1.2), Vector3(0.6, 1.5, 0.9), _mat(Color(0.30, 0.12, 0.08), 0.3), "PH_jukebox")
 	var juke := _box(Vector3(-4.48, 1.1, -1.2), Vector3(0.02, 0.5, 0.7), Color(0.9, 0.5, 0.2), 0.2)
+	juke.name = "PH_jukebox_glow"
 	var jm: StandardMaterial3D = juke.material_override
 	jm.emission_enabled = true
 	jm.emission = Color(0.9, 0.45, 0.15)

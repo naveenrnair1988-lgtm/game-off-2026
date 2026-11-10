@@ -20,6 +20,9 @@ jobs:
         run: godot --headless --path . -s tests/smoke.gd
       - name: Export Web
         run: |
+          # GitHub runs containers with a different HOME; point Godot at the image's export templates
+          mkdir -p ~/.local/share/godot/export_templates
+          [ -d ~/.local/share/godot/export_templates/4.7.2.stable ] || ln -s /root/.local/share/godot/export_templates/4.7.2.stable ~/.local/share/godot/export_templates/4.7.2.stable
           mkdir -p build/web
           godot --headless --path . --export-release "Web" build/web/index.html
       - name: Web build zip (for itch.io upload)
