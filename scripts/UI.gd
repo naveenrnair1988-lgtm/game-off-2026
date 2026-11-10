@@ -30,7 +30,8 @@ var text: RichTextLabel
 var choices: VBoxContainer
 var board: PanelContainer
 var board_list: VBoxContainer
-var title: CenterContainer
+var title: MarginContainer
+var title_shade: TextureRect
 var title_dim: ColorRect
 var portrait: TextureRect
 var portrait_cache: Dictionary = {}
@@ -334,49 +335,106 @@ func _tl_pick(id: String) -> void:
 
 
 func _build_title() -> void:
+	# soft black falloff from the left so the type sits on darkness, not on the bar
 	title_dim = ColorRect.new()
-	title_dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	title_dim.color = Color(0.02, 0.015, 0.01, 0.72)
-	title_dim.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(title_dim)
-	title = CenterContainer.new()
+	title_dim.visible = false
+	var grad := Gradient.new()
+	grad.set_color(0, Color(0, 0, 0, 0.88))
+	grad.set_color(1, Color(0, 0, 0, 0.0))
+	grad.set_offset(1, 0.62)
+	var gt := GradientTexture2D.new()
+	gt.gradient = grad
+	gt.fill_from = Vector2(0, 0.5)
+	gt.fill_to = Vector2(1, 0.5)
+	title_shade = TextureRect.new()
+	title_shade.texture = gt
+	title_shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	title_shade.stretch_mode = TextureRect.STRETCH_SCALE
+	title_shade.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(title_shade)
+	title = MarginContainer.new()
 	title.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	title.add_theme_constant_override("margin_left", 84)
+	title.add_theme_constant_override("margin_right", 40)
+	title.add_theme_constant_override("margin_top", 96)
+	title.add_theme_constant_override("margin_bottom", 96)
 	add_child(title)
 	var v := VBoxContainer.new()
-	v.add_theme_constant_override("separation", 14)
+	v.add_theme_constant_override("separation", 6)
 	v.alignment = BoxContainer.ALIGNMENT_CENTER
+	v.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	title.add_child(v)
+	var k := Label.new()
+	k.text = "A   F R A N K   S A B L E   M Y S T E R Y"
+	k.add_theme_font_override("font", font_ui)
+	k.add_theme_font_size_override("font_size", 12)
+	k.add_theme_color_override("font_color", Color(0.62, 0.55, 0.46))
+	v.add_child(k)
 	var t := Label.new()
-	t.text = "On the Rocks\nThe Last Shift"
-	t.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	t.text = "On the Rocks"
 	t.add_theme_font_override("font", font_serif)
-	t.add_theme_font_size_override("font_size", 56)
-	t.add_theme_color_override("font_color", TEXT)
+	t.add_theme_font_size_override("font_size", 84)
+	t.add_theme_color_override("font_color", Color(0.95, 0.90, 0.82))
+	t.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.8))
+	t.add_theme_constant_override("shadow_offset_y", 3)
 	v.add_child(t)
-	var s := Label.new()
-	s.text = "GAME OFF 2026  ·  SHIFT"
-	s.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	s.add_theme_font_override("font", font_ui)
-	s.add_theme_font_size_override("font_size", 13)
-	s.add_theme_color_override("font_color", AMBER)
-	v.add_child(s)
+	var t2 := Label.new()
+	t2.text = "The Last Shift"
+	t2.add_theme_font_override("font", font_serif_italic)
+	t2.add_theme_font_size_override("font_size", 44)
+	t2.add_theme_color_override("font_color", Color(1.0, 0.36, 0.46))
+	t2.add_theme_color_override("font_shadow_color", Color(0.9, 0.05, 0.2, 0.45))
+	t2.add_theme_constant_override("shadow_offset_y", 0)
+	t2.add_theme_constant_override("shadow_outline_size", 14)
+	v.add_child(t2)
+	var gap := Control.new()
+	gap.custom_minimum_size = Vector2(0, 22)
+	v.add_child(gap)
 	var p := Label.new()
-	p.text = "A murder you have to solve twice. Sober, and with The Voice.\n\nSpace to advance · 1–9 to choose · Shift to shift · E for evidence\nIn the room, click what you want to look at."
-	p.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	p.add_theme_font_override("font", font_ui)
-	p.add_theme_color_override("font_color", MUTED)
+	p.text = "One bar. One body. One detective who is useless sober\nand brilliant drunk. Solve it twice."
+	p.add_theme_font_override("font", font_serif)
+	p.add_theme_font_size_override("font_size", 19)
+	p.add_theme_color_override("font_color", Color(0.78, 0.72, 0.63))
 	v.add_child(p)
+	var gap2 := Control.new()
+	gap2.custom_minimum_size = Vector2(0, 26)
+	v.add_child(gap2)
 	var b := Button.new()
 	b.text = "BEGIN THE NIGHT"
 	b.add_theme_font_override("font", font_ui)
+	b.add_theme_font_size_override("font_size", 15)
+	b.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	b.add_theme_color_override("font_color", Color(0.95, 0.90, 0.82))
+	b.add_theme_color_override("font_hover_color", Color(1.0, 0.45, 0.55))
+	var sb := _style(Color(0, 0, 0, 0.35), Color(0.95, 0.90, 0.82, 0.55))
+	sb.content_margin_left = 28
+	sb.content_margin_right = 28
+	sb.set_corner_radius_all(2)
+	var sbh := _style(Color(0.25, 0.03, 0.07, 0.55), Color(1.0, 0.36, 0.46))
+	sbh.content_margin_left = 28
+	sbh.content_margin_right = 28
+	sbh.set_corner_radius_all(2)
+	b.add_theme_stylebox_override("normal", sb)
+	b.add_theme_stylebox_override("hover", sbh)
+	b.add_theme_stylebox_override("pressed", sbh)
+	b.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
 	b.pressed.connect(_start)
 	v.add_child(b)
 	var seen := Label.new()
 	seen.name = "Seen"
-	seen.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	seen.add_theme_font_size_override("font_size", 12)
-	seen.add_theme_color_override("font_color", MUTED)
+	seen.add_theme_font_override("font", font_serif_italic)
+	seen.add_theme_font_size_override("font_size", 14)
+	seen.add_theme_color_override("font_color", Color(0.62, 0.55, 0.46))
 	v.add_child(seen)
+	var gap3 := Control.new()
+	gap3.custom_minimum_size = Vector2(0, 30)
+	v.add_child(gap3)
+	var c := Label.new()
+	c.text = "SPACE advance   ·   1–9 choose   ·   SHIFT shift   ·   E evidence   ·   click the room to look\nGAME OFF 2026  ·  SHIFT"
+	c.add_theme_font_override("font", font_ui)
+	c.add_theme_font_size_override("font_size", 11)
+	c.add_theme_color_override("font_color", Color(0.48, 0.43, 0.37))
+	v.add_child(c)
 
 
 # ---------------------------------------------------------------- flow
@@ -384,7 +442,10 @@ func _build_title() -> void:
 func show_title() -> void:
 	title_visible = true
 	title.visible = true
-	title_dim.visible = true
+	title_shade.visible = true
+	hud.visible = false
+	title.modulate.a = 0.0
+	create_tween().tween_property(title, "modulate:a", 1.0, 1.8)
 	panel.visible = false
 	board.visible = false
 	tl.visible = false
@@ -404,7 +465,8 @@ func show_title() -> void:
 func _start() -> void:
 	title_visible = false
 	title.visible = false
-	title_dim.visible = false
+	title_shade.visible = false
+	hud.visible = true
 	choice_made.emit({"next": "ch1_wake", "shiftTo": ""})
 
 

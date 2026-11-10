@@ -17,6 +17,12 @@ var clue_meshes: Array[MeshInstance3D] = []   # props that glow in Voice state
 var post_mat: ShaderMaterial
 var headlight: OmniLight3D
 var headlights_on: bool = false
+var in_title: bool = false
+var title_key: SpotLight3D
+var neon_light: OmniLight3D
+var music: AudioStreamPlayer
+const MUSIC_TITLE_DB := -6.0
+const MUSIC_GAME_DB := -20.0
 var post_layer: CanvasLayer
 var cam_base: Transform3D
 var sway_t: float = 0.0
@@ -48,6 +54,7 @@ const MODEL_SLOTS := {
 
 # Camera stations: [position, look_at]
 const STATIONS := {
+	"title":  [Vector3(-3.25, 1.34, -2.12), Vector3(4.5, 1.62, -2.62)],
 	"hub":    [Vector3(0.0, 1.7, 2.6),  Vector3(0.0, 1.1, -2.5)],
 	"booth":  [Vector3(-2.2, 1.5, 2.4), Vector3(-4.2, 0.9, 2.5)],
 	"bar":    [Vector3(2.9, 2.0, -3.3), Vector3(1.0, 0.15, -3.1)],
@@ -89,6 +96,12 @@ const SOBER := {
 	"fog": Color(0.07, 0.05, 0.04), "fog_density": 0.008,
 	"light": Color(1.0, 0.78, 0.52), "light_energy": 4.5,
 }
+## Title screen: the bar after close. Almost everything is off except one lamp and the neon.
+const TITLE := {
+	"bg": Color(0.012, 0.01, 0.014), "ambient": Color(0.10, 0.07, 0.09), "ambient_energy": 0.22,
+	"fog": Color(0.05, 0.03, 0.045), "fog_density": 0.03,
+	"light": Color(1.0, 0.70, 0.42), "light_energy": 0.55,
+}
 const VOICE := {
 	"bg": Color(0.02, 0.04, 0.06), "ambient": Color(0.20, 0.38, 0.45), "ambient_energy": 1.1,
 	"fog": Color(0.04, 0.10, 0.14), "fog_density": 0.045,
@@ -110,14 +123,21 @@ func _ready() -> void:
 	ui.timeline_solved.connect(func(): go("ch5_silence"))
 	Story.state_changed.connect(_on_state_changed)
 	Story.timed_out.connect(func(): call_deferred("go", "end_timeout"))
-	_apply_palette(SOBER, 0.0)
-	_snap_camera("hub")
-	ui.show_title()
+	_build_title_set()
+	_build_music()
+	_enter_title()
 
 
 func _process(delta: float) -> void:
 	# slow handheld breathing on the camera, on top of whatever station it is at
 	sway_t += delta
+	if in_title:
+		# very slow push down the bar
+		var st: Array = STATIONS["title"]
+		var drift := Vector3(sin(sway_t * 0.07) * 0.35, sin(sway_t * 0.05) * 0.03, 0.0)
+		cam.position = st[0] + drift
+		cam.look_at(st[1], Vector3.UP)
+		cam_base = cam.transform
 	if cam_tween == null or not cam_tween.is_running():
 		var t := cam_base
 		t.origin += Vector3(sin(sway_t * 0.37) * 0.012, sin(sway_t * 0.61) * 0.009, 0.0)
@@ -140,8 +160,7 @@ func go(id: String) -> void:
 		_set_headlights(false)
 		Story.reset()
 		_set_hub(false)
-		_snap_camera("hub")
-		ui.show_title()
+		_enter_title()
 		return
 	if not Story.scenes.has(id):
 		push_error("No scene: " + id)
@@ -161,6 +180,8 @@ func go(id: String) -> void:
 
 
 func _on_choice(choice: Dictionary) -> void:
+	if in_title:
+		_leave_title()
 	if choice.get("shiftTo", "") != "":
 		Story.shift_forced(choice["shiftTo"])
 	go(choice["next"])
@@ -196,6 +217,104 @@ func _snap_camera(station: String) -> void:
 	cam.position = st[0]
 	cam.look_at(st[1], Vector3.UP)
 	cam_base = cam.transform
+
+
+# ---------------------------------------------------------------- title screen
+
+func _enter_title() -> void:
+	in_title = true
+	current_scene = ""
+	_apply_palette(TITLE, 0.0)
+	if post_mat:
+		post_mat.set_shader_parameter("voice", 0.0)
+	title_key.light_energy = 9.0
+	neon_light.light_energy = 2.3
+	_snap_camera("title")
+	if music and music.stream and not music.playing:
+		music.play()
+	if music:
+		music.volume_db = MUSIC_TITLE_DB
+	ui.show_title()
+
+
+func _leave_title() -> void:
+	in_title = false
+	_apply_palette(SOBER, 2.0)
+	var t := create_tween().set_parallel(true)
+	t.tween_property(title_key, "light_energy", 0.0, 2.0)
+	t.tween_property(neon_light, "light_energy", 0.9, 2.0)
+	if music:
+		t.tween_property(music, "volume_db", MUSIC_GAME_DB, 3.0)
+
+
+func _build_music() -> void:
+	music = AudioStreamPlayer.new()
+	music.name = "Music"
+	add_child(music)
+	for path in ["res://assets/audio/theme.ogg", "res://assets/audio/theme.mp3"]:
+		if ResourceLoader.exists(path):
+			var stream: AudioStream = load(path)
+			if stream is AudioStreamMP3:
+				(stream as AudioStreamMP3).loop = true
+			elif stream is AudioStreamOggVorbis:
+				(stream as AudioStreamOggVorbis).loop = true
+			music.stream = stream
+			break
+
+
+## Props that sell the title shot and stay in the room afterwards:
+## the neon sign, a last drink on the bar, one lamp left on.
+func _build_title_set() -> void:
+	# neon sign on the far wall, dead ahead down the bar
+	var sign := Label3D.new()
+	sign.name = "Neon"
+	sign.text = "The Last Call"
+	sign.font = load("res://assets/fonts/PlayfairDisplay-Italic.ttf")
+	sign.font_size = 150
+	sign.pixel_size = 0.0027
+	sign.modulate = Color(1.0, 0.62, 0.68)
+	sign.outline_modulate = Color(1.0, 0.10, 0.28, 0.7)
+	sign.outline_size = 26
+	sign.position = Vector3(5.06, 2.25, -2.75)
+	sign.rotation_degrees.y = -90.0
+	add_child(sign)
+	neon_light = OmniLight3D.new()
+	neon_light.position = Vector3(4.55, 2.2, -2.75)
+	neon_light.light_color = Color(1.0, 0.22, 0.38)
+	neon_light.omni_range = 6.5
+	neon_light.omni_attenuation = 1.3
+	neon_light.light_energy = 0.9
+	add_child(neon_light)
+	# the last drink: rocks glass, whisky, one ice cube, the bottle behind it
+	var gp := Vector3(-2.45, 1.15, -2.38)
+	var glass := _cyl(gp + Vector3(0, 0.05, 0), 0.042, 0.10, Color(0.85, 0.92, 1.0, 0.22), 0.03)
+	(glass.material_override as StandardMaterial3D).transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	var whisky := _cyl(gp + Vector3(0, 0.03, 0), 0.037, 0.045, Color(0.80, 0.42, 0.08, 0.85), 0.05)
+	var wm := whisky.material_override as StandardMaterial3D
+	wm.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	wm.emission_enabled = true
+	wm.emission = Color(0.9, 0.45, 0.08)
+	wm.emission_energy_multiplier = 0.35
+	var ice := _box(gp + Vector3(0.005, 0.055, 0.004), Vector3(0.036, 0.036, 0.036), Color(0.9, 0.95, 1.0, 0.5), 0.05)
+	ice.rotation_degrees = Vector3(18, 30, 12)
+	(ice.material_override as StandardMaterial3D).transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	_cyl(gp + Vector3(0.42, 0.13, -0.16), 0.043, 0.26, Color(0.16, 0.08, 0.03), 0.12)
+	_cyl(gp + Vector3(0.42, 0.31, -0.16), 0.016, 0.10, Color(0.16, 0.08, 0.03), 0.12)
+	_box(gp + Vector3(0.42, 0.13, -0.116), Vector3(0.06, 0.09, 0.004), Color(0.82, 0.76, 0.62), 0.9)
+	# a coaster and Danny's tab book
+	_cyl(gp + Vector3(0, 0.003, 0), 0.06, 0.006, Color(0.55, 0.12, 0.10), 0.9)
+	_box(gp + Vector3(0.9, 0.015, 0.05), Vector3(0.22, 0.03, 0.15), Color(0.10, 0.22, 0.14), 0.7)
+	# one lamp left on over the drink
+	title_key = SpotLight3D.new()
+	title_key.position = gp + Vector3(0.15, 1.5, 0.25)
+	title_key.rotation_degrees = Vector3(-84, 0, 0)
+	title_key.light_color = Color(1.0, 0.74, 0.42)
+	title_key.spot_range = 4.0
+	title_key.spot_angle = 26.0
+	title_key.spot_angle_attenuation = 1.6
+	title_key.shadow_enabled = true
+	title_key.light_energy = 0.0
+	add_child(title_key)
 
 
 # ---------------------------------------------------------------- headlights
