@@ -32,3 +32,26 @@ CC0 low-poly packs (Kenney, Quaternius) for furniture if generation stalls. Cred
 ## Portraits (2D)
 
 The dialogue panel can show a portrait beside the name. `assets/portraits/<who>_S.png` and `<who>_V.png` — same face, lit warm vs cold. Rendered from the character sheet. Hook: `UI._append_line` (TODO).
+
+## Status — Nov 9
+
+Reference images generated on Higgsfield (gpt_image_2_6), one per slot, flat-lit on plain grey for clean image→3D:
+
+| Slot | Higgsfield image job |
+|---|---|
+| `mira` (kneeling) | 8ceb3ce1-65e1-4a6a-bba0-6af6ac224701 |
+| `theo` | 867ecfc6-cb4b-4486-9d32-23ef62d797e3 |
+| `lenny` | 50309aed-de3f-4729-8167-9d53e9b5b784 |
+| `connie` (seated, stool included) | 494748bf-6353-4917-b946-d65ee0f9b876 |
+| `body` | 6c0b94a2-1b6e-45a1-8a7a-931a6e6fabd7 |
+| `jukebox` | 15feec36-e8ee-4b0f-9c76-3437d9cf1adb |
+
+Next: image→3D (`meshy_v7_image_to_3d`, textured + PBR, 20k polys, 38 credits each), download each GLB, save as `assets/models/<slot>.glb`.
+
+## Auto-fit
+
+`Main.gd` scales every model to its slot's target size, centres it and stands it on the floor, whatever units or origin the file has. Verified with a 3 m off-centre test mesh: lands at 1.78 m, feet at y = 0, centred on the slot. If a model faces the wrong way, change the rotation number in `MODEL_SLOTS`. Connie's model brings its own stool; the primitive stool under her is hidden automatically.
+
+## Portraits
+
+`assets/portraits/<who>.png` shows beside the dialogue while that character speaks, tinted warm (Sober) or cold (Voice). The reference images above, cropped to head and shoulders, work as-is.

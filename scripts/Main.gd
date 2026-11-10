@@ -15,6 +15,8 @@ var lights: Array[Light3D] = []
 var cam_tween: Tween
 var clue_meshes: Array[MeshInstance3D] = []   # props that glow in Voice state
 var post_mat: ShaderMaterial
+var headlight: OmniLight3D
+var headlights_on: bool = false
 var post_layer: CanvasLayer
 var cam_base: Transform3D
 var sway_t: float = 0.0
@@ -26,19 +28,22 @@ var tex_wall: Texture2D
 var tex_leather_n: Texture2D
 
 ## Drop GLB files here (assets/models/<name>.glb) and they replace the primitive at that slot.
-## position, y-rotation (deg), uniform scale. Built with Higgsfield image→3D.
+## [position on the floor, y-rotation in degrees, target size in metres, axis the size applies to].
+## Models are auto-fitted: whatever units or origin the file has, it is scaled to the target
+## size, centred on the slot and stood on the floor. Size 0 = use the file as-is.
+## If a model faces the wrong way, change only the rotation here.
 const MODEL_SLOTS := {
-	"bar_counter": [Vector3(0.0, 0.0, -2.55), 0.0, 1.0],
-	"back_bar":    [Vector3(0.0, 0.0, -4.0), 0.0, 1.0],
-	"jukebox":     [Vector3(-4.8, 0.0, -1.2), 90.0, 1.0],
-	"booth":       [Vector3(-4.0, 0.0, 2.5), 0.0, 1.0],
-	"body":        [Vector3(1.0, 0.0, -3.1), 0.0, 1.0],
-	"stool":       [Vector3(0.0, 0.0, -1.9), 0.0, 1.0],
-	"frank":       [Vector3(0.0, 0.0, 1.9), 180.0, 1.0],
-	"mira":        [Vector3(0.2, 0.0, -3.1), 20.0, 1.0],
-	"theo":        [Vector3(0.0, 0.0, 3.6), 180.0, 1.0],
-	"lenny":       [Vector3(-2.0, 0.0, 0.4), 60.0, 1.0],
-	"connie":      [Vector3(3.0, 0.0, -1.9), 0.0, 1.0],
+	"bar_counter": [Vector3(0.0, 0.0, -2.55), 0.0, 0.0, "y"],
+	"back_bar":    [Vector3(0.0, 0.0, -4.0), 0.0, 0.0, "y"],
+	"jukebox":     [Vector3(-4.75, 0.0, -1.2), 90.0, 1.5, "y"],
+	"booth":       [Vector3(-4.0, 0.0, 2.5), 0.0, 0.0, "y"],
+	"body":        [Vector3(1.0, 0.0, -3.1), 0.0, 1.8, "long"],
+	"stool":       [Vector3(0.0, 0.0, -1.9), 0.0, 0.8, "y"],
+	"frank":       [Vector3(0.0, 0.0, 1.9), 180.0, 1.8, "y"],
+	"mira":        [Vector3(0.2, 0.0, -3.1), 90.0, 1.2, "y"],
+	"theo":        [Vector3(0.0, 0.0, 3.6), 180.0, 1.78, "y"],
+	"lenny":       [Vector3(-2.0, 0.0, 0.4), 40.0, 1.75, "y"],
+	"connie":      [Vector3(3.0, 0.0, -1.9), -30.0, 1.45, "y"],
 }
 
 # Camera stations: [position, look_at]
@@ -132,6 +137,7 @@ func go(id: String) -> void:
 	if id == "hub" and Story.ch4_due():
 		id = "ch4_blackout"
 	if id == "__restart":
+		_set_headlights(false)
 		Story.reset()
 		_set_hub(false)
 		_snap_camera("hub")
@@ -147,6 +153,7 @@ func go(id: String) -> void:
 	current_scene = id
 	var sc: Dictionary = Story.scenes[id]
 	Story.current_no_shift = bool(sc.get("noShift", false))
+	_set_headlights(id == "accuse" or id == "end_true" or id == "end_timeout")
 	_set_hub(bool(sc.get("hub", false)))
 	_move_camera(SCENE_STATION.get(id, "hub"))
 	Story.grant_evidence(id)
@@ -191,6 +198,26 @@ func _snap_camera(station: String) -> void:
 	cam_base = cam.transform
 
 
+# ---------------------------------------------------------------- headlights
+
+## The police arriving: the front window flares and a cold light sweeps the room.
+func _set_headlights(on: bool) -> void:
+	if on == headlights_on or headlight == null:
+		return
+	headlights_on = on
+	var win := get_node_or_null("Window") as MeshInstance3D
+	var t := create_tween().set_parallel(true)
+	t.tween_property(headlight, "light_energy", 6.0 if on else 0.0, 1.6 if on else 0.4)
+	if on:
+		headlight.position.x = -4.6
+		t.tween_property(headlight, "position:x", -1.6, 2.4).set_trans(Tween.TRANS_SINE)
+	if win:
+		var m: StandardMaterial3D = win.material_override
+		m.emission_enabled = true
+		m.emission = Color(0.8, 0.9, 1.0)
+		t.tween_property(m, "emission_energy_multiplier", 4.0 if on else 0.0, 1.6 if on else 0.4)
+
+
 # ---------------------------------------------------------------- post-process
 
 func _build_post() -> void:
@@ -217,17 +244,53 @@ func _load_models() -> void:
 		var scene: PackedScene = load(path)
 		if scene == null:
 			continue
-		var inst := scene.instantiate()
+		var inst: Node3D = scene.instantiate()
 		var cfg: Array = MODEL_SLOTS[slot]
-		inst.position = cfg[0]
-		inst.rotation_degrees.y = cfg[1]
-		inst.scale = Vector3.ONE * cfg[2]
-		inst.name = "Model_" + slot
-		add_child(inst)
-		# hide the primitive placeholder for this slot, if any
-		var ph := get_node_or_null("PH_" + slot)
-		if ph:
-			ph.visible = false
+		var pivot := Node3D.new()
+		pivot.name = "Model_" + slot
+		pivot.position = cfg[0]
+		pivot.rotation_degrees.y = cfg[1]
+		pivot.add_child(inst)
+		_fit_model(inst, float(cfg[2]), str(cfg[3]))
+		add_child(pivot)
+		# hide the primitive placeholder(s) for this slot
+		for c in get_children():
+			if c.name == "PH_" + slot or str(c.name).begins_with("PH_" + slot + "_"):
+				c.visible = false
+
+
+## Bounding box of every mesh under `n`, in the space of `n`'s parent.
+func _model_aabb(n: Node, xf: Transform3D, acc: Array) -> void:
+	var here := xf
+	if n is Node3D:
+		here = xf * (n as Node3D).transform
+	if n is MeshInstance3D and (n as MeshInstance3D).mesh != null:
+		var box: AABB = here * (n as MeshInstance3D).get_aabb()
+		if acc.is_empty():
+			acc.append(box)
+		else:
+			acc[0] = (acc[0] as AABB).merge(box)
+	for c in n.get_children():
+		_model_aabb(c, here, acc)
+
+
+## Scale to the target size, centre on the pivot, stand on the floor.
+func _fit_model(inst: Node3D, target: float, axis: String) -> void:
+	if target <= 0.0:
+		return
+	inst.transform = Transform3D.IDENTITY
+	var acc: Array = []
+	_model_aabb(inst, Transform3D.IDENTITY, acc)
+	if acc.is_empty():
+		return
+	var box: AABB = acc[0]
+	var extent: float = box.size.y if axis == "y" else maxf(box.size.x, box.size.z)
+	if extent <= 0.0001:
+		return
+	var k := target / extent
+	var centre := box.get_center()
+	inst.scale = Vector3.ONE * k
+	inst.position = Vector3(-centre.x * k, -box.position.y * k, -centre.z * k)
 
 
 # ---------------------------------------------------------------- hotspots
@@ -512,6 +575,13 @@ func _build_room() -> void:
 	# window (front wall, left): emissive pane for headlights later
 	var win := _box(Vector3(-3.0, 1.9, 4.08), Vector3(2.2, 1.2, 0.04), Color(0.05, 0.06, 0.09), 0.2)
 	win.name = "Window"
+	headlight = OmniLight3D.new()
+	headlight.position = Vector3(-3.0, 1.9, 3.6)
+	headlight.light_color = Color(0.85, 0.92, 1.0)
+	headlight.light_energy = 0.0
+	headlight.omni_range = 9.0
+	headlight.shadow_enabled = true
+	add_child(headlight)
 	# bar counter + top + back bar
 	_tbox(Vector3(0, 0.55, -2.55), Vector3(7.2, 1.1, 0.7), m_wood, "PH_bar_counter")
 	_tbox(Vector3(0, 1.12, -2.55), Vector3(7.4, 0.06, 0.9), m_wood_dark)
@@ -540,8 +610,11 @@ func _build_room() -> void:
 		_cyl(Vector3(x, 0.11, -2.1), 0.015, 0.22, brass, 0.25, 0.95)
 	# stools — Connie's is the last one at x = 3.0
 	for x in [-3.0, -1.5, 0.0, 1.5, 3.0]:
-		_cyl(Vector3(x, 0.38, -1.9), 0.03, 0.76, Color(0.2, 0.2, 0.2), 0.4, 0.8)
-		_cyl(Vector3(x, 0.78, -1.9), 0.18, 0.06, Color(0.30, 0.10, 0.08), 0.8)
+		var leg := _cyl(Vector3(x, 0.38, -1.9), 0.03, 0.76, Color(0.2, 0.2, 0.2), 0.4, 0.8)
+		var seat := _cyl(Vector3(x, 0.78, -1.9), 0.18, 0.06, Color(0.30, 0.10, 0.08), 0.8)
+		if x == 3.0:
+			leg.name = "PH_connie_stool_leg"
+			seat.name = "PH_connie_stool_seat"
 	# Connie's glass — still sweating
 	_clue(_cyl(Vector3(3.0, 1.21, -2.4), 0.035, 0.12, Color(0.8, 0.9, 0.95, 0.5), 0.05))
 	# till (register) behind the bar, drawer out

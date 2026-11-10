@@ -31,6 +31,8 @@ var choices: VBoxContainer
 var board: PanelContainer
 var board_list: VBoxContainer
 var title: CenterContainer
+var portrait: TextureRect
+var portrait_cache: Dictionary = {}
 var font_serif: Font
 var tl: PanelContainer
 var tl_pool: VBoxContainer
@@ -181,7 +183,18 @@ func _build_panel() -> void:
 	text.add_theme_font_size_override("normal_font_size", 20)
 	text.add_theme_font_size_override("italics_font_size", 20)
 	text.add_theme_color_override("default_color", TEXT)
-	v.add_child(text)
+	var row := HBoxContainer.new()
+	row.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	row.add_theme_constant_override("separation", 16)
+	v.add_child(row)
+	portrait = TextureRect.new()
+	portrait.custom_minimum_size = Vector2(132, 176)
+	portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	portrait.visible = false
+	row.add_child(portrait)
+	text.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_child(text)
 	choices = VBoxContainer.new()
 	choices.add_theme_constant_override("separation", 6)
 	v.add_child(choices)
@@ -413,8 +426,21 @@ func _next_line() -> void:
 		_finish_scene()
 
 
+## Portraits are optional: assets/portraits/<who>.png (mira, theo, lenny, connie, frank).
+func _set_portrait(who: String) -> void:
+	if not portrait_cache.has(who):
+		var path := "res://assets/portraits/%s.png" % who
+		portrait_cache[who] = load(path) if ResourceLoader.exists(path) else null
+	var tex: Texture2D = portrait_cache[who]
+	portrait.texture = tex
+	portrait.visible = tex != null
+	portrait.modulate = Color(0.75, 0.95, 1.0) if Story.state == "V" else Color(1.0, 0.92, 0.82)
+
+
 func _append_line(l: Dictionary) -> void:
 	var who: String = l["who"]
+	if who != "narr" and who != "voice":
+		_set_portrait(who)
 	var t: String = str(l["text"]).replace("[", "[lb]")
 	match who:
 		"narr":
