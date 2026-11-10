@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>On the Rocks: The Last Shift</title>
+<style>
+:root{
+  --ink:#0d0b09;--paper:#1a1612;--card:#231d17;--line:#3a3028;
+  --amber:#d9a441;--amber-dim:#8a6a2e;--text:#e8dcc8;--muted:#9a8a74;--red:#b8352b;
+  --font-body:Georgia,"Times New Roman",serif;--font-ui:system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+:root[data-state="V"]{
+  --paper:#070b10;--card:#0b1118;--line:#1b2a36;--amber:#6fd3e6;--amber-dim:#2a6b79;--text:#d8ecf2;--muted:#6f8f9a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--ink);color:var(--text);font-family:var(--font-body);-webkit-text-size-adjust:100%}
+body{display:flex;flex-direction:column;align-items:center;transition:background .6s}
+#app{width:100%;max-width:820px;min-height:100vh;display:flex;flex-direction:column;background:var(--paper);transition:background .6s;position:relative;padding-bottom:env(safe-area-inset-bottom)}
+#hud{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line);font-family:var(--font-ui);font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);user-select:none}
+#hud b{color:var(--amber);font-weight:600}
+#hud .flasks{letter-spacing:.2em}
+#hud button{background:none;border:1px solid var(--line);color:var(--amber);font:inherit;padding:6px 10px;border-radius:4px;cursor:pointer;text-transform:uppercase;letter-spacing:.08em}
+#hud button:hover{border-color:var(--amber)}
+#hud button:disabled{opacity:.35;cursor:not-allowed}
+#stage{flex:1;display:flex;flex-direction:column;padding:28px 20px 20px}
+#loc{font-family:var(--font-ui);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--amber-dim);margin-bottom:18px}
+#text{flex:1;font-size:19px;line-height:1.6;max-width:640px}
+#text p{margin:0 0 16px;opacity:0;animation:fade .35s forwards}
+#text p.narr{color:var(--muted)}
+#text p.voice{font-style:italic;color:var(--amber)}
+#text p.who::before{content:attr(data-who);display:block;font-family:var(--font-ui);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--amber-dim);margin-bottom:2px}
+#text p.evidence{font-family:var(--font-ui);font-size:13px;letter-spacing:.05em;color:var(--amber);border-left:2px solid var(--amber);padding-left:10px}
+@keyframes fade{to{opacity:1}}
+#choices{display:flex;flex-direction:column;gap:10px;margin-top:20px;max-width:640px}
+#choices button,#tap{background:var(--card);border:1px solid var(--line);color:var(--text);font:inherit;font-size:16px;text-align:left;padding:14px 16px;border-radius:6px;cursor:pointer;line-height:1.4}
+#choices button:hover,#tap:hover{border-color:var(--amber)}
+#choices button small{display:block;font-family:var(--font-ui);font-size:11px;color:var(--muted);margin-top:4px;letter-spacing:.05em}
+#choices button:disabled{opacity:.4;cursor:not-allowed}
+#tap{text-align:center;color:var(--muted);font-family:var(--font-ui);font-size:13px;letter-spacing:.15em;text-transform:uppercase}
+#board{position:absolute;inset:0;background:var(--paper);padding:24px 20px;overflow:auto;display:none;flex-direction:column}
+#board.open{display:flex}
+#board h2{font-family:var(--font-ui);font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--amber-dim);margin-bottom:16px}
+#board ul{list-style:none;display:grid;gap:10px}
+#board li{background:var(--card);border:1px solid var(--line);padding:12px 14px;border-radius:6px;font-size:15px;line-height:1.45}
+#board li span{display:inline-block;font-family:var(--font-ui);font-size:10px;letter-spacing:.15em;padding:2px 6px;border-radius:3px;margin-right:8px;vertical-align:middle}
+#board li.S span{background:#5a3f16;color:#f2c97a}
+#board li.V span{background:#14404a;color:#9fe3f0}
+#board li.locked{opacity:.3}
+#board .close{margin-top:auto;align-self:flex-end}
+.title{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;flex:1;gap:18px}
+.title h1{font-weight:normal;font-size:40px;letter-spacing:.02em;line-height:1.1}
+.title h1 small{display:block;font-size:14px;font-family:var(--font-ui);letter-spacing:.3em;text-transform:uppercase;color:var(--amber-dim);margin-top:10px}
+.title p{color:var(--muted);max-width:420px;line-height:1.5}
+.pulse{animation:pulse 4s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.82}}
+#flash{position:fixed;inset:0;pointer-events:none;background:#fff;opacity:0}
+#flash.go{animation:flash .5s}
+@keyframes flash{0%{opacity:.6}100%{opacity:0}}
+@media (max-width:600px){#text{font-size:17px}.title h1{font-size:30px}}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="hud">
+    <span><b id="clock">1:40 AM</b></span>
+    <span class="flasks" id="flasks">▮▮▮</span>
+    <span id="state"><b>SOBER</b></span>
+    <span>
+      <button id="btnBoard" title="Evidence (E)">Board</button>
+      <button id="btnShift" title="Shift (Shift key)">⇧ Shift</button>
+    </span>
+  </div>
+  <div id="stage">
+    <div id="loc"></div>
+    <div id="text"></div>
+    <div id="choices"></div>
+  </div>
+  <div id="board"><h2>Evidence board</h2><ul id="evList"></ul><button class="close" id="btnClose">Close</button></div>
+</div>
+<div id="flash"></div>
+
+<script>
+// ============================================================
+//  On the Rocks: The Last Shift — Game Off 2026 (theme: SHIFT)
+//  Single-file visual-novel engine. No dependencies.
+//  State: 'S' = Sober Frank, 'V' = The Voice. Lines/choices/evidence
+//  are filtered by state. Clock runs out at 4:00 AM.
+// ============================================================
+
+const CONFIG = {
+  startMinutes: 1*60+40,       // 1:40 AM
+  endMinutes:   4*60,          // 4:00 AM police arrive
+  flasks: 3,                   // drinks available tonight
+  shiftBackCost: 30,           // minutes to sober up
+  visitCost: 10,               // minutes per location/interview
+  trueEndingNeeds: { S: 4, V: 4, witness: 'E08' }
+};
+
+// ---------- Evidence ----------
+const EVIDENCE = {
+  E01:  {s:'S', t:'A broken bottle beside the body.'},
+  E01v: {s:'V', t:'The bottle is the top-shelf one. Danny never served it. Somebody brought it down.'},
+  E02:  {s:'S', t:'A receipt in Frank\'s pocket, in Danny\'s hand: "11:47 — CUT OFF. — D."'},
+  E03:  {s:'V', t:'Frank\'s right knuckles are bruised. He hit something. Or someone.'},
+  E04:  {s:'S', t:'The till is empty.'},
+  E04v: {s:'V', t:'Theo\'s phone is still on the charger behind the bar. He didn\'t come back for it.'},
+  E05:  {s:'S', t:'The office ledger and the deed are missing.'},
+  E05v: {s:'V', t:'Cigar ash on the office carpet. And Lenny said "was" before anyone told him Danny was dead.'},
+  E06:  {s:'S', t:'The brass rail has been wiped clean.'},
+  E06v: {s:'V', t:'Wiped clean — except one handprint at the end. Frank-sized.'},
+  E07:  {s:'S', t:'Connie\'s stool is empty. She says she left at midnight.'},
+  E07v: {s:'V', t:'Her glass is still sweating. She never left.'},
+  E08:  {s:'V', t:'Connie\'s testimony. She saw everything.'},
+  E09:  {s:'V', t:'The Voice\'s confession.'}
+};
+
+// ---------- Characters ----------
+const WHO = { frank:'Frank', voice:'', mira:'Mira Roarke', theo:'Theo Pike', lenny:'Lenny Baptiste', connie:'Connie Vale', narr:'' };
+
+// ---------- Scenes ----------
+// line: [who, text, state]  state: 'S' | 'V' | 'B'
+const SCENES = {
+
+// ===================== CHAPTER 1 — LAST CALL =====================
+ch1_wake: { loc:'The Last Call · Booth', lines:[
+  ['narr','Chapter One — Last Call','B'],
+  ['narr','You wake up with your cheek on something sticky and your mouth tasting like a coin. The booth. Your booth. The jukebox is skipping on the same four seconds of a trumpet.','S'],
+  ['frank','Right. Okay. So. It\'s — what time is it.','S'],
+  ['narr','1:40. The bar should have been dark for an hour and a half. It isn\'t. Every light is on.','S'],
+  ['narr','Somebody is crying behind the bar. Low, controlled, the way you cry when you\'ve decided to.','S'],
+], choices:[ {label:'Get up.', next:'ch1_body'} ] },
+
+ch1_body: { loc:'The Last Call · Bar floor', clock:0, lines:[
+  ['narr','Danny Roarke is on the floor behind his own bar, on his side, one arm under him like he was reaching for something. There\'s a dark halo under his head and a broken bottle a foot from his hand.','S'],
+  ['frank','Danny. Danny, hey — oh. Oh, no. I should — I shouldn\'t touch that. I should not touch that.','S'],
+  ['narr','Mira Roarke is kneeling beside him with a phone in her lap. She looks up at you and her face does nothing at all.','S'],
+  ['mira','You were asleep. The whole time. I checked.','S'],
+  ['frank','I — yes. I think so. I\'m sorry. I\'m so sorry, Mira.','S'],
+  ['mira','The police are coming. They said forty minutes, then they said two hours. It\'s Saturday.','S'],
+], choices:[ {label:'"What happened?"', next:'ch1_mira1'} ] },
+
+ch1_mira1: { loc:'The Last Call · Bar floor', lines:[
+  ['mira','I was upstairs doing the books. I came down at quarter to one to tell him to lock up and he was — like that. The till\'s open. It\'s empty.','S'],
+  ['frank','A robbery. Okay. Okay. That — yes.','S'],
+  ['mira','You\'re going to help, Frank. You\'re a detective.','S'],
+  ['frank','I\'m — well, technically I consult, which — yes. Yes. I\'m going to help.','S'],
+  ['narr','Your hands are shaking. Not from the body. From the schedule. It\'s been three hours. You know exactly what you need and you hate that you know it.','S'],
+  ['narr','The flask is in your coat. Full. You don\'t remember filling it.','S'],
+], choices:[ {label:'Not yet. Look around first.', next:'ch1_others'} ] },
+
+ch1_others: { loc:'The Last Call · Bar floor', lines:[
+  ['narr','The front door opens and the room fills up like a bad joke walking into a bar.','S'],
+  ['narr','Theo Pike, the barback, twenty-two and grey in the face, hovering in the doorway like he needs permission to be sad. Behind him, Lenny Baptiste — Danny\'s partner — in a camel coat, already talking.','S'],
+  ['lenny','I told him. I told him this place was a hole with a liquor license. Christ, Mira. Christ.','S'],
+  ['theo','I just came back for my phone. I left at twelve. I just — I came back for my phone.','S'],
+  ['narr','And at the end of the bar, on the last stool, in the half dark, Connie Vale. Seventy, cardigan, handbag on her knees. You didn\'t see her come in.','S'],
+  ['connie','Hello, Frank. I had a feeling. So I came back.','S'],
+  ['narr','Four people. One of them is lying. Probably more than one. You can feel the shape of it and you can\'t see it, the way you can feel a word you\'ve forgotten.','S'],
+  ['frank','I can\'t do this like this.','S'],
+], choices:[ {label:'Take out the flask.', next:'ch1_drink'} ] },
+
+ch1_drink: { loc:'The Last Call · Bar floor', lines:[
+  ['narr','You turn your back on them. You unscrew the cap. The smell is a hand on the back of your neck.','S'],
+  ['narr','Two swallows. The rule is two.','S'],
+  ['narr','You count. One. Two.','S'],
+  ['narr','Three.','S'],
+], choices:[ {label:'…', next:'ch1_voice', shiftTo:'V'} ] },
+
+ch1_voice: { loc:'The Last Call · Bar floor', lines:[
+  ['narr','And the room comes in.','V'],
+  ['voice','There you are.','V'],
+  ['voice','Look at them. Don\'t look at him, he\'s done, look at them. The wife has clean hands. The kid is standing exactly where he can see the till and he hasn\'t looked at it once, which means he already knows what\'s in it. The partner said "was." Twice. Nobody told him Danny was anything.','V'],
+  ['voice','And the old woman\'s glass is sweating.','V'],
+  ['frank','What does that —','V'],
+  ['voice','It means you were here for a reason tonight, Frank. You just don\'t get to know it yet.','V'],
+  ['narr','End of Chapter One.','B'],
+], choices:[ {label:'Chapter Two — the sweep', next:'hub'} ] },
+
+// ===================== HUB — CHAPTERS 2 & 3 =====================
+hub: { loc:'The Last Call', hub:true, lines:[
+  ['narr','The room, as you see it right now. Pick where to go. Each stop costs ten minutes. The police arrive at four.','S'],
+  ['voice','Everything you looked at sober, look at again. It\'s a different room.','V'],
+], choices:[
+  {label:'The booth', next:'loc_booth', small:'where you woke up'},
+  {label:'Behind the bar', next:'loc_bar', small:'the body, the till'},
+  {label:'The bar floor', next:'loc_floor', small:'the rail, the stools'},
+  {label:'The office', next:'loc_office', small:'the books'},
+  {label:'Talk to Mira', next:'int_mira'},
+  {label:'Talk to Theo', next:'int_theo'},
+  {label:'Talk to Lenny', next:'int_lenny'},
+  {label:'Talk to Connie', next:'int_connie'},
+  {label:'Make an accusation', next:'accuse', small:'ends the night'}
+] },
+
+loc_booth: { loc:'Booth', clock:10, grant:['E02','E03'], lines:[
+  ['narr','Your booth. A coaster you\'ve chewed the edge of. Your coat, half on the seat, half on the floor.','S'],
+  ['narr','You go through the pockets like you\'re frisking a stranger. Keys. Flask. A receipt.','S'],
+  ['narr','Danny\'s handwriting, the big slanted capitals. "11:47 — CUT OFF. — D." He does this every night. He puts it on the tab like a joke.','S'],
+  ['frank','Eleven forty-seven. I was — I was awake at eleven forty-seven.','S'],
+  ['narr','You don\'t remember being cut off. You don\'t remember much of anything after ten.','S'],
+  ['voice','Your hand. Right hand. Look at it.','V'],
+  ['narr','Knuckles. Split on the second and third. Not from the booth. Booths don\'t do that.','V'],
+  ['voice','You hit something tonight. Don\'t ask what. You won\'t like the shape of the answer and neither of us has time for you to be sad about it.','V'],
+], choices:[ {label:'Back', next:'hub'} ] },
+
+loc_bar: { loc:'Behind the bar', clock:10, grant:['E01','E04','E01v','E04v'], lines:[
+  ['narr','You don\'t look at his face. You look at the floor around him, the way you were taught. The bottle: brown glass, neck intact, the body shattered. The till: drawer out, empty, the little spring clips sticking up like fingers.','S'],
+  ['frank','Somebody hit him with the bottle. Took the cash. That\'s — that\'s a thing that happens.','S'],
+  ['voice','Read the label.','V'],
+  ['narr','The top-shelf bottle. The one with the hand-written tag. Danny didn\'t pour from it. Nobody poured from it. It lived on the highest shelf behind the register where you couldn\'t reach it in a fight if you tried.','V'],
+  ['voice','So nobody grabbed it in a fight. Somebody took it down. Carefully. Afterwards.','V'],
+  ['voice','And the charger. Behind the register. The phone on it.','V'],
+  ['narr','A cracked phone, a sticker of a cartoon dog on the back. Theo\'s. Still charging.','V'],
+  ['voice','He came back for his phone, he says. It\'s right here. He never touched it. So what did he come back for?','V'],
+], choices:[ {label:'Back', next:'hub'} ] },
+
+loc_floor: { loc:'Bar floor', clock:10, grant:['E06','E07','E06v','E07v'], lines:[
+  ['narr','The brass rail along the bar gleams. It never gleams. Danny polishes it once a year and complains about it for a month.','S'],
+  ['frank','Someone wiped this. Recently.','S'],
+  ['narr','Connie\'s stool at the end is pushed in neatly. She told you she left at midnight and came back when she had a feeling.','S'],
+  ['voice','Wiped, yes. Look at the end. By her stool. One handprint, the one place the cloth didn\'t go because somebody was sitting in the way of it.','V'],
+  ['narr','A big hand. Four fingers and the heel of a palm, pressed hard, like somebody caught themselves.','V'],
+  ['voice','Put your hand over it. Go on.','V'],
+  ['narr','You don\'t.','V'],
+  ['voice','And her glass. Gin and tonic, one ice cube left, the outside of it still wet. It\'s been sitting there ten minutes. Not ninety. She never left this stool, Frank. She watched the whole thing.','V'],
+], choices:[ {label:'Back', next:'hub'} ] },
+
+loc_office: { loc:'Office', clock:10, grant:['E05','E05v'], lines:[
+  ['narr','A desk the size of a door, a lamp, a safe that\'s been open for years. The ledger — the big green one Danny did the tabs in — isn\'t on the desk. The deed Danny kept in a folder taped to the underside of the drawer isn\'t taped to the underside of the drawer.','S'],
+  ['frank','So they took the books too. That\'s a strange thing for a robber to take.','S'],
+  ['voice','It\'s a strange thing for a robber to know about.','V'],
+  ['narr','On the carpet by the chair: a grey crumb of ash. Cigar ash. The bar\'s been no-smoking for six years and Danny enforced it like scripture.','V'],
+  ['voice','One man in this building smokes cigars and acts like the rule is a suggestion. He stood here. He stood here long enough to ash. And earlier he said Danny "was" a stubborn bastard, past tense, before anyone had said the word dead.','V'],
+], choices:[ {label:'Back', next:'hub'} ] },
+
+int_mira: { loc:'Mira Roarke', clock:10, lines:[
+  ['mira','Ask. Whatever it is, ask it.','B'],
+  ['frank','When you came down. Was the door locked?','S'],
+  ['mira','Front, yes. Back, I didn\'t check. I didn\'t check anything, Frank, I was looking at my husband.','S'],
+  ['frank','Of course. I\'m sorry.','S'],
+  ['voice','Her hands. Look at her hands.','V'],
+  ['narr','Spotless. She found her husband in a pool of his own blood and knelt in it and her hands are spotless. Her sleeves are pushed up to the elbow. Her nails are clean.','V'],
+  ['voice','She washed. Before she called anyone. She washed, and she wiped a bar rail, and she came back down and arranged her face. Ask her what time she really came down.','V'],
+  ['mira','Quarter to one. I told you.','V'],
+  ['voice','She didn\'t blink. People who are lying blink. People who\'ve rehearsed don\'t.','V'],
+], choices:[ {label:'Back', next:'hub'} ] },
+
+int_theo: { loc:'Theo Pike', clock:10, lines:[
+  ['theo','I left at twelve. I came back about ten after for my phone. I didn\'t — he was fine. I mean I didn\'t see him. I grabbed it and left.','B'],
+  ['frank','That\'s very clear. Thank you, Theo.','S'],
+  ['narr','He\'s nodding too much. But he\'s twenty-two and a man is dead, and you\'d nod too.','S'],
+  ['voice','He grabbed his phone. The one that\'s on the charger. Behind the register. Right now.','V'],
+  ['frank','Theo. Where\'s your phone.','V'],
+  ['narr','He pats his jacket. Both pockets. His face goes from grey to white.','V'],
+  ['theo','I — I must have —','V'],
+  ['voice','Six weeks of wages, Frank. Everybody in this bar knows Danny was six weeks behind with him. The till had, what, two thousand? He didn\'t take all of it. He took what he was owed. That\'s not a robber. That\'s a kid doing arithmetic over a man on the floor.','V'],
+  ['voice','On the floor. Alive. Say it.','V'],
+], choices:[ {label:'Back', next:'hub'} ] },
+
+int_lenny: { loc:'Lenny Baptiste', clock:10, lines:[
+  ['lenny','I came by at half twelve to talk business. Door was locked. I went home. I come back now because Mira called. That\'s the whole thing, detective, so you can put the little notebook away.','B'],
+  ['frank','I don\'t actually have a — right. Thank you, Mr. Baptiste.','S'],
+  ['voice','Locked. Mira said she didn\'t check the back. And the man who came to talk business went home without talking it, at half twelve, on a Saturday, with three months of money on the table.','V'],
+  ['voice','He went in. He went into the office. He stood by the desk long enough to drop ash, he took the ledger and the deed because without paper Danny\'s debt is Danny\'s word, and Danny isn\'t saying much.','V'],
+  ['frank','You were inside.','V'],
+  ['lenny','Prove it.','V'],
+  ['voice','You will. Here\'s the thing that should bother you, though. If he came at half twelve and Danny was already on the floor — who put him there at a quarter to?','V'],
+], choices:[ {label:'Back', next:'hub'} ] },
+
+int_connie: { loc:'Connie Vale', clock:10, lines:[
+  ['connie','I don\'t know what I can tell you, dear. I went home at midnight like always.','B'],
+  ['frank','And you came back because you had a feeling.','S'],
+  ['connie','Forty years teaching eleven-year-olds. You develop feelings.','S'],
+  ['narr','She pats your hand. Her hand is cold and dry and it\'s the kindest thing anyone\'s done to you all night.','S'],
+  ['voice','Her glass is sweating. Her stool is warm. She hasn\'t been anywhere.','V'],
+  ['frank','Connie. You didn\'t leave.','V'],
+  ['narr','She looks at you for a long time. Then she looks at your right hand, and then back at your face, and she smiles the way you smile at a child who\'s about to find out.','V'],
+  ['connie','No, dear. I didn\'t.','V'],
+  ['connie','But I\'m not going to tell you what I saw. Not tonight. You\'re not ready, and I\'m not sure you should ever be.','V'],
+  ['voice','She\'ll talk. Later. When you\'ve had another drink and can\'t pretend you didn\'t hear it.','V'],
+], choices:[ {label:'Back', next:'hub'} ] },
+
+// ===================== CHAPTER 6 — ACCUSATION (stub endings) =====================
+accuse: { loc:'The Last Call · 3:58 AM', lines:[
+  ['narr','Headlights swing across the front window. You have one sentence left in you.','B'],
+  ['voice','Pick. And know that whoever you pick, it\'ll be true. That\'s the trick of tonight. Everybody did something.','V'],
+], choices:[
+  {label:'Theo Pike', next:'end_theo', small:'the till'},
+  {label:'Lenny Baptiste', next:'end_lenny', small:'the office'},
+  {label:'Mira Roarke', next:'end_mira', small:'the bottle'},
+  {label:'Connie Vale', next:'end_connie', small:'the stool'},
+  {label:'Frank Sable', next:'end_true', small:'the rail', requiresTrue:true}
+] },
+
+end_theo: { loc:'Ending — The Thief', ending:true, lines:[
+  ['narr','Theo folds in about eleven seconds. The money\'s in his car. He cries and says Danny owed him and Danny was fine when he left, he was sitting up, he told me to get out.','B'],
+  ['narr','The police write "sitting up" in a notebook and never read it again. The robbery story holds. Mira doesn\'t look at you.','B'],
+  ['narr','You were wrong. You will never know.','B'],
+  ['narr','ENDING: THE THIEF','B'],
+], choices:[ {label:'Play again', next:'__restart'} ] },
+
+end_lenny: { loc:'Ending — The Partner', ending:true, lines:[
+  ['narr','The ash does it, and the ledger in his car does the rest. Lenny Baptiste is charged with theft and with leaving a man to die, which turns out to be a crime with a name you didn\'t know.','B'],
+  ['narr','It feels like a win. The Voice doesn\'t say anything. That\'s how you know it isn\'t one.','B'],
+  ['narr','ENDING: THE PARTNER','B'],
+], choices:[ {label:'Play again', next:'__restart'} ] },
+
+end_mira: { loc:'Ending — The Widow', ending:true, lines:[
+  ['narr','The bottle. The rail. The clean hands. She doesn\'t deny any of it. She says the insurance wouldn\'t have paid on a fall and she has a bar to keep.','B'],
+  ['mira','Fine. I staged it. Then who, Frank? Who put him on the floor?','B'],
+  ['narr','You open your mouth. Nothing comes out.','B'],
+  ['narr','ENDING: THE WIDOW','B'],
+], choices:[ {label:'Play again', next:'__restart'} ] },
+
+end_connie: { loc:'Ending — The Witness', ending:true, lines:[
+  ['narr','She laughs. Not unkindly.','B'],
+  ['connie','Oh, Frank. All right. Since you asked.','B'],
+  ['narr','And she tells you. All of it. Eleven fifty. The rail. Your hand.','B'],
+  ['narr','You don\'t hear the police come in.','B'],
+  ['narr','ENDING: THE WITNESS — now you know what to look for.','B'],
+], choices:[ {label:'Play again', next:'__restart'} ] },
+
+end_true: { loc:'Ending — The Last Shift', ending:true, lines:[
+  ['narr','[Chapter 6 — true ending — in progress. Requires full timeline + the Voice\'s confession.]','B'],
+  ['voice','…','V'],
+  ['narr','ENDING: THE LAST SHIFT','B'],
+], choices:[ {label:'Play again', next:'__restart'} ] },
+
+end_timeout: { loc:'Ending — The Easy Answer', ending:true, lines:[
+  ['narr','4:00 AM. Two uniforms, one of them yawning. They find the money in Theo\'s car in under a minute. That\'s the story now. That\'s the whole story.','B'],
+  ['narr','You have a drink. Nobody stops you. Nobody\'s left who would.','B'],
+  ['narr','ENDING: THE EASY ANSWER','B'],
+], choices:[ {label:'Play again', next:'__restart'} ] },
+};
+
+// ---------- Engine ----------
+const $ = s => document.querySelector(s);
+const el = { clock:$('#clock'), flasks:$('#flasks'), state:$('#state'), loc:$('#loc'), text:$('#text'), choices:$('#choices'), board:$('#board'), evList:$('#evList'), btnShift:$('#btnShift'), flash:$('#flash') };
+
+let G;
+function resetGame(){
+  G = { state:'S', minutes:CONFIG.startMinutes, flasks:CONFIG.flasks, evidence:new Set(), scene:null, lineIdx:0, visited:{}, started:false, over:false };
+  showTitle();
+}
+
+function fmtClock(m){ const h=Math.floor(m/60)%12||12, mm=String(m%60).padStart(2,'0'); return `${h}:${mm} AM`; }
+function hud(){
+  el.clock.textContent = fmtClock(G.minutes);
+  el.flasks.textContent = '▮'.repeat(G.flasks) + '▯'.repeat(CONFIG.flasks-G.flasks);
+  el.state.innerHTML = G.state==='S' ? '<b>SOBER</b>' : '<b class="pulse">THE VOICE</b>';
+  document.documentElement.dataset.state = G.state;
+  el.btnShift.disabled = !canShift();
+  el.btnShift.textContent = G.state==='S' ? '⇧ Drink' : '⇧ Sober up (+30m)';
+}
+function canShift(){
+  if(!G.started||G.over) return false;
+  if(G.scene && (G.scene.ending || G.scene.noShift)) return false;
+  return G.state==='S' ? G.flasks>0 : true;
+}
+function addMinutes(n){ G.minutes += n; if(G.minutes>=CONFIG.endMinutes && !G.over){ G.minutes=CONFIG.endMinutes; go('end_timeout'); return true;} return false; }
+function shift(to){
+  if(!to) to = G.state==='S'?'V':'S';
+  if(to===G.state) return;
+  if(to==='V'){ if(G.flasks<=0) return; G.flasks--; }
+  else { if(addMinutes(CONFIG.shiftBackCost)) return; }
+  G.state = to;
+  el.flash.classList.remove('go'); void el.flash.offsetWidth; el.flash.classList.add('go');
+  hud();
+  if(G.scene && G.scene.hub) render(G.scene.id, true);   // re-read hub in new state
+  else if(G.scene) render(G.scene.id, true);              // re-read current scene
+}
+
+function showTitle(){
+  G.started=false; hud();
+  el.loc.textContent='';
+  el.text.innerHTML = `<div class="title"><h1>On the Rocks<br>The Last Shift<small>Game Off 2026 · SHIFT</small></h1><p>A murder you have to solve twice. Sober, and with The Voice.</p><p style="font-size:13px;font-family:var(--font-ui)">Space / tap to advance · 1–4 to choose · <b>Shift</b> to shift · E for evidence</p></div>`;
+  el.choices.innerHTML=''; const b=document.createElement('button'); b.textContent='Begin the night'; b.onclick=()=>{G.started=true; go('ch1_wake');}; el.choices.appendChild(b);
+}
+
+function go(id){
+  if(id==='__restart'){ resetGame(); return; }
+  const sc = SCENES[id]; if(!sc){ console.error('no scene',id); return; }
+  sc.id=id;
+  if(sc.clock && !G.visited[id+G.state]){ if(addMinutes(sc.clock)) return; }
+  G.visited[id+G.state]=true;
+  G.scene=sc; G.lineIdx=0;
+  if(sc.ending) G.over=true;
+  render(id);
+}
+
+function visibleLines(sc){ return sc.lines.filter(l=>l[2]==='B'||l[2]===G.state); }
+
+function render(id, reread){
+  const sc=SCENES[id]; G.scene=sc; G.lineIdx=0;
+  el.loc.textContent = sc.loc||'';
+  el.text.innerHTML=''; el.choices.innerHTML='';
+  if(sc.grant){ sc.grant.forEach(e=>{ if(EVIDENCE[e].s===G.state && !G.evidence.has(e)){ G.evidence.add(e); } }); }
+  hud();
+  nextLine();
+}
+
+function nextLine(){
+  const sc=G.scene, lines=visibleLines(sc);
+  if(G.lineIdx<lines.length){
+    const [who,text]=lines[G.lineIdx++];
+    const p=document.createElement('p');
+    if(who==='narr') p.className='narr';
+    else if(who==='voice') p.className='voice';
+    else { p.className='who'; p.dataset.who=WHO[who]; }
+    p.textContent=text;
+    el.text.appendChild(p); p.scrollIntoView({block:'nearest'});
+    el.choices.innerHTML='';
+    if(G.lineIdx<lines.length){ const t=document.createElement('button'); t.id='tap'; t.textContent='continue'; t.onclick=nextLine; el.choices.appendChild(t); }
+    else showGrantsAndChoices();
+  }
+}
+
+function showGrantsAndChoices(){
+  const sc=G.scene;
+  if(sc.grant){ sc.grant.forEach(e=>{ if(EVIDENCE[e].s===G.state){ const p=document.createElement('p'); p.className='evidence'; p.textContent='EVIDENCE · '+EVIDENCE[e].t; el.text.appendChild(p);} }); }
+  el.choices.innerHTML='';
+  (sc.choices||[]).filter(c=>!c.state||c.state===G.state).forEach((c,i)=>{
+    const b=document.createElement('button');
+    b.innerHTML = `${i+1}. ${c.label}` + (c.small?`<small>${c.small}</small>`:'');
+    if(c.requiresTrue && !trueUnlocked()){ b.disabled=true; b.innerHTML += `<small>locked — ${trueProgress()}</small>`; }
+    b.onclick=()=>{ if(c.shiftTo){ shiftForced(c.shiftTo); } go(c.next); };
+    el.choices.appendChild(b);
+  });
+  el.choices.scrollIntoView({block:'nearest'});
+}
+function shiftForced(to){ if(to==='V'&&G.flasks>0) G.flasks--; G.state=to; hud(); }
+
+function trueCounts(){ let S=0,V=0; G.evidence.forEach(e=>{ if(EVIDENCE[e].s==='S')S++; else V++; }); return {S,V}; }
+function trueUnlocked(){ const c=trueCounts(); return c.S>=CONFIG.trueEndingNeeds.S && c.V>=CONFIG.trueEndingNeeds.V && G.evidence.has(CONFIG.trueEndingNeeds.witness); }
+function trueProgress(){ const c=trueCounts(); return `sober ${c.S}/${CONFIG.trueEndingNeeds.S} · voice ${c.V}/${CONFIG.trueEndingNeeds.V} · witness ${G.evidence.has('E08')?'✓':'✗'}`; }
+
+// ---------- Evidence board ----------
+function openBoard(){
+  el.evList.innerHTML='';
+  Object.entries(EVIDENCE).forEach(([k,v])=>{
+    const li=document.createElement('li'); li.className=v.s+(G.evidence.has(k)?'':' locked');
+    li.innerHTML=`<span>${v.s==='S'?'SOBER':'VOICE'}</span>${G.evidence.has(k)?v.t:'— — —'}`;
+    el.evList.appendChild(li);
+  });
+  el.board.classList.add('open');
+}
+function closeBoard(){ el.board.classList.remove('open'); }
+
+// ---------- Input ----------
+$('#btnShift').onclick=()=>shift();
+$('#btnBoard').onclick=()=>el.board.classList.contains('open')?closeBoard():openBoard();
+$('#btnClose').onclick=closeBoard;
+let shiftDown=false;
+window.addEventListener('keydown',e=>{
+  if(e.key==='Shift'){ if(!shiftDown){ shiftDown=true; if(canShift()) shift(); } e.preventDefault(); return; }
+  if(e.key==='Escape'){ closeBoard(); return; }
+  if(e.key.toLowerCase()==='e'){ $('#btnBoard').onclick(); return; }
+  if(el.board.classList.contains('open')) return;
+  if(e.key===' '||e.key==='Enter'){ const t=$('#tap'); if(t) t.click(); else { const first=el.choices.querySelector('button:not(:disabled)'); if(first&&el.choices.children.length===1) first.click(); } e.preventDefault(); return; }
+  const n=parseInt(e.key,10); if(n>=1&&n<=9){ const b=el.choices.children[n-1]; if(b&&!b.disabled) b.click(); }
+});
+window.addEventListener('keyup',e=>{ if(e.key==='Shift') shiftDown=false; });
+// touch: tapping the text area advances
+el.text.addEventListener('click',()=>{ const t=$('#tap'); if(t) t.click(); });
+
+resetGame();
+</script>
+</body>
+</html>

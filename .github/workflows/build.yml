@@ -1,0 +1,43 @@
+name: build
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+jobs:
+  test-and-export:
+    runs-on: ubuntu-latest
+    container:
+      image: barichello/godot-ci:4.7.2
+    steps:
+      - uses: actions/checkout@v4
+      - name: Import
+        run: godot --headless --path . --import || true
+      - name: Smoke test
+        run: godot --headless --path . -s tests/smoke.gd
+      - name: Export Web
+        run: |
+          mkdir -p build/web
+          godot --headless --path . --export-release "Web" build/web/index.html
+      - name: Web build zip (for itch.io upload)
+        run: cd build/web && zip -r ../last-shift-web.zip .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: last-shift-web
+          path: build/last-shift-web.zip
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/web
+  deploy-pages:
+    needs: test-and-export
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
