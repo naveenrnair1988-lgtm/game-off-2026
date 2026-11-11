@@ -10,27 +10,32 @@
     {
      "who": "narr",
      "text": "Chapter One — Last Call",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     },
     {
      "who": "narr",
      "text": "You wake up with your cheek on something sticky and your mouth tasting like a coin. The booth. Your booth. The jukebox is skipping on the same four seconds of a trumpet.",
-     "state": "S"
+     "state": "S",
+     "vo": ""
     },
     {
      "who": "frank",
      "text": "Right. Okay. So. It's — what time is it.",
-     "state": "S"
+     "state": "S",
+     "vo": "ch1_wake_02"
     },
     {
      "who": "narr",
      "text": "1:40. The bar should have been dark for an hour and a half. It isn't. Every light is on.",
-     "state": "S"
+     "state": "S",
+     "vo": ""
     },
     {
      "who": "narr",
      "text": "Somebody is crying behind the bar. Low, controlled, the way you cry when you've decided to.",
-     "state": "S"
+     "state": "S",
+     "vo": ""
     }
    ],
    "choices": [
@@ -58,32 +63,38 @@
     {
      "who": "narr",
      "text": "Danny Roarke is on the floor behind his own bar, on his side, one arm under him like he was reaching for something. There's a dark halo under his head and a broken bottle a foot from his hand.",
-     "state": "S"
+     "state": "S",
+     "vo": ""
     },
     {
      "who": "frank",
      "text": "Danny. Danny, hey — oh. Oh, no. I should — I shouldn't touch that. I should not touch that.",
-     "state": "S"
+     "state": "S",
+     "vo": "ch1_body_01"
     },
     {
      "who": "narr",
      "text": "Mira Roarke is kneeling beside him with a phone in her lap. She looks up at you and her face does nothing at all.",
-     "state": "S"
+     "state": "S",
+     "vo": ""
     },
     {
      "who": "mira",
      "text": "You were asleep. The whole time. I checked.",
-     "state": "S"
+     "state": "S",
+     "vo": "ch1_body_03"
     },
     {
      "who": "frank",
      "text": "I — yes. I think so. I'm sorry. I'm so sorry, Mira.",
-     "state": "S"
+     "state": "S",
+     "vo": "ch1_body_04"
     },
     {
      "who": "mira",
      "text": "The police are coming. They said forty minutes, then they said two hours. It's Saturday.",
-     "state": "S"
+     "state": "S",
+     "vo": "ch1_body_05"
     }
    ],
    "choices": [
@@ -111,32 +122,38 @@
     {
      "who": "mira",
      "text": "I was upstairs doing the books. I came down at quarter to one to tell him to lock up and he was — like that. The till's open. It's empty.",
-     "state": "S"
+     "state": "S",
+     "vo": "ch1_mira1_00"
     },
     {
      "who": "frank",
      "text": "A robbery. Okay. Okay. That — yes.",
-     "state": "S"
+     "state": "S",
+     "vo": "ch1_mira1_01"
     },
     {
      "who": "mira",
      "text": "You're going to help, Frank. You're a detective.",
-     "state": "S"
+     "state": "S",
+     "vo": "ch1_mira1_02"
     },
     {
      "who": "frank",
      "text": "I'm — well, technically I consult, which — yes. Yes. I'm going to help.",
-     "state": "S"
+     "state": "S",
+     "vo": "ch1_mira1_03"
     },
     {
      "who": "narr",
      "text": "Your hands are shaking. Not from the body. From the schedule. It's been three hours. You know exactly what you need and you hate that you know it.",
-     "state": "S"
+     "state": "S",
+     "vo": ""
     },
     {
      "who": "narr",
      "text": "The flask is in your coat. Full. You don't remember filling it.",
-     "state": "S"
+     "state": "S",
+     "vo": ""
     }
    ],
    "choices": [
@@ -164,42 +181,50 @@
     {
      "who": "narr",
      "text": "The front door opens and the room fills up like a bad joke walking into a bar.",
-     "state": "S"
+     "state": "S",
+     "vo": ""
     },
     {
      "who": "narr",
      "text": "Theo Pike, the barback, twenty-two and grey in the face, hovering in the doorway like he needs permission to be sad. Behind him, Lenny Baptiste — Danny's partner — in a camel coat, already talking.",
-     "state": "S"
+     "state": "S",
+     "vo": ""
     },
     {
      "who": "lenny",
      "text": "I told him. I told him this place was a hole with a liquor license. Christ, Mira. Christ.",
-     "state": "S"
+     "state": "S",
+     "vo": "ch1_others_02"
     },
     {
      "who": "theo",
      "text": "I just came back for my phone. I left at twelve. I just — I came back for my phone.",
-     "state": "S"
+     "state": "S",
+     "vo": "ch1_others_03"
     },
     {
      "who": "narr",
      "text": "And at the end of the bar, on the last stool, in the half dark, Connie Vale. Seventy, cardigan, handbag on her knees. You didn't see her come in.",
-     "state": "S"
+     "state": "S",
+     "vo": ""
     },
     {
      "who": "connie",
      "text": "Hello, Frank. I had a feeling. So I came back.",
-     "state": "S"
+     "state": "S",
+     "vo": "ch1_others_05"
     },
     {
      "who": "narr",
      "text": "Four people. One of them is lying. Probably more than one. You can feel the shape of it and you can't see it, the way you can feel a word you've forgotten.",
-     "state": "S"
+     "state": "S",
+     "vo": ""
     },
     {
      "who": "frank",
      "text": "I can't do this like this.",
-     "state": "S"
+     "state": "S",
+     "vo": "ch1_others_07"
     }
    ],
    "choices": [
@@ -227,22 +252,26 @@
     {
      "who": "narr",
      "text": "You turn your back on them. You unscrew the cap. The smell is a hand on the back of your neck.",
-     "state": "S"
+     "state": "S",
+     "vo": ""
     },
     {
      "who": "narr",
      "text": "Two swallows. The rule is two.",
-     "state": "S"
+     "state": "S",
+     "vo": ""
     },
     {
      "who": "narr",
      "text": "You count. One. Two.",
-     "state": "S"
+     "state": "S",
+     "vo": ""
     },
     {
      "who": "narr",
      "text": "Three.",
-     "state": "S"
+     "state": "S",
+     "vo": ""
     }
    ],
    "choices": [
@@ -270,37 +299,44 @@
     {
      "who": "narr",
      "text": "And the room comes in.",
-     "state": "V"
+     "state": "V",
+     "vo": ""
     },
     {
      "who": "voice",
      "text": "There you are.",
-     "state": "V"
+     "state": "V",
+     "vo": "ch1_voice_01"
     },
     {
      "who": "voice",
      "text": "Look at them. Don't look at him, he's done, look at them. The wife has clean hands. The kid is standing exactly where he can see the till and he hasn't looked at it once, which means he already knows what's in it. The partner said \"was.\" Twice. Nobody told him Danny was anything.",
-     "state": "V"
+     "state": "V",
+     "vo": "ch1_voice_02"
     },
     {
      "who": "voice",
      "text": "And the old woman's glass is sweating.",
-     "state": "V"
+     "state": "V",
+     "vo": "ch1_voice_03"
     },
     {
      "who": "frank",
      "text": "What does that —",
-     "state": "V"
+     "state": "V",
+     "vo": "ch1_voice_04"
     },
     {
      "who": "voice",
      "text": "It means you were here for a reason tonight, Frank. You just don't get to know it yet.",
-     "state": "V"
+     "state": "V",
+     "vo": "ch1_voice_05"
     },
     {
      "who": "narr",
      "text": "End of Chapter One.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     }
    ],
    "choices": [
@@ -328,12 +364,14 @@
     {
      "who": "narr",
      "text": "The room, as you see it right now. Pick where to go. Each stop costs ten minutes. The police arrive at four.",
-     "state": "S"
+     "state": "S",
+     "vo": ""
     },
     {
      "who": "voice",
      "text": "Everything you looked at sober, look at again. It's a different room.",
-     "state": "V"
+     "state": "V",
+     "vo": "hub_01"
     }
    ],
    "choices": [
@@ -444,42 +482,50 @@
     {
      "who": "narr",
      "text": "Your booth. A coaster you've chewed the edge of. Your coat, half on the seat, half on the floor.",
-     "state": "S"
+     "state": "S",
+     "vo": ""
     },
     {
      "who": "narr",
      "text": "You go through the pockets like you're frisking a stranger. Keys. Flask. A receipt.",
-     "state": "S"
+     "state": "S",
+     "vo": ""
     },
     {
      "who": "narr",
      "text": "Danny's handwriting, the big slanted capitals. \"11:47 — CUT OFF. — D.\" He does this every night. He puts it on the tab like a joke.",
-     "state": "S"
+     "state": "S",
+     "vo": ""
     },
     {
      "who": "frank",
      "text": "Eleven forty-seven. I was — I was awake at eleven forty-seven.",
-     "state": "S"
+     "state": "S",
+     "vo": "loc_booth_03"
     },
     {
      "who": "narr",
      "text": "You don't remember being cut off. You don't remember much of anything after ten.",
-     "state": "S"
+     "state": "S",
+     "vo": ""
     },
     {
      "who": "voice",
      "text": "Your hand. Right hand. Look at it.",
-     "state": "V"
+     "state": "V",
+     "vo": "loc_booth_05"
     },
     {
      "who": "narr",
      "text": "Knuckles. Split on the second and third. Not from the booth. Booths don't do that.",
-     "state": "V"
+     "state": "V",
+     "vo": ""
     },
     {
      "who": "voice",
      "text": "You hit something tonight. Don't ask what. You won't like the shape of the answer and neither of us has time for you to be sad about it.",
-     "state": "V"
+     "state": "V",
+     "vo": "loc_booth_07"
     }
    ],
    "choices": [
@@ -512,42 +558,50 @@
     {
      "who": "narr",
      "text": "You don't look at his face. You look at the floor around him, the way you were taught. The bottle: brown glass, neck intact, the body shattered. The till: drawer out, empty, the little spring clips sticking up like fingers.",
-     "state": "S"
+     "state": "S",
+     "vo": ""
     },
     {
      "who": "frank",
      "text": "Somebody hit him with the bottle. Took the cash. That's — that's a thing that happens.",
-     "state": "S"
+     "state": "S",
+     "vo": "loc_bar_01"
     },
     {
      "who": "voice",
      "text": "Read the label.",
-     "state": "V"
+     "state": "V",
+     "vo": "loc_bar_02"
     },
     {
      "who": "narr",
      "text": "The top-shelf bottle. The one with the hand-written tag. Danny didn't pour from it. Nobody poured from it. It lived on the highest shelf behind the register where you couldn't reach it in a fight if you tried.",
-     "state": "V"
+     "state": "V",
+     "vo": ""
     },
     {
      "who": "voice",
      "text": "So nobody grabbed it in a fight. Somebody took it down. Carefully. Afterwards.",
-     "state": "V"
+     "state": "V",
+     "vo": "loc_bar_04"
     },
     {
      "who": "voice",
      "text": "And the charger. Behind the register. The phone on it.",
-     "state": "V"
+     "state": "V",
+     "vo": "loc_bar_05"
     },
     {
      "who": "narr",
      "text": "A cracked phone, a sticker of a cartoon dog on the back. Theo's. Still charging.",
-     "state": "V"
+     "state": "V",
+     "vo": ""
     },
     {
      "who": "voice",
      "text": "He came back for his phone, he says. It's right here. He never touched it. So what did he come back for?",
-     "state": "V"
+     "state": "V",
+     "vo": "loc_bar_07"
     }
    ],
    "choices": [
@@ -580,42 +634,50 @@
     {
      "who": "narr",
      "text": "The brass rail along the bar gleams. It never gleams. Danny polishes it once a year and complains about it for a month.",
-     "state": "S"
+     "state": "S",
+     "vo": ""
     },
     {
      "who": "frank",
      "text": "Someone wiped this. Recently.",
-     "state": "S"
+     "state": "S",
+     "vo": "loc_floor_01"
     },
     {
      "who": "narr",
      "text": "Connie's stool at the end is pushed in neatly. She told you she left at midnight and came back when she had a feeling.",
-     "state": "S"
+     "state": "S",
+     "vo": ""
     },
     {
      "who": "voice",
      "text": "Wiped, yes. Look at the end. By her stool. One handprint, the one place the cloth didn't go because somebody was sitting in the way of it.",
-     "state": "V"
+     "state": "V",
+     "vo": "loc_floor_03"
     },
     {
      "who": "narr",
      "text": "A big hand. Four fingers and the heel of a palm, pressed hard, like somebody caught themselves.",
-     "state": "V"
+     "state": "V",
+     "vo": ""
     },
     {
      "who": "voice",
      "text": "Put your hand over it. Go on.",
-     "state": "V"
+     "state": "V",
+     "vo": "loc_floor_05"
     },
     {
      "who": "narr",
      "text": "You don't.",
-     "state": "V"
+     "state": "V",
+     "vo": ""
     },
     {
      "who": "voice",
      "text": "And her glass. Gin and tonic, one ice cube left, the outside of it still wet. It's been sitting there ten minutes. Not ninety. She never left this stool, Frank. She watched the whole thing.",
-     "state": "V"
+     "state": "V",
+     "vo": "loc_floor_07"
     }
    ],
    "choices": [
@@ -646,27 +708,32 @@
     {
      "who": "narr",
      "text": "A desk the size of a door, a lamp, a safe that's been open for years. The ledger — the big green one Danny did the tabs in — isn't on the desk. The deed Danny kept in a folder taped to the underside of the drawer isn't taped to the underside of the drawer.",
-     "state": "S"
+     "state": "S",
+     "vo": ""
     },
     {
      "who": "frank",
      "text": "So they took the books too. That's a strange thing for a robber to take.",
-     "state": "S"
+     "state": "S",
+     "vo": "loc_office_01"
     },
     {
      "who": "voice",
      "text": "It's a strange thing for a robber to know about.",
-     "state": "V"
+     "state": "V",
+     "vo": "loc_office_02"
     },
     {
      "who": "narr",
      "text": "On the carpet by the chair: a grey crumb of ash. Cigar ash. The bar's been no-smoking for six years and Danny enforced it like scripture.",
-     "state": "V"
+     "state": "V",
+     "vo": ""
     },
     {
      "who": "voice",
      "text": "One man in this building smokes cigars and acts like the rule is a suggestion. He stood here. He stood here long enough to ash. And earlier he said Danny \"was\" a stubborn bastard, past tense, before anyone had said the word dead.",
-     "state": "V"
+     "state": "V",
+     "vo": "loc_office_04"
     }
    ],
    "choices": [
@@ -694,47 +761,56 @@
     {
      "who": "mira",
      "text": "Ask. Whatever it is, ask it.",
-     "state": "B"
+     "state": "B",
+     "vo": "int_mira_00"
     },
     {
      "who": "frank",
      "text": "When you came down. Was the door locked?",
-     "state": "S"
+     "state": "S",
+     "vo": "int_mira_01"
     },
     {
      "who": "mira",
      "text": "Front, yes. Back, I didn't check. I didn't check anything, Frank, I was looking at my husband.",
-     "state": "S"
+     "state": "S",
+     "vo": "int_mira_02"
     },
     {
      "who": "frank",
      "text": "Of course. I'm sorry.",
-     "state": "S"
+     "state": "S",
+     "vo": "int_mira_03"
     },
     {
      "who": "voice",
      "text": "Her hands. Look at her hands.",
-     "state": "V"
+     "state": "V",
+     "vo": "int_mira_04"
     },
     {
      "who": "narr",
      "text": "Spotless. She found her husband in a pool of his own blood and knelt in it and her hands are spotless. Her sleeves are pushed up to the elbow. Her nails are clean.",
-     "state": "V"
+     "state": "V",
+     "vo": ""
     },
     {
      "who": "voice",
      "text": "She washed. Before she called anyone. She washed, and she wiped a bar rail, and she came back down and arranged her face. Ask her what time she really came down.",
-     "state": "V"
+     "state": "V",
+     "vo": "int_mira_06"
     },
     {
      "who": "mira",
      "text": "Quarter to one. I told you.",
-     "state": "V"
+     "state": "V",
+     "vo": "int_mira_07"
     },
     {
      "who": "voice",
      "text": "She didn't blink. People who are lying blink. People who've rehearsed don't.",
-     "state": "V"
+     "state": "V",
+     "vo": "int_mira_08"
     }
    ],
    "choices": [
@@ -762,47 +838,56 @@
     {
      "who": "theo",
      "text": "I left at twelve. I came back about ten after for my phone. I didn't — he was fine. I mean I didn't see him. I grabbed it and left.",
-     "state": "B"
+     "state": "B",
+     "vo": "int_theo_00"
     },
     {
      "who": "frank",
      "text": "That's very clear. Thank you, Theo.",
-     "state": "S"
+     "state": "S",
+     "vo": "int_theo_01"
     },
     {
      "who": "narr",
      "text": "He's nodding too much. But he's twenty-two and a man is dead, and you'd nod too.",
-     "state": "S"
+     "state": "S",
+     "vo": ""
     },
     {
      "who": "voice",
      "text": "He grabbed his phone. The one that's on the charger. Behind the register. Right now.",
-     "state": "V"
+     "state": "V",
+     "vo": "int_theo_03"
     },
     {
      "who": "frank",
      "text": "Theo. Where's your phone.",
-     "state": "V"
+     "state": "V",
+     "vo": "int_theo_04"
     },
     {
      "who": "narr",
      "text": "He pats his jacket. Both pockets. His face goes from grey to white.",
-     "state": "V"
+     "state": "V",
+     "vo": ""
     },
     {
      "who": "theo",
      "text": "I — I must have —",
-     "state": "V"
+     "state": "V",
+     "vo": "int_theo_06"
     },
     {
      "who": "voice",
      "text": "Six weeks of wages, Frank. Everybody in this bar knows Danny was six weeks behind with him. The till had, what, two thousand? He didn't take all of it. He took what he was owed. That's not a robber. That's a kid doing arithmetic over a man on the floor.",
-     "state": "V"
+     "state": "V",
+     "vo": "int_theo_07"
     },
     {
      "who": "voice",
      "text": "On the floor. Alive. Say it.",
-     "state": "V"
+     "state": "V",
+     "vo": "int_theo_08"
     }
    ],
    "choices": [
@@ -830,37 +915,44 @@
     {
      "who": "lenny",
      "text": "I came by at half twelve to talk business. Door was locked. I went home. I come back now because Mira called. That's the whole thing, detective, so you can put the little notebook away.",
-     "state": "B"
+     "state": "B",
+     "vo": "int_lenny_00"
     },
     {
      "who": "frank",
      "text": "I don't actually have a — right. Thank you, Mr. Baptiste.",
-     "state": "S"
+     "state": "S",
+     "vo": "int_lenny_01"
     },
     {
      "who": "voice",
      "text": "Locked. Mira said she didn't check the back. And the man who came to talk business went home without talking it, at half twelve, on a Saturday, with three months of money on the table.",
-     "state": "V"
+     "state": "V",
+     "vo": "int_lenny_02"
     },
     {
      "who": "voice",
      "text": "He went in. He went into the office. He stood by the desk long enough to drop ash, he took the ledger and the deed because without paper Danny's debt is Danny's word, and Danny isn't saying much.",
-     "state": "V"
+     "state": "V",
+     "vo": "int_lenny_03"
     },
     {
      "who": "frank",
      "text": "You were inside.",
-     "state": "V"
+     "state": "V",
+     "vo": "int_lenny_04"
     },
     {
      "who": "lenny",
      "text": "Prove it.",
-     "state": "V"
+     "state": "V",
+     "vo": "int_lenny_05"
     },
     {
      "who": "voice",
      "text": "You will. Here's the thing that should bother you, though. If he came at half twelve and Danny was already on the floor — who put him there at a quarter to?",
-     "state": "V"
+     "state": "V",
+     "vo": "int_lenny_06"
     }
    ],
    "choices": [
@@ -888,52 +980,62 @@
     {
      "who": "connie",
      "text": "I don't know what I can tell you, dear. I went home at midnight like always.",
-     "state": "B"
+     "state": "B",
+     "vo": "int_connie_00"
     },
     {
      "who": "frank",
      "text": "And you came back because you had a feeling.",
-     "state": "S"
+     "state": "S",
+     "vo": "int_connie_01"
     },
     {
      "who": "connie",
      "text": "Forty years teaching eleven-year-olds. You develop feelings.",
-     "state": "S"
+     "state": "S",
+     "vo": "int_connie_02"
     },
     {
      "who": "narr",
      "text": "She pats your hand. Her hand is cold and dry and it's the kindest thing anyone's done to you all night.",
-     "state": "S"
+     "state": "S",
+     "vo": ""
     },
     {
      "who": "voice",
      "text": "Her glass is sweating. Her stool is warm. She hasn't been anywhere.",
-     "state": "V"
+     "state": "V",
+     "vo": "int_connie_04"
     },
     {
      "who": "frank",
      "text": "Connie. You didn't leave.",
-     "state": "V"
+     "state": "V",
+     "vo": "int_connie_05"
     },
     {
      "who": "narr",
      "text": "She looks at you for a long time. Then she looks at your right hand, and then back at your face, and she smiles the way you smile at a child who's about to find out.",
-     "state": "V"
+     "state": "V",
+     "vo": ""
     },
     {
      "who": "connie",
      "text": "No, dear. I didn't.",
-     "state": "V"
+     "state": "V",
+     "vo": "int_connie_07"
     },
     {
      "who": "connie",
      "text": "But I'm not going to tell you what I saw. Not tonight. You're not ready, and I'm not sure you should ever be.",
-     "state": "V"
+     "state": "V",
+     "vo": "int_connie_08"
     },
     {
      "who": "voice",
      "text": "She'll talk. Later. When you've had another drink and can't pretend you didn't hear it.",
-     "state": "V"
+     "state": "V",
+     "vo": "int_connie_09"
     }
    ],
    "choices": [
@@ -971,12 +1073,14 @@
     {
      "who": "narr",
      "text": "Headlights swing across the front window. You have one sentence left in you.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     },
     {
      "who": "voice",
      "text": "Pick. And know that whoever you pick, it'll be true. That's the trick of tonight. Everybody did something.",
-     "state": "V"
+     "state": "V",
+     "vo": "accuse_01"
     }
    ],
    "choices": [
@@ -1054,22 +1158,26 @@
     {
      "who": "narr",
      "text": "Theo folds in about eleven seconds. The money's in his car. He cries and says Danny owed him and Danny was fine when he left, he was sitting up, he told me to get out.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     },
     {
      "who": "narr",
      "text": "The police write \"sitting up\" in a notebook and never read it again. The robbery story holds. Mira doesn't look at you.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     },
     {
      "who": "narr",
      "text": "You were wrong. You will never know.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     },
     {
      "who": "narr",
      "text": "ENDING: THE THIEF",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     }
    ],
    "choices": [
@@ -1097,17 +1205,20 @@
     {
      "who": "narr",
      "text": "The ash does it, and the ledger in his car does the rest. Lenny Baptiste is charged with theft and with leaving a man to die, which turns out to be a crime with a name you didn't know.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     },
     {
      "who": "narr",
      "text": "It feels like a win. The Voice doesn't say anything. That's how you know it isn't one.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     },
     {
      "who": "narr",
      "text": "ENDING: THE PARTNER",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     }
    ],
    "choices": [
@@ -1135,22 +1246,26 @@
     {
      "who": "narr",
      "text": "The bottle. The rail. The clean hands. She doesn't deny any of it. She says the insurance wouldn't have paid on a fall and she has a bar to keep.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     },
     {
      "who": "mira",
      "text": "Fine. I staged it. Then who, Frank? Who put him on the floor?",
-     "state": "B"
+     "state": "B",
+     "vo": "end_mira_01"
     },
     {
      "who": "narr",
      "text": "You open your mouth. Nothing comes out.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     },
     {
      "who": "narr",
      "text": "ENDING: THE WIDOW",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     }
    ],
    "choices": [
@@ -1178,27 +1293,32 @@
     {
      "who": "narr",
      "text": "She laughs. Not unkindly.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     },
     {
      "who": "connie",
      "text": "Oh, Frank. All right. Since you asked.",
-     "state": "B"
+     "state": "B",
+     "vo": "end_connie_01"
     },
     {
      "who": "narr",
      "text": "And she tells you. All of it. Eleven fifty. The rail. Your hand.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     },
     {
      "who": "narr",
      "text": "You don't hear the police come in.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     },
     {
      "who": "narr",
      "text": "ENDING: THE WITNESS — next time, drink before you ask her.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     }
    ],
    "choices": [
@@ -1228,62 +1348,74 @@
     {
      "who": "narr",
      "text": "Chapter Six — Shift Ends",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     },
     {
      "who": "narr",
      "text": "Headlights fill the front window. Two doors slam. You have the time it takes a tired man to find the right key.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     },
     {
      "who": "frank",
      "text": "It wasn't them. It was all of them, and it wasn't them. Somebody put Danny on the floor at ten to twelve, and you've known who since the booth.",
-     "state": "B"
+     "state": "B",
+     "vo": "end_true_02"
     },
     {
      "who": "frank",
      "text": "Say it.",
-     "state": "B"
+     "state": "B",
+     "vo": "end_true_03"
     },
     {
      "who": "narr",
      "text": "Nothing.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     },
     {
      "who": "frank",
      "text": "You said you'd show me the thing in the corner. This is the corner. SAY IT.",
-     "state": "B"
+     "state": "B",
+     "vo": "end_true_05"
     },
     {
      "who": "voice",
      "text": "…You told him his wife only came downstairs to count the till. You told him that's why she lived upstairs. He put a hand on your collar and you put two on his chest.",
-     "state": "V"
+     "state": "V",
+     "vo": "end_true_06"
     },
     {
      "who": "voice",
      "text": "He went over the rail. He hit his head. He sat down and said get out of my bar, Frank, and you went to your booth and you slept, and he died over the next hour and a half in front of four people and one of them was you.",
-     "state": "V"
+     "state": "V",
+     "vo": "end_true_07"
     },
     {
      "who": "voice",
      "text": "I didn't tell you because I'm the part of you that's supposed to be useful. There's nothing useful in it. There's just a dead friend and a man who can't hold his drink.",
-     "state": "V"
+     "state": "V",
+     "vo": "end_true_08"
     },
     {
      "who": "narr",
      "text": "The Voice's confession goes on the board. Last card.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     },
     {
      "who": "narr",
      "text": "The front door opens. The uniforms come in blinking. Mira stands. Theo backs into the wall. Lenny puts his cigar out on his own shoe. Connie doesn't move.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     },
     {
      "who": "narr",
      "text": "You have one sentence.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     }
    ],
    "choices": [
@@ -1321,17 +1453,20 @@
     {
      "who": "narr",
      "text": "4:00 AM. Two uniforms, one of them yawning. They find the money in Theo's car in under a minute. That's the story now. That's the whole story.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     },
     {
      "who": "narr",
      "text": "You have a drink. Nobody stops you. Nobody's left who would.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     },
     {
      "who": "narr",
      "text": "ENDING: THE EASY ANSWER",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     }
    ],
    "choices": [
@@ -1359,32 +1494,38 @@
     {
      "who": "narr",
      "text": "Chapter Four — Blackout",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     },
     {
      "who": "narr",
      "text": "Ninety minutes. You feel it before you check the clock — the floor tilts a quarter inch and settles. The schedule is a dog that knows when it's fed.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     },
     {
      "who": "narr",
      "text": "Sober, you can keep the clock. The Voice can't help you and you'll see only what's in front of you.",
-     "state": "S"
+     "state": "S",
+     "vo": ""
     },
     {
      "who": "voice",
      "text": "Here it comes. You can ride it out and stay useful for the police, or you can have the second drink and I'll show you the thing in the corner you keep not looking at. Your call. It's always your call. That's the joke.",
-     "state": "V"
+     "state": "V",
+     "vo": "ch4_blackout_03"
     },
     {
      "who": "narr",
      "text": "Connie is watching you from the last stool. She hasn't looked away in twenty minutes.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     },
     {
      "who": "narr",
      "text": "The flask is in your hand. You don't remember taking it out.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     }
    ],
    "choices": [
@@ -1422,32 +1563,38 @@
     {
      "who": "narr",
      "text": "Two swallows. Three. The room goes under like a stone.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     },
     {
      "who": "narr",
      "text": "— and comes back up with the clock twenty minutes on and your hand on the end of the brass rail, pressed flat, exactly over the print.",
-     "state": "V"
+     "state": "V",
+     "vo": ""
     },
     {
      "who": "voice",
      "text": "There. Now you know what size it is.",
-     "state": "V"
+     "state": "V",
+     "vo": "ch4_drink_02"
     },
     {
      "who": "narr",
      "text": "Connie has moved. She's standing next to you. She smells like gin and chalk dust.",
-     "state": "V"
+     "state": "V",
+     "vo": ""
     },
     {
      "who": "connie",
      "text": "All right, dear. You've had enough now that you'll listen and not enough that you'll forget. That's the window. I used to wait for it with my husband.",
-     "state": "V"
+     "state": "V",
+     "vo": "ch4_drink_04"
     },
     {
      "who": "connie",
      "text": "Sit down. I'm going to tell you about tonight.",
-     "state": "V"
+     "state": "V",
+     "vo": "ch4_drink_05"
     }
    ],
    "choices": [
@@ -1477,62 +1624,74 @@
     {
      "who": "connie",
      "text": "Danny cut you off at a quarter to twelve. He wrote it on your tab like he always does, and you laughed like you always do, and then you didn't. Something in you said something to him. About Mira. About upstairs.",
-     "state": "V"
+     "state": "V",
+     "vo": "ch4_connie_00"
     },
     {
      "who": "voice",
      "text": "I remember what I said. You don't want it.",
-     "state": "V"
+     "state": "V",
+     "vo": "ch4_connie_01"
     },
     {
      "who": "connie",
      "text": "He came round the bar and took you by the collar. Not hard. Like a father. And you put both hands on his chest and pushed, and he went backwards over the rail and sat down very suddenly, and hit his head on the brass on the way, and said — and I remember this exactly — 'Get out of my bar, Frank.'",
-     "state": "V"
+     "state": "V",
+     "vo": "ch4_connie_02"
     },
     {
      "who": "connie",
      "text": "You went to your booth. You were asleep before you lay down.",
-     "state": "V"
+     "state": "V",
+     "vo": "ch4_connie_03"
     },
     {
      "who": "connie",
      "text": "He sat there a while, rubbing his head. Then he got up. He wrote on the tab again. He was all right, Frank. He was walking. He was all right for a long time.",
-     "state": "V"
+     "state": "V",
+     "vo": "ch4_connie_04"
     },
     {
      "who": "connie",
      "text": "The boy came in at ten past and Danny was sitting on the floor again by then, and he said, 'Not now, Theo.' The boy took money from the till. Danny watched him do it and didn't say a word. The boy ran.",
-     "state": "V"
+     "state": "V",
+     "vo": "ch4_connie_05"
     },
     {
      "who": "connie",
      "text": "Lenny came at half past. Danny was lying down. Lenny stepped over him into the office. He came out with the green book and a folder and he lit a cigar in the doorway and looked at Danny for a long time and went home.",
-     "state": "V"
+     "state": "V",
+     "vo": "ch4_connie_06"
     },
     {
      "who": "connie",
      "text": "Mira came down at quarter to one. She knelt. She stayed a while. Then she stood up and went and got the bottle from the top shelf and broke it beside him. She took a cloth to the rail. She went upstairs and washed, and she came back and sat with him until half past one, and then she rang.",
-     "state": "V"
+     "state": "V",
+     "vo": "ch4_connie_07"
     },
     {
      "who": "frank",
      "text": "And you —",
-     "state": "V"
+     "state": "V",
+     "vo": "ch4_connie_08"
     },
     {
      "who": "connie",
      "text": "I sat here, dear. I'm seventy-one. I sat here and I watched a man die slowly in front of four people who each had a reason not to call, and I was the fifth.",
-     "state": "V"
+     "state": "V",
+     "vo": "ch4_connie_09"
     },
     {
      "who": "connie",
      "text": "Now you know what everyone did. What you do with it is the part I can't help you with.",
-     "state": "B"
+     "state": "B",
+     "vo": "ch4_connie_10"
     },
     {
      "who": "narr",
      "text": "End of Chapter Four.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     }
    ],
    "choices": [
@@ -1563,47 +1722,56 @@
     {
      "who": "narr",
      "text": "You screw the cap back on. The shake in your hands has to be lived with. You go and stand in the office because it's the only room without a body or a witness in it.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     },
     {
      "who": "narr",
      "text": "The little sink in the corner. A bar cloth, wrung out and dropped, still wet. The edges are pink.",
-     "state": "S"
+     "state": "S",
+     "vo": ""
     },
     {
      "who": "frank",
      "text": "Somebody washed a cloth. After.",
-     "state": "B"
+     "state": "B",
+     "vo": "ch4_sober_02"
     },
     {
      "who": "narr",
      "text": "And on the desk, under the lamp: the tab book is gone, but Danny used carbon paper like it was still 1988. The carbon of the last page is still in the drawer.",
-     "state": "S"
+     "state": "S",
+     "vo": ""
     },
     {
      "who": "narr",
      "text": "'11:47 — CUT OFF. — D.' And under it, a shakier line: '11:52 — F. went over. OK. Sat him down.'",
-     "state": "S"
+     "state": "S",
+     "vo": ""
     },
     {
      "who": "frank",
      "text": "F. went over. F. is — F. is me.",
-     "state": "B"
+     "state": "B",
+     "vo": "ch4_sober_05"
     },
     {
      "who": "narr",
      "text": "You don't know what 'went over' means. Sober, you may never know. But Danny wrote it down, which means he was alive and writing at 11:52, and he thought it mattered.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     },
     {
      "who": "narr",
      "text": "Connie, from the doorway: 'When you're ready, dear. I'll be on my stool.'",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     },
     {
      "who": "narr",
      "text": "End of Chapter Four.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     }
    ],
    "choices": [
@@ -1631,22 +1799,26 @@
     {
      "who": "narr",
      "text": "Chapter Five — Convergence",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     },
     {
      "who": "narr",
      "text": "You have it all. It's in pieces on the floor of your head like a dropped tray. Put it in order.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     },
     {
      "who": "voice",
      "text": "Order matters. Who was standing when. Who could have called and didn't. Get it wrong and one of them will tell you so.",
-     "state": "V"
+     "state": "V",
+     "vo": "ch5_intro_02"
     },
     {
      "who": "narr",
      "text": "You take the carbon, the receipt, the ash, the glass, and you lay them on Danny's desk in a line.",
-     "state": "S"
+     "state": "S",
+     "vo": ""
     }
    ],
    "choices": [
@@ -1674,37 +1846,44 @@
     {
      "who": "narr",
      "text": "Six events. One line. And a gap at 11:50 the shape of a man.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     },
     {
      "who": "frank",
      "text": "There's five minutes nobody accounts for. Between the cut-off and Theo. Danny went over the rail at 11:50 and nobody was behind the bar but him.",
-     "state": "B"
+     "state": "B",
+     "vo": "ch5_silence_01"
     },
     {
      "who": "frank",
      "text": "Except somebody was.",
-     "state": "B"
+     "state": "B",
+     "vo": "ch5_silence_02"
     },
     {
      "who": "narr",
      "text": "You wait for the Voice to say something. It always says something.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     },
     {
      "who": "narr",
      "text": "It doesn't.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     },
     {
      "who": "narr",
      "text": "For the first time all night, the inside of your head is quiet. It's the loudest thing you've ever heard.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     },
     {
      "who": "narr",
      "text": "End of Chapter Five.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     }
    ],
    "choices": [
@@ -1732,42 +1911,50 @@
     {
      "who": "narr",
      "text": "You say it. All of it. The push, the rail, the hour and a half. Theo and the till. Lenny and the book. Mira and the bottle. Connie on her stool.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     },
     {
      "who": "narr",
      "text": "Nobody argues. That's the thing about the truth in a room where everybody already knows it — it just lands, like a glass set down.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     },
     {
      "who": "narr",
      "text": "Mira looks at you and for the first time tonight her face does something. It isn't forgiveness. It's worse. It's relief.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     },
     {
      "who": "narr",
      "text": "On the way out you stop at the bar and pour the flask into the sink. It takes longer than you'd think.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     },
     {
      "who": "voice",
      "text": "I'll be here when you want me.",
-     "state": "V"
+     "state": "V",
+     "vo": "end_true_tell_04"
     },
     {
      "who": "frank",
      "text": "I know.",
-     "state": "B"
+     "state": "B",
+     "vo": "end_true_tell_05"
     },
     {
      "who": "narr",
      "text": "ENDING: THE LAST SHIFT — you told them.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     },
     {
      "who": "narr",
      "text": "The game remembers this.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     }
    ],
    "choices": [
@@ -1795,42 +1982,50 @@
     {
      "who": "narr",
      "text": "You point at the till. The uniforms find the money in Theo's car in under a minute. He cries. Mira says nothing. Lenny says 'tragic' and means the bar.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     },
     {
      "who": "narr",
      "text": "Insurance pays. Lenny gets the lease. Theo gets eighteen months. Connie finishes her drink.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     },
     {
      "who": "narr",
      "text": "You sit in the booth until they turn the lights off. Then you have the last of the flask, because the schedule's the schedule.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     },
     {
      "who": "voice",
      "text": "Good. You'd have hated prison. No bar.",
-     "state": "V"
+     "state": "V",
+     "vo": "end_true_stand_03"
     },
     {
      "who": "frank",
      "text": "Shut up.",
-     "state": "B"
+     "state": "B",
+     "vo": "end_true_stand_04"
     },
     {
      "who": "voice",
      "text": "You first.",
-     "state": "V"
+     "state": "V",
+     "vo": "end_true_stand_05"
     },
     {
      "who": "narr",
      "text": "ENDING: THE LAST SHIFT — you let it stand.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     },
     {
      "who": "narr",
      "text": "The game remembers this.",
-     "state": "B"
+     "state": "B",
+     "vo": ""
     }
    ],
    "choices": [

@@ -7,6 +7,7 @@ signal restart_requested
 signal shift_requested
 signal timeline_solved
 signal line_advanced
+signal line_voice(stem: String)
 
 const WHO := {"frank": "FRANK", "mira": "MIRA ROARKE", "theo": "THEO PIKE", "lenny": "LENNY BAPTISTE", "connie": "CONNIE VALE"}
 const AMBER := Color(0.85, 0.64, 0.25)
@@ -488,7 +489,9 @@ func _next_line() -> void:
 		var l: Dictionary = lines[line_idx]
 		line_idx += 1
 		_append_line(l)
-		if line_idx > 1:
+		var vo := str(l.get("vo", ""))
+		line_voice.emit(vo)
+		if line_idx > 1 and vo == "":
 			line_advanced.emit()
 		if line_idx < lines.size():
 			var b := _choice_button("continue", true)

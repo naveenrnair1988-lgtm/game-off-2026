@@ -21,6 +21,8 @@ var in_title: bool = false
 var title_key: SpotLight3D
 var neon_light: OmniLight3D
 var music: AudioStreamPlayer
+var voice_player: AudioStreamPlayer      # the people in the room
+var head_player: AudioStreamPlayer       # the Voice: same line path, through the "Head" bus
 var sfx: Dictionary = {}          # name -> AudioStreamPlayer (missing files are simply absent)
 var last_evidence_sfx: float = -10.0
 const MUSIC_TITLE_DB := -6.0
@@ -128,6 +130,8 @@ func _ready() -> void:
 	_build_title_set()
 	_build_music()
 	_build_sfx()
+	_build_voice()
+	ui.line_voice.connect(_on_line_voice)
 	ui.line_advanced.connect(func(): _play("page"))
 	Story.evidence_found.connect(_on_evidence_sfx)
 	_enter_title()
@@ -230,6 +234,9 @@ func _snap_camera(station: String) -> void:
 
 func _enter_title() -> void:
 	in_title = true
+	if voice_player:
+		voice_player.stop()
+		head_player.stop()
 	_stop("room")
 	_stop("police")
 	current_scene = ""
@@ -255,6 +262,61 @@ func _leave_title() -> void:
 	t.tween_property(neon_light, "light_energy", 0.9, 2.0)
 	if music:
 		t.tween_property(music, "volume_db", MUSIC_GAME_DB, 3.0)
+
+
+## Spoken lines live in assets/voice/<stem>.ogg; story.json names the stem per line ("vo").
+## The Voice plays through its own bus with a tight reverb and a short slap delay,
+## so it sounds like it is inside Frank's head rather than in the room.
+func _build_voice() -> void:
+	if AudioServer.get_bus_index("Head") == -1:
+		AudioServer.add_bus()
+		var bi := AudioServer.bus_count - 1
+		AudioServer.set_bus_name(bi, "Head")
+		AudioServer.set_bus_send(bi, "Master")
+		var rv := AudioEffectReverb.new()
+		rv.room_size = 0.18
+		rv.damping = 0.7
+		rv.wet = 0.22
+		rv.dry = 0.9
+		rv.spread = 0.2
+		AudioServer.add_bus_effect(bi, rv)
+		var dl := AudioEffectDelay.new()
+		dl.tap1_delay_ms = 85.0
+		dl.tap1_level_db = -14.0
+		dl.tap2_active = false
+		dl.dry = 1.0
+		AudioServer.add_bus_effect(bi, dl)
+	voice_player = AudioStreamPlayer.new()
+	voice_player.name = "VoiceRoom"
+	voice_player.volume_db = 0.0
+	add_child(voice_player)
+	head_player = AudioStreamPlayer.new()
+	head_player.name = "VoiceHead"
+	head_player.bus = "Head"
+	head_player.volume_db = 1.5
+	add_child(head_player)
+
+
+func _on_line_voice(stem: String) -> void:
+	voice_player.stop()
+	head_player.stop()
+	if stem == "":
+		return
+	var path := "res://assets/voice/%s.ogg" % stem
+	if not ResourceLoader.exists(path):
+		return
+	var pl := head_player if _is_voice_line(stem) else voice_player
+	pl.stream = load(path)
+	pl.play()
+
+
+func _is_voice_line(stem: String) -> bool:
+	if current_scene == "" or not Story.scenes.has(current_scene):
+		return false
+	for l in Story.scenes[current_scene]["lines"]:
+		if str(l.get("vo", "")) == stem:
+			return str(l["who"]) == "voice"
+	return false
 
 
 ## Sound effects live in assets/audio/<name>.(ogg|mp3|wav). Any that are missing are skipped.
