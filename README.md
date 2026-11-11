@@ -48,7 +48,7 @@ LICENSE              MIT for code; story, characters and art are CC BY-NC 4.0
 
 **Pre-existing material.** Frank Sable and The Voice are characters from the author's unreleased whodunnit series *On the Rocks*. The character concept predates the jam. Everything in this repository — the game, the case, the dialogue, the puzzle design, the code — was created during the Game Off 2026 submission window (Nov 1 – Dec 1, 2026). No prose from the series was imported.
 
-**AI use.** Code (GDScript, Godot scene construction), dialogue drafting and design iteration were done with Claude (Anthropic). Character and prop 3D models were generated with Higgsfield (reference images, then image-to-3D). The title theme was generated with ElevenLabs Music (via Higgsfield). Direction, story, puzzle logic, editing and all decisions are the author's.
+**AI use.** Code (GDScript, Godot scene construction), dialogue drafting and design iteration were done with Claude (Anthropic). Character and prop 3D models were generated with Higgsfield (reference images, then image-to-3D). The title theme was generated with ElevenLabs Music (via Higgsfield). Dialogue portraits and sound effects were generated with Higgsfield. Direction, story, puzzle logic, editing and all decisions are the author's.
 
 **Content.** The protagonist's drinking is the game's central mechanic and is treated as a cost, not a power-up. Mild language, implied violence, no gore.
 

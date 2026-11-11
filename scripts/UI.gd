@@ -6,6 +6,7 @@ signal back_requested
 signal restart_requested
 signal shift_requested
 signal timeline_solved
+signal line_advanced
 
 const WHO := {"frank": "FRANK", "mira": "MIRA ROARKE", "theo": "THEO PIKE", "lenny": "LENNY BAPTISTE", "connie": "CONNIE VALE"}
 const AMBER := Color(0.85, 0.64, 0.25)
@@ -487,6 +488,8 @@ func _next_line() -> void:
 		var l: Dictionary = lines[line_idx]
 		line_idx += 1
 		_append_line(l)
+		if line_idx > 1:
+			line_advanced.emit()
 		if line_idx < lines.size():
 			var b := _choice_button("continue", true)
 			b.pressed.connect(_next_line)
@@ -509,7 +512,11 @@ func _set_portrait(who: String) -> void:
 
 func _append_line(l: Dictionary) -> void:
 	var who: String = l["who"]
-	if who != "narr" and who != "voice":
+	if who == "narr":
+		portrait.visible = false
+	elif who == "voice":
+		_set_portrait("frank")   # the Voice wears Frank's face, lit cold
+	else:
 		_set_portrait(who)
 	var t: String = str(l["text"]).replace("[", "[lb]")
 	match who:

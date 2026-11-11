@@ -21,6 +21,8 @@ var in_title: bool = false
 var title_key: SpotLight3D
 var neon_light: OmniLight3D
 var music: AudioStreamPlayer
+var sfx: Dictionary = {}          # name -> AudioStreamPlayer (missing files are simply absent)
+var last_evidence_sfx: float = -10.0
 const MUSIC_TITLE_DB := -6.0
 const MUSIC_GAME_DB := -20.0
 var post_layer: CanvasLayer
@@ -125,6 +127,9 @@ func _ready() -> void:
 	Story.timed_out.connect(func(): call_deferred("go", "end_timeout"))
 	_build_title_set()
 	_build_music()
+	_build_sfx()
+	ui.line_advanced.connect(func(): _play("page"))
+	Story.evidence_found.connect(_on_evidence_sfx)
 	_enter_title()
 
 
@@ -189,6 +194,8 @@ func _on_choice(choice: Dictionary) -> void:
 
 func _on_state_changed(s: String) -> void:
 	_apply_palette(VOICE if s == "V" else SOBER, 0.8)
+	if not in_title:
+		_play("drink" if s == "V" else "sober")
 	_refresh_hotspot_labels()
 	_refresh_clue_glow()
 	if post_mat:
@@ -223,6 +230,8 @@ func _snap_camera(station: String) -> void:
 
 func _enter_title() -> void:
 	in_title = true
+	_stop("room")
+	_stop("police")
 	current_scene = ""
 	_apply_palette(TITLE, 0.0)
 	if post_mat:
@@ -239,12 +248,56 @@ func _enter_title() -> void:
 
 func _leave_title() -> void:
 	in_title = false
+	_play("room")
 	_apply_palette(SOBER, 2.0)
 	var t := create_tween().set_parallel(true)
 	t.tween_property(title_key, "light_energy", 0.0, 2.0)
 	t.tween_property(neon_light, "light_energy", 0.9, 2.0)
 	if music:
 		t.tween_property(music, "volume_db", MUSIC_GAME_DB, 3.0)
+
+
+## Sound effects live in assets/audio/<name>.(ogg|mp3|wav). Any that are missing are skipped.
+func _build_sfx() -> void:
+	var defs := {"drink": -4.0, "sober": -6.0, "room": -24.0, "police": -8.0, "page": -16.0, "evidence": -8.0}
+	for n in defs.keys():
+		for ext in ["ogg", "mp3", "wav"]:
+			var path := "res://assets/audio/%s.%s" % [n, ext]
+			if not ResourceLoader.exists(path):
+				continue
+			var stream: AudioStream = load(path)
+			if n == "room":
+				if stream is AudioStreamMP3:
+					(stream as AudioStreamMP3).loop = true
+				elif stream is AudioStreamOggVorbis:
+					(stream as AudioStreamOggVorbis).loop = true
+				elif stream is AudioStreamWAV:
+					(stream as AudioStreamWAV).loop_mode = AudioStreamWAV.LOOP_FORWARD
+					(stream as AudioStreamWAV).loop_end = int((stream as AudioStreamWAV).get_length() * (stream as AudioStreamWAV).mix_rate)
+			var pl := AudioStreamPlayer.new()
+			pl.name = "Sfx_" + n
+			pl.stream = stream
+			pl.volume_db = defs[n]
+			add_child(pl)
+			sfx[n] = pl
+			break
+
+
+func _play(n: String) -> void:
+	if sfx.has(n):
+		(sfx[n] as AudioStreamPlayer).play()
+
+
+func _stop(n: String) -> void:
+	if sfx.has(n):
+		(sfx[n] as AudioStreamPlayer).stop()
+
+
+func _on_evidence_sfx(_id: String) -> void:
+	# several items can land in one scene; one sting is enough
+	if sway_t - last_evidence_sfx > 1.0:
+		last_evidence_sfx = sway_t
+		_play("evidence")
 
 
 func _build_music() -> void:
@@ -324,6 +377,8 @@ func _set_headlights(on: bool) -> void:
 	if on == headlights_on or headlight == null:
 		return
 	headlights_on = on
+	if on:
+		_play("police")
 	var win := get_node_or_null("Window") as MeshInstance3D
 	var t := create_tween().set_parallel(true)
 	t.tween_property(headlight, "light_energy", 6.0 if on else 0.0, 1.6 if on else 0.4)
