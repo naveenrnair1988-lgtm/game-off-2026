@@ -25,7 +25,7 @@ The truth needs both.
 
 **From source:** open the project in [Godot 4.7.2](https://godotengine.org/download) and press Play. The bar is built from primitives in code, so it runs with zero imported assets.
 
-**Performance.** The game measures its own frame rate and steps down 3D resolution, anti-aliasing and shadows until it holds about 42 fps; the interface always stays sharp. To pin a level, add `?tier=0` (best) to `?tier=3` (fastest) to the page address.
+**Performance.** The game measures its own frame rate and steps down quality until it holds about 42 fps. In the browser that means drawing fewer lines and letting the page stretch them (1440, 1080, 810 or 630 lines; it starts at 1080); on desktop it scales the 3D view. Press `F3` to see the frame rate and tier. To pin a level, add `?tier=0` (best) to `?tier=3` (fastest) to the page address. On a laptop with two graphics chips, browsers usually pick the slow one: in Windows, Settings → System → Display → Graphics lets you set your browser to High performance.
 
 **Controls**
 - Keyboard: `Space`/`Enter` advance, `1–9` choose, **`Shift`** shifts between Sober and The Voice, `E` evidence board

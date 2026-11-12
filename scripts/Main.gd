@@ -163,23 +163,31 @@ func _ready() -> void:
 
 
 # ---------------------------------------------------------------- adaptive quality
-## The game picks a quality tier from the size of the window, then steps down (never up)
-## whenever the frame rate stays low. Tiers trade 3D resolution, MSAA and shadows for speed;
-## the interface is always drawn at full resolution.
+## The game picks a quality tier, then steps down whenever the frame rate stays low.
+##
+## Measured in Chrome on Intel integrated graphics: the cost is per pixel (the room is lit by
+## many lamps), and on the web neither 3D scaling nor MSAA changes it. What does work there is
+## drawing fewer pixels and letting the browser stretch the canvas, so on the web a tier is a
+## cap on how many lines the game draws. On desktop a tier scales the 3D view instead.
 const TIERS := [
-	{"scale": 1.0, "msaa": Viewport.MSAA_4X, "shadows": true},
-	{"scale": 0.77, "msaa": Viewport.MSAA_2X, "shadows": true},
-	{"scale": 0.62, "msaa": Viewport.MSAA_DISABLED, "shadows": true},
-	{"scale": 0.5, "msaa": Viewport.MSAA_DISABLED, "shadows": false},
+	{"lines": 1440, "scale": 1.0, "msaa": Viewport.MSAA_4X, "shadows": true, "glow": true},
+	{"lines": 1080, "scale": 0.77, "msaa": Viewport.MSAA_2X, "shadows": true, "glow": true},
+	{"lines": 810, "scale": 0.62, "msaa": Viewport.MSAA_DISABLED, "shadows": true, "glow": true},
+	{"lines": 630, "scale": 0.5, "msaa": Viewport.MSAA_DISABLED, "shadows": false, "glow": false},
 ]
 const FPS_FLOOR := 42.0
 var tier: int = -1
 var fps_t: float = 0.0
 var fps_n: int = 0
 var fps_grace: float = 4.0
+var fps_now: float = 0.0
 var shadow_lights: Array[Light3D] = []
 var good_windows: int = 0
+var slow_streak: int = 0
 var stepped_up: bool = false
+var is_web: bool = OS.has_feature("web")
+var forced_tier: int = -2          # -2 = not read yet, -1 = automatic
+var fps_label: Label
 
 
 func _set_tier(t: int) -> void:
@@ -189,29 +197,45 @@ func _set_tier(t: int) -> void:
 	tier = t
 	var q: Dictionary = TIERS[t]
 	var vp := get_viewport()
-	vp.scaling_3d_mode = Viewport.SCALING_3D_MODE_BILINEAR
-	# never render the room below about 600 lines, however small the window
-	vp.scaling_3d_scale = clampf(maxf(float(q["scale"]), 600.0 / maxf(1.0, float(vp.size.y))), 0.25, 1.0)
+	if is_web:
+		# cap the canvas at this many lines; the browser stretches it to the window
+		JavaScriptBridge.eval("""(function(lines){
+			if (window.__lsRealDpr === undefined) { window.__lsRealDpr = window.devicePixelRatio || 1; }
+			var r = Math.min(window.__lsRealDpr, lines / Math.max(1, window.innerHeight));
+			window.__lsLines = lines;
+			Object.defineProperty(window, 'devicePixelRatio', { get: function () { return Math.min(window.__lsRealDpr, window.__lsLines / Math.max(1, window.innerHeight)); }, configurable: true });
+			window.dispatchEvent(new Event('resize'));
+		})(%d)""" % int(q["lines"]), true)
+	else:
+		vp.scaling_3d_mode = Viewport.SCALING_3D_MODE_BILINEAR
+		# never render the room below about 600 lines, however small the window
+		vp.scaling_3d_scale = clampf(maxf(float(q["scale"]), 600.0 / maxf(1.0, float(vp.size.y))), 0.25, 1.0)
 	vp.msaa_3d = q["msaa"]
 	for l in shadow_lights:
 		l.shadow_enabled = q["shadows"]
+	if env:
+		env.glow_enabled = q["glow"]
 	fps_grace = 2.5
 	print("quality tier ", t)
 
 
 ## A fixed tier can be asked for: LS_TIER=0..3 on desktop, or ?tier=0..3 on the web page.
 func _forced_tier() -> int:
-	var v := OS.get_environment("LS_TIER")
-	if v == "" and OS.has_feature("web"):
-		var q: Variant = JavaScriptBridge.eval("new URLSearchParams(window.location.search).get('tier') || ''", true)
-		v = str(q) if q != null else ""
-	return int(v) if v.is_valid_int() else -1
+	if forced_tier == -2:
+		var v := OS.get_environment("LS_TIER")
+		if v == "" and is_web:
+			var q: Variant = JavaScriptBridge.eval("new URLSearchParams(window.location.search).get('tier') || ''", true)
+			v = str(q) if q != null else ""
+		forced_tier = int(v) if v.is_valid_int() else -1
+	return forced_tier
 
 
 func _initial_tier() -> int:
 	var forced := _forced_tier()
 	if forced >= 0:
 		return forced
+	if is_web:
+		return 1   # 1080 lines: sharp enough, and a quarter of the pixels of a 4K window
 	var px := float(get_viewport().size.x) * float(get_viewport().size.y)
 	if px > 5.0e6:
 		return 2
@@ -220,26 +244,59 @@ func _initial_tier() -> int:
 	return 0
 
 
+## F3 (or ?fps=1 on the web) shows the frame rate and the quality tier.
+func _toggle_fps() -> void:
+	if fps_label == null:
+		fps_label = Label.new()
+		fps_label.add_theme_font_override("font", load("res://assets/fonts/Inter.ttf"))
+		fps_label.add_theme_font_size_override("font_size", 13)
+		fps_label.add_theme_color_override("font_color", Color(0.6, 1.0, 0.6))
+		fps_label.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.9))
+		fps_label.add_theme_constant_override("shadow_outline_size", 6)
+		fps_label.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT)
+		fps_label.offset_left = -220
+		fps_label.offset_top = -30
+		fps_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		fps_label.visible = false
+		ui.add_child(fps_label)
+	fps_label.visible = not fps_label.visible
+
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F3:
+		_toggle_fps()
+
+
 func _watch_fps(delta: float) -> void:
 	if tier < 0:
 		for l in lights:
 			if l.shadow_enabled:
 				shadow_lights.append(l)
 		_set_tier(_initial_tier())
+		if is_web and str(JavaScriptBridge.eval("new URLSearchParams(window.location.search).get('fps') || ''", true)) == "1":
+			_toggle_fps()
 		return
 	if fps_grace > 0.0:
 		fps_grace -= delta
 		fps_t = 0.0
 		fps_n = 0
 		return
-	if delta > 0.5:
-		return   # a hitch (tab switch, load), not a slow machine
+	if delta > 3.0:
+		# one long frame is a pause (tab switch, load); several in a row is a slow machine
+		slow_streak += 1
+		if slow_streak < 3:
+			return
+	else:
+		slow_streak = 0
 	fps_t += delta
 	fps_n += 1
 	if fps_t >= 1.5:
 		var fps := float(fps_n) / fps_t
+		fps_now = fps
 		fps_t = 0.0
 		fps_n = 0
+		if fps_label and fps_label.visible:
+			fps_label.text = "%d fps  ·  tier %d  ·  %d×%d" % [roundi(fps), tier, get_viewport().size.x, get_viewport().size.y]
 		if fps < FPS_FLOOR and tier < TIERS.size() - 1 and _forced_tier() < 0:
 			_set_tier(tier + 1)
 			good_windows = 0
@@ -622,7 +679,11 @@ func _set_headlights(on: bool) -> void:
 		_play("police")
 	var win := get_node_or_null("Window") as MeshInstance3D
 	var t := create_tween().set_parallel(true)
+	if on:
+		headlight.visible = true
 	t.tween_property(headlight, "light_energy", 6.0 if on else 0.0, 1.6 if on else 0.4)
+	if not on:
+		t.chain().tween_callback(func(): headlight.visible = headlights_on)
 	if on:
 		headlight.position.x = -4.6
 		t.tween_property(headlight, "position:x", -1.6, 2.4).set_trans(Tween.TRANS_SINE)
@@ -1194,6 +1255,7 @@ func _build_room() -> void:
 	headlight.position = Vector3(-3.0, 1.9, 3.6)
 	headlight.light_color = Color(0.85, 0.92, 1.0)
 	headlight.light_energy = 0.0
+	headlight.visible = false          # a light that is off still costs per-pixel work unless hidden
 	headlight.omni_range = 9.0
 	headlight.shadow_enabled = false
 	add_child(headlight)
