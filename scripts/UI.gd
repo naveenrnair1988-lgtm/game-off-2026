@@ -529,11 +529,11 @@ func show_title() -> void:
 	var seen: Label = title.find_child("Seen", true, false)
 	if seen:
 		var n: Array = Story.endings_seen
-		if n.has("ending_tell") and n.has("ending_stand"):
+		if n.has("end_true_tell") and n.has("end_true_stand"):
 			seen.text = "You have told them, and you have let it stand. There is nothing left to choose."
-		elif n.has("ending_tell"):
+		elif n.has("end_true_tell"):
 			seen.text = "Last time, you told them."
-		elif n.has("ending_stand"):
+		elif n.has("end_true_stand"):
 			seen.text = "Last time, you let it stand."
 		else:
 			seen.text = ""

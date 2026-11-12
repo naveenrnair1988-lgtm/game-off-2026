@@ -151,8 +151,7 @@ func enter_scene(id: String) -> bool:
 		clock_changed.emit(minutes)
 	if bool(sc.get("ending", false)):
 		over = true
-		if str(sc.get("setsFlag", "")).begins_with("ending_"):
-			_record_ending(str(sc["setsFlag"]))
+		_record_ending(id)
 	return true
 
 
@@ -225,12 +224,11 @@ func recap() -> String:
 
 
 func endings_total() -> int:
-	var seen: Dictionary = {}
+	var n := 0
 	for id in scenes.keys():
-		var f := str(scenes[id].get("setsFlag", ""))
-		if bool(scenes[id].get("ending", false)) and f.begins_with("ending_"):
-			seen[f] = true
-	return seen.size()
+		if bool(scenes[id].get("ending", false)):
+			n += 1
+	return n
 
 
 func _record_ending(name: String) -> void:
@@ -245,7 +243,9 @@ func _record_ending(name: String) -> void:
 func _load_save() -> void:
 	var cf := ConfigFile.new()
 	if cf.load(SAVE_PATH) == OK:
-		endings_seen = cf.get_value("game", "endings", [])
+		for e in cf.get_value("game", "endings", []):
+			if scenes.has(str(e)) and not endings_seen.has(e):
+				endings_seen.append(e)
 
 
 func visible_lines(id: String) -> Array:

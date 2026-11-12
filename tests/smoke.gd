@@ -152,7 +152,7 @@ func _run() -> void:
 	ui._process(60.0)
 	await process_frame
 	check(main.current_scene == "end_true_stand", "saying nothing lets it stand, got " + main.current_scene)
-	check(st.over and st.endings_seen.has("ending_stand"), "ending recorded")
+	check(st.over and st.endings_seen.has("end_true_stand"), "ending recorded")
 	check(st.recap().contains("3 of 3 confessions"), "recap: " + st.recap())
 	main.go("hub")
 	await process_frame
