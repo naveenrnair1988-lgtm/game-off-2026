@@ -17,7 +17,8 @@ The truth needs both.
 - **Structure:** Six chapters and seven endings. The true ending needs three confessions, one witness, and the night laid out in order.
 - **Fully voiced** (27 minutes of recorded dialogue), including Frank's inner monologue and The Voice.
 - **Choices are remembered:** how you treat the people who confess, and whether you answer the phone, change what Connie tells you and how the true ending plays.
-- **Characters move:** they breathe, turn to whoever is speaking, flinch when caught, and their mouths follow the recorded voice.
+- **Characters move:** they breathe, blink, turn to whoever is speaking, raise or knit their brows, flinch when caught, and their mouths follow the recorded voice. Theo talks with his hands.
+- **Length:** about 27 minutes for a careful first run to the true ending (measured from the recorded lines); seven endings.
 
 ## Play
 
@@ -44,6 +45,7 @@ scripts/Puppet.gd    per-character animation: look-at, idle, speech, reactions
 shaders/puppet.gdshader   two-bone vertex-shader rig (torso, head, jaw) for the scanned characters
 data/lipsync.json    loudness envelope per voice line, drives the jaw
 docs/voice-check.json    speech-recognition transcript, pace and level of every voice line
+docs/voice-prosody.json  pitch and pitch variation of every voice line
 data/story.json      every scene and line, tagged S (sober) / V (voice) / B (both)
 tests/smoke.gd       headless test that plays the whole game: godot --headless --path . -s tests/smoke.gd
 export_presets.cfg   Web export preset

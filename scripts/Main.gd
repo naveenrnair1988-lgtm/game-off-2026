@@ -88,10 +88,15 @@ const SCENE_STATION := {
 ## Shader-rig settings per character, as fractions of the model's height:
 ## waist, neck, mouth line, neck pivot (x, z), face surface z. See shaders/puppet.gdshader.
 const RIG := {
-	"mira":   {"waist": 0.45, "neck": 0.768, "mouth": 0.826, "chin": 0.786, "c": Vector2(0.0, 0.0), "face": 0.105},
-	"theo":   {"waist": 0.55, "neck": 0.872, "mouth": 0.888, "chin": 0.872, "c": Vector2(0.0, 0.005), "face": 0.058},
-	"lenny":  {"waist": 0.55, "neck": 0.890, "mouth": 0.886, "chin": 0.863, "c": Vector2(0.005, 0.02), "face": 0.100},
-	"connie": {"waist": 0.50, "neck": 0.838, "mouth": 0.880, "chin": 0.858, "c": Vector2(-0.007, -0.087), "face": -0.008},
+	"mira":   {"waist": 0.45, "neck": 0.768, "mouth": 0.826, "chin": 0.786, "c": Vector2(0.0, 0.0), "face": 0.105,
+		"eye": 0.888, "eye_dx": 0.026, "eye_cx": 0.0},
+	"theo":   {"waist": 0.55, "neck": 0.872, "mouth": 0.888, "chin": 0.872, "c": Vector2(0.0, 0.005), "face": 0.058,
+		"eye": 0.922, "eye_dx": 0.017, "eye_cx": 0.0,
+		"arms": {"b": Vector2(0.122, 0.085), "h": Vector2(0.56, 0.80), "shoulder": Vector2(0.10, 0.80), "elbow": 0.62, "low": 0.40, "gesture": 1.0, "lead_right": true}},
+	"lenny":  {"waist": 0.55, "neck": 0.890, "mouth": 0.886, "chin": 0.863, "c": Vector2(0.005, 0.02), "face": 0.100,
+		"eye": 0.932, "eye_dx": 0.021, "eye_cx": 0.004},   # no arm bones: his coat cannot be told apart from his sleeves
+	"connie": {"waist": 0.50, "neck": 0.838, "mouth": 0.880, "chin": 0.858, "c": Vector2(-0.007, -0.087), "face": -0.008,
+		"eye": 0.9266, "eye_dx": 0.017, "eye_cx": 0.005},
 }
 var puppets: Dictionary = {}       # name -> Puppet
 var speaker: String = ""           # who is talking right now
@@ -393,7 +398,8 @@ func _on_present(evidence_id: String) -> void:
 			var who := current_scene.trim_prefix("int_")
 			go(str(r["scene"]))
 			if puppets.has(who):
-				puppets[who].react(1.0, -1.0 if who == "lenny" else 1.0)
+				# Lenny bristles (brows down, chin away); the others are caught out (brows up)
+				puppets[who].react(1.0, -1.0 if who == "lenny" else 1.0, -1.0 if who == "lenny" else 1.0)
 		"wrong_state":
 			Story.toast.emit("Not to this Frank. Shift, then show it again.")
 			ui.show_interject(r["line"])
@@ -780,6 +786,17 @@ func _make_puppet(slot: String, pivot: Node3D, inst: Node3D, height: float) -> v
 	sm.set_shader_parameter("neck", rig["neck"])
 	sm.set_shader_parameter("mouth", rig["mouth"])
 	sm.set_shader_parameter("chin", rig["chin"])
+	sm.set_shader_parameter("eye", rig["eye"])
+	sm.set_shader_parameter("eye_dx", rig["eye_dx"])
+	sm.set_shader_parameter("eye_cx", rig["eye_cx"])
+	if rig.has("arms"):
+		var ar: Dictionary = rig["arms"]
+		sm.set_shader_parameter("arms", true)
+		sm.set_shader_parameter("arm_b", ar["b"])
+		sm.set_shader_parameter("arm_h", ar["h"])
+		sm.set_shader_parameter("shoulder", ar["shoulder"])
+		sm.set_shader_parameter("elbow", ar["elbow"])
+		sm.set_shader_parameter("arm_low", ar["low"])
 	sm.set_shader_parameter("head_c", Vector2(cx + rig["c"].x * h, cz + rig["c"].y * h))
 	sm.set_shader_parameter("face_z", cz + float(rig["face"]) * h)
 	for si in mi.mesh.get_surface_count():
@@ -789,6 +806,10 @@ func _make_puppet(slot: String, pivot: Node3D, inst: Node3D, height: float) -> v
 	pp.name = "Puppet_" + slot
 	add_child(pp)
 	pp.setup(pivot, sm, height * (float(rig["neck"]) + 1.0) * 0.5, slot.hash())
+	if rig.has("arms"):
+		pp.has_arms = true
+		pp.gesture = float(rig["arms"]["gesture"])
+		pp.lead_right = bool(rig["arms"]["lead_right"])
 	puppets[slot] = pp
 
 

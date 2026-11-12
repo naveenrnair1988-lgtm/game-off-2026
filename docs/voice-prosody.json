@@ -1,0 +1,1856 @@
+[
+{
+"vo": "n01",
+"who": "narr",
+"med": 119.25611271117225,
+"sd": 2.973977317109913,
+"rng": 9.735054410824027,
+"dur": 12.063673469387755,
+"text": "I wake up with my cheek on something sticky and my mouth tasting like a coin. My booth. The jukebox is skipping on the same four seconds of a trumpet."
+},
+{
+"vo": "ch1_wake_02",
+"who": "frank",
+"med": 131.20814123303245,
+"sd": 4.390343909518849,
+"rng": 13.557584960537039,
+"dur": 5.840045351473923,
+"text": "Right. Okay. So. It's \u2014 what time is it."
+},
+{
+"vo": "n02",
+"who": "narr",
+"med": 113.49157666255977,
+"sd": 3.459040306574093,
+"rng": 10.623927711974645,
+"dur": 14.880045351473923,
+"text": "One forty. The Last Call closes at midnight, and every light in the place is on. And somebody is crying behind the bar. Low. Controlled. The way you cry when you've decided to."
+},
+{
+"vo": "n03",
+"who": "narr",
+"med": 117.87131879878189,
+"sd": 2.960780457049625,
+"rng": 8.59611369881504,
+"dur": 13.024807256235828,
+"text": "Danny Roarke is on the floor at the end of his own bar, under a bar sheet, one arm out like he was reaching for something. There's a dark halo under his head, and a broken bottle a foot from his hand."
+},
+{
+"vo": "ch1_body_01",
+"who": "frank",
+"med": 116.44443405023192,
+"sd": 4.643193002990985,
+"rng": 14.57326471886618,
+"dur": 9.794331065759637,
+"text": "Danny. Danny, hey \u2014 oh. Oh, no. I should \u2014 I shouldn't touch that. I should not touch that."
+},
+{
+"vo": "n04",
+"who": "narr",
+"med": 106.19473148848036,
+"sd": 2.2687476370820994,
+"rng": 7.040877718943308,
+"dur": 8.480045351473922,
+"text": "Mira Roarke is kneeling beside him with a phone in her lap. She looks up at me, and her face does nothing at all."
+},
+{
+"vo": "ch1_body_03",
+"who": "mira",
+"med": 189.73647844950554,
+"sd": 3.3693536100478907,
+"rng": 10.244247655978423,
+"dur": 3.360045351473923,
+"text": "You were asleep. The whole time. I checked."
+},
+{
+"vo": "ch1_body_04",
+"who": "frank",
+"med": 131.744056674626,
+"sd": 4.022642001820785,
+"rng": 11.256889078720473,
+"dur": 5.1630839002267575,
+"text": "I \u2014 yes. I think so. I'm sorry. I'm so sorry, Mira."
+},
+{
+"vo": "ch1_body_05",
+"who": "mira",
+"med": 193.73198161012536,
+"sd": 4.053506241575464,
+"rng": 11.920841276403777,
+"dur": 6.450702947845805,
+"text": "The police are coming. They said forty minutes, then they said two hours. It's Saturday."
+},
+{
+"vo": "ch1_mira1_00",
+"who": "mira",
+"med": 174.6088382741845,
+"sd": 3.1950231570320318,
+"rng": 10.10074826299641,
+"dur": 11.360045351473923,
+"text": "I was upstairs doing the books. I came down at quarter to one to tell him to lock up and he was \u2014 like that. The till's open. It's empty."
+},
+{
+"vo": "ch1_mira1_01",
+"who": "frank",
+"med": 112.48153764066498,
+"sd": 2.2704042359313488,
+"rng": 6.869787054264593,
+"dur": 4.754149659863946,
+"text": "A robbery. Okay. Okay. That \u2014 yes."
+},
+{
+"vo": "ch1_mira1_02",
+"who": "mira",
+"med": 163.17710060761996,
+"sd": 5.430950882151398,
+"rng": 15.956400374846126,
+"dur": 2.880045351473923,
+"text": "You're going to help, Frank. You're a detective."
+},
+{
+"vo": "ch1_mira1_03",
+"who": "frank",
+"med": 114.57884374496273,
+"sd": 3.7708344111316854,
+"rng": 10.703752183405891,
+"dur": 7.825034013605443,
+"text": "I'm \u2014 well, technically I consult, which \u2014 yes. Yes. I'm going to help."
+},
+{
+"vo": "n05",
+"who": "narr",
+"med": 117.78620295231653,
+"sd": 3.091709720684439,
+"rng": 9.351687124295454,
+"dur": 16.305532879818593,
+"text": "My hands are shaking. Not from the body. From the schedule. Ninety minutes between drinks, and it's been two hours. The flask is in my coat. Full. I don't remember filling it."
+},
+{
+"vo": "n06",
+"who": "narr",
+"med": 118.54219686300779,
+"sd": 3.184460764542986,
+"rng": 9.786929028325506,
+"dur": 19.911927437641722,
+"text": "The front door opens, and the room fills up like a bad joke walking into a bar. Theo Pike, the barback. Twenty-two, and grey in the face. And behind him, Lenny Baptiste. Danny's partner. Camel coat. Already talking."
+},
+{
+"vo": "ch1_others_02",
+"who": "lenny",
+"med": 66.6904459603131,
+"sd": 1.8949996322457463,
+"rng": 6.014544721664697,
+"dur": 6.790204081632653,
+"text": "I told him. I told him this place was a hole with a liquor license. Christ, Mira. Christ."
+},
+{
+"vo": "ch1_others_03",
+"who": "theo",
+"med": 178.59994950452406,
+"sd": 4.988795731903189,
+"rng": 16.255853386316506,
+"dur": 5.199365079365079,
+"text": "I just came back for my phone. I left at twelve. I just \u2014 I came back for my phone."
+},
+{
+"vo": "n07",
+"who": "narr",
+"med": 109.1151251374784,
+"sd": 3.565701381702281,
+"rng": 11.30749221236043,
+"dur": 11.840045351473924,
+"text": "And at the end of the bar, on the last stool, Connie Vale. Seventy-one. Cardigan. Handbag on her knees. I didn't see her come in."
+},
+{
+"vo": "ch1_others_05",
+"who": "connie",
+"med": 230.0840541576285,
+"sd": 4.690311091412308,
+"rng": 15.01311697312857,
+"dur": 4.206621315192744,
+"text": "Hello, Frank. I had a feeling. So I came back."
+},
+{
+"vo": "n08",
+"who": "narr",
+"med": 115.42554520416131,
+"sd": 2.953930401055721,
+"rng": 9.888420774139092,
+"dur": 9.522403628117914,
+"text": "Four people. At least one of them is lying. I can feel the shape of it and I can't see it. Like a word I've forgotten."
+},
+{
+"vo": "ch1_others_07",
+"who": "frank",
+"med": 119.52352901960876,
+"sd": 4.094415653661928,
+"rng": 12.315001513667044,
+"dur": 1.6856235827664399,
+"text": "I can't do this like this."
+},
+{
+"vo": "n09",
+"who": "narr",
+"med": 119.97957656580968,
+"sd": 3.709335301029566,
+"rng": 13.094511044341145,
+"dur": 9.280045351473923,
+"text": "I turn my back on them and unscrew the cap. The rule is two swallows. One. Two."
+},
+{
+"vo": "n10",
+"who": "narr",
+"med": 95.82012451604466,
+"sd": 3.1669473737847813,
+"rng": 8.803964350875232,
+"dur": 0.6167800453514739,
+"text": "Three."
+},
+{
+"vo": "v01",
+"who": "voice",
+"med": 88.89686812387954,
+"sd": 1.8059578722975977,
+"rng": 4.824761581657503,
+"dur": 1.3432653061224489,
+"text": "And the room comes in."
+},
+{
+"vo": "ch1_voice_01",
+"who": "voice",
+"med": 82.22527952164036,
+"sd": 2.670447866359844,
+"rng": 7.224599784083452,
+"dur": 1.073061224489796,
+"text": "There you are."
+},
+{
+"vo": "ch1_voice_02",
+"who": "voice",
+"med": 84.81507799674188,
+"sd": 2.049557765968534,
+"rng": 6.2939878083598275,
+"dur": 23.920045351473924,
+"text": "Look at them. Don't look at him, he's done, look at them. The wife has clean hands. The kid is standing exactly where he can see the till and he hasn't looked at it once, which means he already knows what's in it. The partner said \"was.\" Twice. Nobody told him Danny was anything."
+},
+{
+"vo": "ch1_voice_03",
+"who": "voice",
+"med": 88.78830489351947,
+"sd": 1.5742726566129415,
+"rng": 4.119373614654309,
+"dur": 1.840045351473923,
+"text": "And the old woman's glass is sweating."
+},
+{
+"vo": "ch1_voice_04",
+"who": "frank",
+"med": 149.35698234865737,
+"sd": 2.483425063248422,
+"rng": 8.911498791038708,
+"dur": 0.9421768707482994,
+"text": "What does that \u2014"
+},
+{
+"vo": "ch1_voice_05",
+"who": "voice",
+"med": 84.08599123300688,
+"sd": 1.4767941371160487,
+"rng": 4.182339893290917,
+"dur": 5.6794104308390025,
+"text": "It means you were here for a reason tonight, Frank. You just don't get to know it yet."
+},
+{
+"vo": "v15",
+"who": "voice",
+"med": 84.2963061271558,
+"sd": 2.9281521984443843,
+"rng": 9.214862118529055,
+"dur": 18.715419501133788,
+"text": "Here's how tonight works, Frank. I see what they're hiding. But nobody confesses to me. They confess to you. The sorry, sober one. So look at the room with me. Then sober up, and show them what we found."
+},
+{
+"vo": "v16",
+"who": "voice",
+"med": 85.83255540423634,
+"sd": 2.5228697818782315,
+"rng": 8.258108620771399,
+"dur": 7.257006802721088,
+"text": "Except the partner. He only respects a harder man. Him, you leave to me."
+},
+{
+"vo": "n12",
+"who": "narr",
+"med": 120.72938905166923,
+"sd": 2.786545600224362,
+"rng": 8.81216831681416,
+"dur": 24.400045351473924,
+"text": "My booth. A coaster I've chewed the edge off. My coat, half on the seat. I go through the pockets like I'm frisking a stranger. Keys. Flask. And a receipt, in Danny's big slanted capitals. Eleven forty-seven. Cut off. D. He does it every night. Puts it on the tab like a joke."
+},
+{
+"vo": "loc_booth_03",
+"who": "frank",
+"med": 116.29330875165404,
+"sd": 3.1223742815013997,
+"rng": 9.392193744031275,
+"dur": 5.840045351473923,
+"text": "Eleven forty-seven. I was \u2014 I was awake at eleven forty-seven."
+},
+{
+"vo": "n13",
+"who": "narr",
+"med": 118.46249102437717,
+"sd": 2.530363935136845,
+"rng": 7.115101672653762,
+"dur": 4.5600453514739225,
+"text": "I don't remember being cut off. I don't remember much of anything after ten."
+},
+{
+"vo": "loc_booth_05",
+"who": "voice",
+"med": 84.37089124882087,
+"sd": 2.508697878008197,
+"rng": 7.2405346127131445,
+"dur": 3.520045351473923,
+"text": "Your hand. Right hand. Look at it."
+},
+{
+"vo": "v02",
+"who": "voice",
+"med": 83.74374873582282,
+"sd": 2.650745423239838,
+"rng": 8.688671654179096,
+"dur": 7.3244897959183675,
+"text": "Knuckles. Split on the second and third. Not from the booth. Booths don't do that."
+},
+{
+"vo": "loc_booth_07",
+"who": "voice",
+"med": 83.15875271681847,
+"sd": 2.2907931839990083,
+"rng": 7.613448731392553,
+"dur": 9.120045351473923,
+"text": "You hit something tonight. Don't ask what. You won't like the shape of the answer and neither of us has time for you to be sad about it."
+},
+{
+"vo": "n14",
+"who": "narr",
+"med": 114.424781994848,
+"sd": 3.207506261671608,
+"rng": 9.329114114707938,
+"dur": 16.160045351473922,
+"text": "I don't look at his face. I look at the floor around him, the way I was taught. The bottle. Brown glass, neck intact, the body shattered. And on the back counter, the till. Drawer out. Empty."
+},
+{
+"vo": "loc_bar_01",
+"who": "frank",
+"med": 120.34972006358325,
+"sd": 3.216652986340245,
+"rng": 8.423259672413725,
+"dur": 5.760045351473923,
+"text": "Somebody hit him with the bottle. Took the cash. That's \u2014 that's a thing that happens."
+},
+{
+"vo": "loc_bar_02",
+"who": "voice",
+"med": 88.637898179797,
+"sd": 2.4978403495529737,
+"rng": 7.054015207938839,
+"dur": 1.2624943310657597,
+"text": "Read the label."
+},
+{
+"vo": "v03",
+"who": "voice",
+"med": 86.2823955358785,
+"sd": 2.0472270424508197,
+"rng": 6.211246499252866,
+"dur": 12.240045351473922,
+"text": "The top-shelf bottle. The one with the hand-written tag. Danny never poured from it. It lived on the highest shelf, where you couldn't reach it in a fight if you tried."
+},
+{
+"vo": "loc_bar_04",
+"who": "voice",
+"med": 84.9294458989609,
+"sd": 2.9228134044216727,
+"rng": 9.047093131906967,
+"dur": 8.320045351473922,
+"text": "So nobody grabbed it in a fight. Somebody took it down. Carefully. Afterwards."
+},
+{
+"vo": "loc_bar_05",
+"who": "voice",
+"med": 91.91647725674767,
+"sd": 2.673143487559849,
+"rng": 7.856362453911176,
+"dur": 5.594331065759637,
+"text": "And the charger. Behind the register. The phone on it."
+},
+{
+"vo": "v04",
+"who": "voice",
+"med": 85.8886014019312,
+"sd": 2.282871556357383,
+"rng": 7.0960569480681706,
+"dur": 5.871700680272109,
+"text": "A cracked phone with a cartoon dog on the back. Theo's. Still charging."
+},
+{
+"vo": "loc_bar_07",
+"who": "voice",
+"med": 89.06138571477163,
+"sd": 1.951322411911357,
+"rng": 6.392204553181427,
+"dur": 9.851156462585035,
+"text": "He came back for his phone, he says. It's right here. He never touched it. So what did he come back for?"
+},
+{
+"vo": "n15",
+"who": "narr",
+"med": 117.3730606504758,
+"sd": 2.94051983592323,
+"rng": 9.683981530200322,
+"dur": 9.964126984126985,
+"text": "The brass rail along the bar gleams. It never gleams. Danny polishes it once a year and complains about it for a month."
+},
+{
+"vo": "loc_floor_01",
+"who": "frank",
+"med": 135.7964121952907,
+"sd": 7.458104253950777,
+"rng": 22.07657282448276,
+"dur": 3.040045351473923,
+"text": "Someone wiped this. Recently."
+},
+{
+"vo": "n16",
+"who": "narr",
+"med": 112.89216800170682,
+"sd": 3.379563513926672,
+"rng": 10.048117607608352,
+"dur": 8.138367346938775,
+"text": "Connie's on her stool at the end, same as every night. She told me she went home at midnight, and came back when she had a feeling."
+},
+{
+"vo": "loc_floor_03",
+"who": "voice",
+"med": 97.92444481224388,
+"sd": 3.277465143062478,
+"rng": 9.781958794136631,
+"dur": 12.160045351473922,
+"text": "Wiped, yes. Look at the end. By her stool. One handprint, the one place the cloth didn't go because somebody was sitting in the way of it."
+},
+{
+"vo": "v05",
+"who": "voice",
+"med": 86.15606927468315,
+"sd": 2.5045684898759406,
+"rng": 7.391227492449685,
+"dur": 8.560045351473923,
+"text": "A big hand. Four fingers and the heel of a palm, pressed hard. Like somebody caught themselves."
+},
+{
+"vo": "loc_floor_05",
+"who": "voice",
+"med": 95.64176418876521,
+"sd": 2.7531081199105754,
+"rng": 7.9830681762185645,
+"dur": 3.120045351473923,
+"text": "Put your hand over it. Go on."
+},
+{
+"vo": "v06",
+"who": "voice",
+"med": 110.54511317762102,
+"sd": 3.573544844337559,
+"rng": 11.389282056215645,
+"dur": 2.460861678004535,
+"text": "No? Thought not."
+},
+{
+"vo": "loc_floor_07",
+"who": "voice",
+"med": 84.86692041516287,
+"sd": 2.2028190651743547,
+"rng": 6.802048545216805,
+"dur": 16.000045351473922,
+"text": "And her glass. Gin and tonic, one ice cube left, the outside of it still wet. It's been sitting there ten minutes. Not ninety. She never left this stool, Frank. She watched the whole thing."
+},
+{
+"vo": "n17",
+"who": "narr",
+"med": 116.7712827726051,
+"sd": 3.1042603224158656,
+"rng": 9.19223265587702,
+"dur": 16.320045351473922,
+"text": "A desk the size of a door. A banker's lamp. A safe that's been open for years. The green ledger Danny kept the tabs in isn't on the desk. And the deed he kept taped under the drawer isn't under the drawer."
+},
+{
+"vo": "loc_office_01",
+"who": "frank",
+"med": 127.9874768759133,
+"sd": 3.985094336046364,
+"rng": 11.492912229038161,
+"dur": 5.022585034013606,
+"text": "So they took the books too. That's a strange thing for a robber to take."
+},
+{
+"vo": "loc_office_02",
+"who": "voice",
+"med": 83.64094960449232,
+"sd": 2.272360957189017,
+"rng": 6.794206247358979,
+"dur": 2.640045351473923,
+"text": "It's a strange thing for a robber to know about."
+},
+{
+"vo": "v07",
+"who": "voice",
+"med": 85.6874106856887,
+"sd": 1.8745999486845097,
+"rng": 5.669886967184761,
+"dur": 11.760045351473924,
+"text": "On the carpet, by the chair. A grey crumb of cigar ash. This bar's been no-smoking for six years, and Danny enforced it like scripture."
+},
+{
+"vo": "loc_office_04",
+"who": "voice",
+"med": 86.52696198405312,
+"sd": 2.172252957728213,
+"rng": 7.026586218986999,
+"dur": 17.440045351473923,
+"text": "One man in this building smokes cigars and acts like the rule is a suggestion. He stood here. He stood here long enough to ash. And earlier he said Danny \"was\" a stubborn bastard, past tense, before anyone had said the word dead."
+},
+{
+"vo": "int_mira_00",
+"who": "mira",
+"med": 183.1488161871461,
+"sd": 4.168748774386879,
+"rng": 13.21996573523488,
+"dur": 3.200045351473923,
+"text": "Ask. Whatever it is, ask it."
+},
+{
+"vo": "int_mira_01",
+"who": "frank",
+"med": 122.50608990072361,
+"sd": 2.713684268614777,
+"rng": 7.6638875617000775,
+"dur": 3.7276643990929705,
+"text": "When you came down. Was the door locked?"
+},
+{
+"vo": "int_mira_02",
+"who": "mira",
+"med": 202.41437102964468,
+"sd": 4.284943594745434,
+"rng": 13.34773801256702,
+"dur": 7.5200453514739225,
+"text": "Front, yes. Back, I didn't check. I didn't check anything, Frank, I was looking at my husband."
+},
+{
+"vo": "int_mira_03",
+"who": "frank",
+"med": 101.9187285125567,
+"sd": 3.0444756409396607,
+"rng": 9.094160403536753,
+"dur": 1.536281179138322,
+"text": "Of course. I'm sorry."
+},
+{
+"vo": "int_mira_04",
+"who": "voice",
+"med": 82.975467961455,
+"sd": 1.9707234703816148,
+"rng": 5.73937603107085,
+"dur": 3.440045351473923,
+"text": "Her hands. Look at her hands."
+},
+{
+"vo": "v08",
+"who": "voice",
+"med": 86.78227098427038,
+"sd": 2.023493820996812,
+"rng": 6.445349401781583,
+"dur": 10.320045351473922,
+"text": "Spotless. She knelt in her husband's blood, and her hands are spotless. Sleeves pushed up. Nails clean."
+},
+{
+"vo": "int_mira_06",
+"who": "voice",
+"med": 80.56154377892133,
+"sd": 2.2527269549256532,
+"rng": 7.005403621713277,
+"dur": 15.200045351473923,
+"text": "She washed. Before she called anyone. She washed, and she wiped a bar rail, and she came back down and arranged her face. Ask her what time she really came down."
+},
+{
+"vo": "int_mira_07",
+"who": "mira",
+"med": 177.15297627709668,
+"sd": 4.182097702358682,
+"rng": 11.757923485575628,
+"dur": 2.080045351473923,
+"text": "Quarter to one. I told you."
+},
+{
+"vo": "int_mira_08",
+"who": "voice",
+"med": 90.4498699912995,
+"sd": 2.71916435585016,
+"rng": 9.456457411283086,
+"dur": 6.338321995464852,
+"text": "She didn't blink. People who are lying blink. People who've rehearsed don't."
+},
+{
+"vo": "int_theo_00",
+"who": "theo",
+"med": 163.73208956504283,
+"sd": 5.3573998521081565,
+"rng": 16.181629791335983,
+"dur": 7.912698412698413,
+"text": "I left at twelve. I came back about ten after for my phone. I didn't \u2014 he was fine. I mean I didn't see him. I grabbed it and left."
+},
+{
+"vo": "int_theo_01",
+"who": "frank",
+"med": 118.70435232160628,
+"sd": 3.4087932487779216,
+"rng": 10.770340983395332,
+"dur": 2.134739229024943,
+"text": "That's very clear. Thank you, Theo."
+},
+{
+"vo": "n18",
+"who": "narr",
+"med": 108.95743915523337,
+"sd": 2.941989183208091,
+"rng": 9.012859965005905,
+"dur": 7.5200453514739225,
+"text": "He's nodding too much. But he's twenty-two, and a man is dead. I'd nod too."
+},
+{
+"vo": "int_theo_03",
+"who": "voice",
+"med": 82.65764686117302,
+"sd": 2.4517453111749967,
+"rng": 7.6451428592831565,
+"dur": 6.098956916099773,
+"text": "He grabbed his phone. The one that's on the charger. Behind the register. Right now."
+},
+{
+"vo": "int_theo_04",
+"who": "frank",
+"med": 126.68014977779305,
+"sd": 3.9861173691606133,
+"rng": 12.043910119742584,
+"dur": 1.6800453514739229,
+"text": "Theo. Where's your phone."
+},
+{
+"vo": "v09",
+"who": "voice",
+"med": 83.85539315922306,
+"sd": 2.1120639800301597,
+"rng": 7.416538415715546,
+"dur": 3.360045351473923,
+"text": "Both pockets. Look at his face go."
+},
+{
+"vo": "int_theo_06",
+"who": "theo",
+"med": 136.018179952095,
+"sd": 1.2395418655274448,
+"rng": 4.152746043570553,
+"dur": 1.623219954648526,
+"text": "I \u2014 I must have \u2014"
+},
+{
+"vo": "int_theo_07",
+"who": "voice",
+"med": 86.08915922155839,
+"sd": 2.2149556352391615,
+"rng": 7.332896272200939,
+"dur": 19.994421768707483,
+"text": "Six weeks of wages, Frank. Everybody in this bar knows Danny was six weeks behind with him. The till had, what, two thousand? He didn't take all of it. He took what he was owed. That's not a robber. That's a kid doing arithmetic over a man on the floor."
+},
+{
+"vo": "int_theo_08",
+"who": "voice",
+"med": 82.01898929810676,
+"sd": 1.7049944047624987,
+"rng": 5.594778773113769,
+"dur": 4.720045351473923,
+"text": "On the floor. Alive. Say it."
+},
+{
+"vo": "int_lenny_00",
+"who": "lenny",
+"med": 67.63554764364763,
+"sd": 1.7106691459763146,
+"rng": 5.187810047826929,
+"dur": 12.320045351473922,
+"text": "I came by at half twelve to talk business. Door was locked. I went home. I come back now because Mira called. That's the whole thing, detective, so you can put the little notebook away."
+},
+{
+"vo": "int_lenny_01",
+"who": "frank",
+"med": 119.60706210945311,
+"sd": 3.4700991342019836,
+"rng": 11.114625759470009,
+"dur": 4.614875283446712,
+"text": "I don't actually have a \u2014 right. Thank you, Mr. Baptiste."
+},
+{
+"vo": "int_lenny_02",
+"who": "voice",
+"med": 86.71416522494046,
+"sd": 2.368196442569988,
+"rng": 7.254256176698862,
+"dur": 11.91891156462585,
+"text": "Locked. Mira said she didn't check the back. And the man who came to talk business went home without talking it, at half twelve, on a Saturday, with three months of money on the table."
+},
+{
+"vo": "int_lenny_03",
+"who": "voice",
+"med": 87.0824087832317,
+"sd": 2.2924155297494084,
+"rng": 7.490320180626885,
+"dur": 17.68004535147392,
+"text": "He went in. He went into the office. He stood by the desk long enough to drop ash, he took the ledger and the deed because without paper Danny's debt is Danny's word, and Danny isn't saying much."
+},
+{
+"vo": "int_lenny_04",
+"who": "frank",
+"med": 109.44267265977766,
+"sd": 2.8816985826794754,
+"rng": 8.482316395773736,
+"dur": 1.7439002267573696,
+"text": "You were inside."
+},
+{
+"vo": "int_lenny_05",
+"who": "lenny",
+"med": 73.34747810559512,
+"sd": 9.100011836919682,
+"rng": 27.308063276289857,
+"dur": 1.0259410430839002,
+"text": "Then prove it."
+},
+{
+"vo": "int_lenny_06",
+"who": "voice",
+"med": 84.1183374763152,
+"sd": 2.9704873630349495,
+"rng": 10.075760583137937,
+"dur": 11.08734693877551,
+"text": "You will. Here's the thing that should bother you, though. If he came at half twelve and Danny was already on the floor \u2014 who put him there at a quarter to?"
+},
+{
+"vo": "int_connie_00",
+"who": "connie",
+"med": 241.74770917896444,
+"sd": 4.017875551283721,
+"rng": 14.157458086096543,
+"dur": 5.120045351473923,
+"text": "I don't know what I can tell you, dear. I went home at midnight like always."
+},
+{
+"vo": "int_connie_01",
+"who": "frank",
+"med": 125.09551618350582,
+"sd": 3.392424103959882,
+"rng": 10.67202717773159,
+"dur": 2.560045351473923,
+"text": "And you came back because you had a feeling."
+},
+{
+"vo": "int_connie_02",
+"who": "connie",
+"med": 239.053956319259,
+"sd": 5.8958264250235795,
+"rng": 16.504986535405997,
+"dur": 4.358866213151927,
+"text": "Forty years teaching eleven-year-olds. You develop feelings."
+},
+{
+"vo": "n19",
+"who": "narr",
+"med": 118.90569062542302,
+"sd": 2.7510706600122683,
+"rng": 9.036251473426125,
+"dur": 8.148299319727892,
+"text": "She pats my hand. Her hand is cold and dry, and it's the kindest thing anyone's done to me all night."
+},
+{
+"vo": "int_connie_04",
+"who": "voice",
+"med": 82.77913046435857,
+"sd": 1.9700666430443419,
+"rng": 6.395636534700537,
+"dur": 5.917551020408164,
+"text": "Her glass is sweating. Her stool is warm. She hasn't been anywhere."
+},
+{
+"vo": "f01",
+"who": "frank",
+"med": 112.87458370418503,
+"sd": 3.5883532423187368,
+"rng": 11.683082112454805,
+"dur": 4.775283446712018,
+"text": "Theo. Your phone's on the charger behind the till. It's been there all night."
+},
+{
+"vo": "t01",
+"who": "theo",
+"med": 156.13872450224,
+"sd": 3.30078279207202,
+"rng": 10.933451403037857,
+"dur": 4.4800453514739225,
+"text": "I... okay. Okay. I didn't come back for the phone."
+},
+{
+"vo": "t02",
+"who": "theo",
+"med": 163.44733957276952,
+"sd": 5.226108918113416,
+"rng": 16.98230227157381,
+"dur": 6.098140589569161,
+"text": "He owed me six weeks. Eighteen hundred dollars. I counted it twice, so I wouldn't take a dollar more."
+},
+{
+"vo": "f02",
+"who": "frank",
+"med": 111.17692766117038,
+"sd": 3.274829307613905,
+"rng": 10.461073715255706,
+"dur": 0.8119274376417234,
+"text": "And Danny?"
+},
+{
+"vo": "t03",
+"who": "theo",
+"med": 134.97045112009403,
+"sd": 6.205357509435434,
+"rng": 19.11109607901725,
+"dur": 11.920045351473924,
+"text": "He was sitting on the floor with his back against the cooler. He looked at me and he said, 'Not now, Theo.' So I took it, and I ran. He was talking, Mr. Sable. He was fine. I thought he was fine."
+},
+{
+"vo": "n20",
+"who": "narr",
+"med": 125.1752213291148,
+"sd": 3.1247938721687034,
+"rng": 8.47271475553844,
+"dur": 3.27437641723356,
+"text": "He wasn't fine. But the kid isn't lying anymore."
+},
+{
+"vo": "v11",
+"who": "voice",
+"med": 90.38522285493366,
+"sd": 2.4965715487192846,
+"rng": 8.041142755696644,
+"dur": 7.205578231292517,
+"text": "You ashed on his carpet, Lenny. And you said 'was' before anyone told you he was dead."
+},
+{
+"vo": "l01",
+"who": "lenny",
+"med": 65.93914782472788,
+"sd": 2.3524719829951004,
+"rng": 8.236861502327336,
+"dur": 2.960045351473923,
+"text": "Who the hell is that talking? That's not you."
+},
+{
+"vo": "v12",
+"who": "voice",
+"med": 86.42401949411455,
+"sd": 2.4615259767453455,
+"rng": 7.888165373288224,
+"dur": 8.640045351473923,
+"text": "It's the part of him that doesn't apologise. Half past twelve. The office. Say it."
+},
+{
+"vo": "l02",
+"who": "lenny",
+"med": 66.48316977125633,
+"sd": 1.72430121087104,
+"rng": 4.963047014656177,
+"dur": 5.983582766439909,
+"text": "Fine. The door was open. He was on the floor, mumbling. I stepped over him."
+},
+{
+"vo": "l03",
+"who": "lenny",
+"med": 68.40426423605942,
+"sd": 2.7804083589378354,
+"rng": 8.434375205193529,
+"dur": 11.51156462585034,
+"text": "I took the ledger and the deed. Without paper, what he owed me is whatever I say it is. He was breathing when I left. I checked. I'm not an animal."
+},
+{
+"vo": "v13",
+"who": "voice",
+"med": 83.05624382055643,
+"sd": 1.3753559739297094,
+"rng": 4.104516038966887,
+"dur": 2.8000453514739228,
+"text": "No. An animal would have called someone."
+},
+{
+"vo": "f03",
+"who": "frank",
+"med": 108.66590744883109,
+"sd": 2.5609943774098567,
+"rng": 6.866908833223473,
+"dur": 7.679773242630385,
+"text": "Mira. That bottle never came off the top shelf in a fight. Somebody lifted it down."
+},
+{
+"vo": "m01",
+"who": "mira",
+"med": 203.43336860706313,
+"sd": 4.008383593707009,
+"rng": 12.679367769258732,
+"dur": 1.566077097505669,
+"text": "You're better at this than you look."
+},
+{
+"vo": "m02",
+"who": "mira",
+"med": 164.34458244007556,
+"sd": 2.8329911114412734,
+"rng": 9.065255969525145,
+"dur": 14.000045351473922,
+"text": "He was cold when I came down. No wound I could see. The till empty, the books gone. And I know what our policy pays on a robbery, and what it pays on a drunk man falling in his own bar."
+},
+{
+"vo": "m03",
+"who": "mira",
+"med": 172.38428650555664,
+"sd": 3.485617465152473,
+"rng": 10.460371503675159,
+"dur": 11.194467120181406,
+"text": "So I gave them a robbery. I broke the bottle. I wiped the rail. I washed my hands, and I sat with him. I did not kill my husband, Frank."
+},
+{
+"vo": "f04",
+"who": "frank",
+"med": 99.23067208993905,
+"sd": 2.866112231843511,
+"rng": 8.7403592892214,
+"dur": 2.63687074829932,
+"text": "I know. I'm sorry. I know."
+},
+{
+"vo": "v27",
+"who": "voice",
+"med": 83.51574224988738,
+"sd": 1.4037905267396558,
+"rng": 4.699664351525485,
+"dur": 8.240045351473922,
+"text": "That's the last one. Three liars, three true things. Now go and sit with the old woman."
+},
+{
+"vo": "f05",
+"who": "frank",
+"med": 115.41016903413635,
+"sd": 3.211785104096347,
+"rng": 8.945829859195976,
+"dur": 3.998140589569161,
+"text": "Your glass is still cold, Connie. You never went home."
+},
+{
+"vo": "int_connie_07",
+"who": "connie",
+"med": 156.2393197940208,
+"sd": 3.234498880948553,
+"rng": 10.638927463007377,
+"dur": 1.573514739229025,
+"text": "No, dear. I didn't."
+},
+{
+"vo": "c03",
+"who": "connie",
+"med": 200.840512650983,
+"sd": 4.563597069359991,
+"rng": 14.119599105520207,
+"dur": 8.85591836734694,
+"text": "I'll tell you what I saw. But not before they do. Make the three of them say their part out loud. Then come and sit with me."
+},
+{
+"vo": "n21",
+"who": "narr",
+"med": 124.92597066413326,
+"sd": 3.023059141084965,
+"rng": 9.681987330432428,
+"dur": 11.040045351473923,
+"text": "Ninety minutes. I feel it before I check the clock. The floor tilts a quarter inch, and settles. The schedule is a dog that knows when it's fed."
+},
+{
+"vo": "ch4_blackout_03",
+"who": "voice",
+"med": 85.42901683229425,
+"sd": 2.2313729981225925,
+"rng": 6.936163729643868,
+"dur": 18.960045351473923,
+"text": "Here it comes. You can ride it out and stay useful for the police, or you can have the second drink and I'll show you the thing in the corner you keep not looking at. Your call. It's always your call. That's the joke."
+},
+{
+"vo": "n22",
+"who": "narr",
+"med": 113.33839632407417,
+"sd": 3.128714245555105,
+"rng": 9.764870432707658,
+"dur": 7.600045351473923,
+"text": "Connie is watching me from the last stool. And the flask is in my hand. I don't remember taking it out."
+},
+{
+"vo": "v14",
+"who": "voice",
+"med": 82.45225559772588,
+"sd": 2.0958252621615814,
+"rng": 7.168219878045461,
+"dur": 13.600045351473923,
+"text": "Three swallows, and the room goes under like a stone. And comes back up ten minutes on, with your hand flat on the end of the brass rail. Exactly over the print."
+},
+{
+"vo": "ch4_drink_02",
+"who": "voice",
+"med": 80.61829593535336,
+"sd": 2.1524762459224553,
+"rng": 6.906683971153251,
+"dur": 3.120045351473923,
+"text": "There. Now you know what size it is."
+},
+{
+"vo": "n23",
+"who": "narr",
+"med": 117.82624095195203,
+"sd": 2.738112870845501,
+"rng": 7.678961163337208,
+"dur": 10.306122448979592,
+"text": "I screw the cap back on. The shake has to be lived with. I go and stand in the office, because it's the only room without a body or a witness in it."
+},
+{
+"vo": "n24",
+"who": "narr",
+"med": 119.91862862958365,
+"sd": 2.784105688357098,
+"rng": 9.367575946361608,
+"dur": 7.008480725623583,
+"text": "The little sink in the corner. A bar cloth, wrung out and dropped. Still wet. Pink at the edges."
+},
+{
+"vo": "ch4_sober_02",
+"who": "frank",
+"med": 113.77557628571314,
+"sd": 3.400999559752326,
+"rng": 8.822754191621511,
+"dur": 3.200045351473923,
+"text": "Somebody washed a cloth. After."
+},
+{
+"vo": "n25",
+"who": "narr",
+"med": 117.06627015965825,
+"sd": 2.6026568208829945,
+"rng": 7.502551012619339,
+"dur": 20.523492063492064,
+"text": "And in the desk drawer, the carbon from the last page of Danny's tab book. Eleven forty-seven, cut off. And under it, shakier. Eleven fifty-two. F put hands on me. Went down. I'm okay. Sat him in his booth."
+},
+{
+"vo": "ch4_sober_05",
+"who": "frank",
+"med": 111.92247178895641,
+"sd": 3.289433861001542,
+"rng": 9.19477632436682,
+"dur": 12.233106575963719,
+"text": "Went down. I went down. I must have fallen, and he \u2014 he sat me in my booth. That's the knuckles. That's all that is."
+},
+{
+"vo": "n26",
+"who": "narr",
+"med": 109.04737270441748,
+"sd": 2.4273940513157823,
+"rng": 7.020898128850508,
+"dur": 5.61750566893424,
+"text": "It reads that way if I want it to. And sober, I want it to."
+},
+{
+"vo": "ch4_drink_05",
+"who": "connie",
+"med": 203.9135597845315,
+"sd": 4.528876824183285,
+"rng": 15.204936582999322,
+"dur": 2.880045351473923,
+"text": "Sit down. I'm going to tell you about tonight."
+},
+{
+"vo": "ch4_connie_00",
+"who": "connie",
+"med": 183.816739996292,
+"sd": 4.613633321262218,
+"rng": 14.9181195380254,
+"dur": 15.42344671201814,
+"text": "Danny cut you off at a quarter to twelve. He wrote it on your tab like he always does, and you laughed like you always do, and then you didn't. Something in you said something to him. About Mira. About upstairs."
+},
+{
+"vo": "ch4_connie_01",
+"who": "voice",
+"med": 89.73791226881183,
+"sd": 1.5929401945313628,
+"rng": 5.0032054404907,
+"dur": 3.295328798185941,
+"text": "I remember what I said. You don't want it."
+},
+{
+"vo": "ch4_connie_02",
+"who": "connie",
+"med": 206.05899119774375,
+"sd": 4.414565420506365,
+"rng": 13.500670170529418,
+"dur": 22.57079365079365,
+"text": "He came round the bar and took you by the collar. Not hard. Like a father. And you put both hands on his chest and pushed, and he went backwards over the rail and sat down very suddenly, and hit his head on the brass on the way, and said \u2014 and I remember this exactly \u2014 'Get out of my bar, Frank.'"
+},
+{
+"vo": "ch4_connie_03",
+"who": "connie",
+"med": 189.46038177299323,
+"sd": 4.330494759947192,
+"rng": 13.70565806707107,
+"dur": 3.186938775510204,
+"text": "You went to your booth. You were asleep before you lay down."
+},
+{
+"vo": "ch4_connie_04",
+"who": "connie",
+"med": 184.2291059098737,
+"sd": 4.914776645274055,
+"rng": 15.58739418808728,
+"dur": 11.373650793650794,
+"text": "He sat there a while, rubbing his head. Then he got up. He wrote on the tab again. He was all right, Frank. He was walking. He was all right for a long time."
+},
+{
+"vo": "ch4_connie_05",
+"who": "connie",
+"med": 200.1562962064963,
+"sd": 3.8633508137520467,
+"rng": 12.480569495954196,
+"dur": 15.170204081632653,
+"text": "The boy came in at ten past and Danny was sitting on the floor again by then, and he said, 'Not now, Theo.' The boy took money from the till. Danny watched him do it and didn't say a word. The boy ran."
+},
+{
+"vo": "ch4_connie_06",
+"who": "connie",
+"med": 189.72566145525377,
+"sd": 3.8698086871417985,
+"rng": 12.613358226608433,
+"dur": 14.880045351473923,
+"text": "Lenny came at half past. Danny was lying down. Lenny stepped over him into the office. He came out with the green book and a folder and he lit a cigar in the doorway and looked at Danny for a long time and went home."
+},
+{
+"vo": "ch4_connie_07",
+"who": "connie",
+"med": 195.0556175944151,
+"sd": 4.037775069984034,
+"rng": 12.675436024466038,
+"dur": 19.093514739229025,
+"text": "Mira came down at quarter to one. She knelt. She stayed a while. Then she stood up and went and got the bottle from the top shelf and broke it beside him. She took a cloth to the rail. She went upstairs and washed, and she came back and sat with him until half past one, and then she rang."
+},
+{
+"vo": "ch4_connie_08",
+"who": "frank",
+"med": 120.71229038871166,
+"sd": 5.45281459791123,
+"rng": 17.081945677135174,
+"dur": 0.8170975056689342,
+"text": "And you \u2014"
+},
+{
+"vo": "ch4_connie_09",
+"who": "connie",
+"med": 216.5548017832389,
+"sd": 4.015693084388252,
+"rng": 12.458721087996288,
+"dur": 12.549750566893424,
+"text": "I sat here, dear. I'm seventy-one. I sat here and I watched a man die slowly in front of four people who each had a reason not to call, and I was the fifth."
+},
+{
+"vo": "f11",
+"who": "frank",
+"med": 124.56347804144387,
+"sd": 3.2940727156752074,
+"rng": 9.214825721992476,
+"dur": 3.8226757369614512,
+"text": "The call, Connie. Twelve twenty. Eleven seconds."
+},
+{
+"vo": "c10",
+"who": "connie",
+"med": 204.6110143072961,
+"sd": 4.151468652468045,
+"rng": 12.208289157323147,
+"dur": 10.480045351473922,
+"text": "That was me, dear. I had the telephone in my hand. And I thought about who they'd find asleep in the booth, with his knuckles split. So I put it down."
+},
+{
+"vo": "c11",
+"who": "connie",
+"med": 207.67827970165666,
+"sd": 4.21825294018282,
+"rng": 12.181704148627189,
+"dur": 6.640045351473923,
+"text": "I chose you over him. I've been sitting here ever since, deciding whether I'd do it again."
+},
+{
+"vo": "ch4_connie_10",
+"who": "connie",
+"med": 206.09220751765073,
+"sd": 4.792123800924577,
+"rng": 16.00077182821616,
+"dur": 6.138231292517006,
+"text": "Now you know what everyone did. What you do with it is the part I can't help you with."
+},
+{
+"vo": "n27",
+"who": "narr",
+"med": 112.42434971861036,
+"sd": 3.7784111877408604,
+"rng": 11.88623643206462,
+"dur": 13.840045351473924,
+"text": "I stop looking. I sit, and I wait. At two minutes to four, headlights swing across the front window. I've got one sentence left in me."
+},
+{
+"vo": "accuse_01",
+"who": "voice",
+"med": 91.9170912352522,
+"sd": 3.443363655917855,
+"rng": 9.648259395014009,
+"dur": 9.280045351473923,
+"text": "Pick. And know that whoever you pick, it'll be true. That's the trick of tonight. Everybody did something."
+},
+{
+"vo": "n28",
+"who": "narr",
+"med": 115.36779432269857,
+"sd": 2.8644977369538567,
+"rng": 8.47881145853566,
+"dur": 13.834149659863945,
+"text": "I have all of it. It's in pieces on the floor of my head, like a dropped tray. I lay it out on Danny's desk in a line. The carbon. The receipt. The ash. The glass."
+},
+{
+"vo": "ch5_intro_02",
+"who": "voice",
+"med": 85.81577208529993,
+"sd": 2.3196495080843564,
+"rng": 7.0176794697259215,
+"dur": 11.58294784580499,
+"text": "Order matters. Who was standing when. Who could have called and didn't. Get it wrong and one of them will tell you so."
+},
+{
+"vo": "n29",
+"who": "narr",
+"med": 107.3862665340379,
+"sd": 2.3543217522498927,
+"rng": 7.852291368284156,
+"dur": 9.520045351473923,
+"text": "Six events. One line. Every one of them walked past a dying man. And the line starts with my hands."
+},
+{
+"vo": "ch5_silence_01",
+"who": "frank",
+"med": 110.16337860193443,
+"sd": 2.530164163970211,
+"rng": 7.417292463520731,
+"dur": 11.325487528344672,
+"text": "It fits. All of it fits. Connie saw my hands on him. But I don't remember it. I've got her word for it, and I've got yours."
+},
+{
+"vo": "ch5_silence_02",
+"who": "frank",
+"med": 136.34693010198862,
+"sd": 3.0306390061317394,
+"rng": 9.644030275901482,
+"dur": 4.171836734693877,
+"text": "And you've spent all night pointing me at everybody else."
+},
+{
+"vo": "n30",
+"who": "narr",
+"med": 117.81598264225192,
+"sd": 3.2149289430825183,
+"rng": 10.06459133721096,
+"dur": 14.848662131519275,
+"text": "I wait for the Voice to say something. It always says something. It doesn't. For the first time all night, the inside of my head is quiet. It's the loudest thing I've ever heard."
+},
+{
+"vo": "n31",
+"who": "narr",
+"med": 121.80192057731793,
+"sd": 2.9757621197130217,
+"rng": 9.546768491461318,
+"dur": 8.021904761904763,
+"text": "Headlights fill the window. Two doors slam. I have the time it takes a tired man to find the right key."
+},
+{
+"vo": "end_true_02",
+"who": "frank",
+"med": 113.53123962786634,
+"sd": 2.977016064902915,
+"rng": 9.341719885702876,
+"dur": 11.183809523809524,
+"text": "It wasn't them. It was all of them, and it wasn't them. Somebody put Danny on the floor at ten to twelve, and you've known who since the booth."
+},
+{
+"vo": "end_true_03",
+"who": "frank",
+"med": 112.97889826825109,
+"sd": 2.942963782067254,
+"rng": 8.687610929682718,
+"dur": 0.6342403628117914,
+"text": "Say it."
+},
+{
+"vo": "end_true_05",
+"who": "frank",
+"med": 129.3641103451071,
+"sd": 3.536936344061702,
+"rng": 11.323402323737266,
+"dur": 4.677641723356009,
+"text": "You said you'd show me the thing in the corner. This is the corner. SAY IT."
+},
+{
+"vo": "end_true_06",
+"who": "voice",
+"med": 84.949464489974,
+"sd": 2.1029281049977286,
+"rng": 6.623869938880535,
+"dur": 13.280045351473923,
+"text": "\u2026You told him his wife only came downstairs to count the till. You told him that's why she lived upstairs. He put a hand on your collar and you put two on his chest."
+},
+{
+"vo": "end_true_07",
+"who": "voice",
+"med": 83.27838297023207,
+"sd": 1.928665078749542,
+"rng": 5.959371229560361,
+"dur": 20.960045351473923,
+"text": "He went over the rail. He hit his head. He sat down and said get out of my bar, Frank, and you went to your booth and you slept, and he died over the next hour and a half in front of four people and one of them was you."
+},
+{
+"vo": "end_true_08",
+"who": "voice",
+"med": 86.14025656136279,
+"sd": 1.8624512119462853,
+"rng": 6.0522749291182585,
+"dur": 11.416281179138322,
+"text": "I didn't tell you because I'm the part of you that's supposed to be useful. There's nothing useful in it. There's just a dead friend and a man who can't hold his drink."
+},
+{
+"vo": "n32",
+"who": "narr",
+"med": 113.14065287748303,
+"sd": 3.04407655191023,
+"rng": 9.461347107297058,
+"dur": 17.103945578231293,
+"text": "The front door opens. The uniforms come in blinking. Mira stands. Theo backs into the wall. Lenny puts his cigar out on his own shoe. Connie doesn't move. One sentence."
+},
+{
+"vo": "n33",
+"who": "narr",
+"med": 113.72197387309187,
+"sd": 2.81779366345638,
+"rng": 8.946985182901255,
+"dur": 25.176825396825397,
+"text": "I say it. All of it. The push, the rail, the hour and a half. Theo and the till. Lenny and the book. Mira and the bottle. Connie on her stool. Nobody argues. That's the thing about the truth in a room where everybody already knows it. It just lands. Like a glass set down."
+},
+{
+"vo": "n56",
+"who": "narr",
+"med": 117.25379244209662,
+"sd": 2.7083475700137347,
+"rng": 7.515861978580627,
+"dur": 6.6066213151927435,
+"text": "Theo says his part before anyone asks him. He says it to Mira. Not to the police."
+},
+{
+"vo": "n57",
+"who": "narr",
+"med": 110.5894594160078,
+"sd": 2.7982182895178274,
+"rng": 7.917352848598954,
+"dur": 4.837097505668934,
+"text": "Theo can't get his part out. So I say it for him. He lets me."
+},
+{
+"vo": "n58",
+"who": "narr",
+"med": 109.64202598362574,
+"sd": 1.9344528918304178,
+"rng": 6.080244556923267,
+"dur": 6.800045351473923,
+"text": "I tell them where the ledger is. Under the spare. Lenny looks at me like I've picked his pocket."
+},
+{
+"vo": "n59",
+"who": "narr",
+"med": 103.21354348346796,
+"sd": 3.2005364378577736,
+"rng": 10.863914969372045,
+"dur": 9.040045351473923,
+"text": "And Connie tells them about the telephone. Eleven seconds. Nobody asks her why. I already know."
+},
+{
+"vo": "n34",
+"who": "narr",
+"med": 121.51239271204136,
+"sd": 4.024490142572882,
+"rng": 12.879500797648596,
+"dur": 10.946893424036281,
+"text": "Mira looks at me, and for the first time tonight her face does something. It isn't forgiveness. It's worse. It's relief."
+},
+{
+"vo": "n35",
+"who": "narr",
+"med": 120.72434817355465,
+"sd": 3.189288139989975,
+"rng": 9.953424137472712,
+"dur": 7.348253968253968,
+"text": "On the way out, I stop at the bar and pour the flask into the sink. It takes longer than you'd think."
+},
+{
+"vo": "end_true_tell_04",
+"who": "voice",
+"med": 84.06088546072088,
+"sd": 1.717036868735688,
+"rng": 5.573653759550344,
+"dur": 1.5298412698412698,
+"text": "I'll be here when you want me."
+},
+{
+"vo": "end_true_tell_05",
+"who": "frank",
+"med": 100.38178657367094,
+"sd": 2.7910703732258244,
+"rng": 6.767979627444431,
+"dur": 0.5564625850340136,
+"text": "I know."
+},
+{
+"vo": "n36",
+"who": "narr",
+"med": 112.90080098458654,
+"sd": 2.536051638192738,
+"rng": 8.130309412415604,
+"dur": 13.258684807256236,
+"text": "I point at the till. They find the money in Theo's car in under a minute. He cries. Mira says nothing. Lenny says 'tragic,' and means the bar."
+},
+{
+"vo": "n37",
+"who": "narr",
+"med": 114.44964353260082,
+"sd": 3.0964148225255292,
+"rng": 9.259812859107345,
+"dur": 17.19342403628118,
+"text": "Insurance pays. Lenny gets the lease. Theo gets eighteen months. Connie finishes her drink. And I sit in my booth until they turn the lights off. Then I have the last of the flask. Because the schedule's the schedule."
+},
+{
+"vo": "end_true_stand_03",
+"who": "voice",
+"med": 84.36044051013396,
+"sd": 3.7430562751675542,
+"rng": 13.936604104184152,
+"dur": 3.680045351473923,
+"text": "Good. You'd have hated prison. No bar."
+},
+{
+"vo": "end_true_stand_04",
+"who": "frank",
+"med": 102.93171609025275,
+"sd": 2.7932285610067202,
+"rng": 8.172697300177107,
+"dur": 1.280045351473923,
+"text": "Shut up."
+},
+{
+"vo": "end_true_stand_05",
+"who": "voice",
+"med": 78.6419391816021,
+"sd": 1.3602785682205931,
+"rng": 3.793791753050739,
+"dur": 1.1200453514739228,
+"text": "You first."
+},
+{
+"vo": "n38",
+"who": "narr",
+"med": 119.63427152322953,
+"sd": 3.4942218145899173,
+"rng": 10.024767156439271,
+"dur": 15.387301587301588,
+"text": "Theo folds in about eleven seconds. The money's in his car. He cries, and says Danny owed him, and Danny was sitting up when he left. The police write 'sitting up' in a notebook, and never read it again."
+},
+{
+"vo": "n39",
+"who": "narr",
+"med": 107.2054515355523,
+"sd": 2.2675672013316652,
+"rng": 7.037178646055738,
+"dur": 8.204444444444444,
+"text": "The robbery story holds. Mira doesn't look at me. I was wrong. And I'll never know it."
+},
+{
+"vo": "n40",
+"who": "narr",
+"med": 110.99221104075009,
+"sd": 2.6794929780141916,
+"rng": 8.386079139684217,
+"dur": 22.448480725623583,
+"text": "The ash does it, and the ledger in his car does the rest. Lenny Baptiste is charged with theft, and with leaving a man to die, which turns out to be a crime with a name I didn't know. It feels like a win. The Voice doesn't say anything. That's how I know it isn't one."
+},
+{
+"vo": "n41",
+"who": "narr",
+"med": 104.27973901213467,
+"sd": 2.5070657626910178,
+"rng": 8.380027795934382,
+"dur": 7.101451247165532,
+"text": "The bottle. The rail. The clean hands. She doesn't deny any of it."
+},
+{
+"vo": "end_mira_01",
+"who": "mira",
+"med": 172.62569935744736,
+"sd": 5.386937760106439,
+"rng": 14.80551247892857,
+"dur": 5.437006802721088,
+"text": "Fine. I staged it. Then who, Frank? Who put him on the floor?"
+},
+{
+"vo": "n42",
+"who": "narr",
+"med": 103.58312043408107,
+"sd": 1.5937173313513582,
+"rng": 5.614812760596532,
+"dur": 3.645124716553288,
+"text": "I open my mouth. Nothing comes out."
+},
+{
+"vo": "n43",
+"who": "narr",
+"med": 115.41484046627832,
+"sd": 4.615001338513929,
+"rng": 14.64529696467023,
+"dur": 2.3200453514739228,
+"text": "She laughs. Not unkindly."
+},
+{
+"vo": "end_connie_01",
+"who": "connie",
+"med": 196.78380923229915,
+"sd": 3.4585958593759893,
+"rng": 12.490474219434399,
+"dur": 3.040045351473923,
+"text": "Oh, Frank. All right. Since you asked."
+},
+{
+"vo": "n44",
+"who": "narr",
+"med": 114.25381100422845,
+"sd": 2.6926071343599705,
+"rng": 7.915071841185428,
+"dur": 10.77718820861678,
+"text": "And she tells me. All of it. Eleven fifty. The rail. My hands. I don't hear the police come in."
+},
+{
+"vo": "n45",
+"who": "narr",
+"med": 111.73389357410201,
+"sd": 2.672763157243228,
+"rng": 8.220003507481422,
+"dur": 13.840045351473924,
+"text": "Four o'clock. Two uniforms, one of them yawning. They find the money in Theo's car in under a minute. That's the story now. That's the whole story. I have a drink. Nobody stops me. Nobody's left who would."
+},
+{
+"vo": "n50",
+"who": "narr",
+"med": 115.35210902618878,
+"sd": 3.5201697577251547,
+"rng": 11.336053562948145,
+"dur": 10.371746031746031,
+"text": "The phone behind the bar rings. The landline. Nobody's called that number in years. Everybody in the room looks at it. Nobody moves."
+},
+{
+"vo": "m10",
+"who": "mira",
+"med": 131.68001140973297,
+"sd": 2.6381339048834933,
+"rng": 7.5568991925960916,
+"dur": 1.0317460317460319,
+"text": "Leave it."
+},
+{
+"vo": "d01",
+"who": "disp",
+"med": 188.76344172281006,
+"sd": 5.510489970649907,
+"rng": 17.242187091745265,
+"dur": 13.202131519274376,
+"text": "This is county dispatch, calling back for the Last Call, on Mercer. We're showing a second call from this number tonight. Twelve twenty a.m. Eleven seconds. Nobody spoke. Is everyone all right there?"
+},
+{
+"vo": "f10",
+"who": "frank",
+"med": 111.46935238895632,
+"sd": 2.203672916199497,
+"rng": 6.657695712712304,
+"dur": 2.400045351473923,
+"text": "Twelve twenty. You're sure."
+},
+{
+"vo": "d02",
+"who": "disp",
+"med": 185.94223859942295,
+"sd": 4.890934752464668,
+"rng": 13.909392811576076,
+"dur": 9.564399092970522,
+"text": "It's on the log, sir. Open line, eleven seconds. We could hear music. A trumpet. Then it hung up. Units are still forty minutes out."
+},
+{
+"vo": "n51",
+"who": "narr",
+"med": 114.0215883217311,
+"sd": 3.2681670498184974,
+"rng": 10.334869870766443,
+"dur": 14.936916099773242,
+"text": "I put the phone down. Twelve twenty. Danny was on the floor, and alive. And somebody in this room picked up a telephone, and listened to it for eleven seconds, and put it back."
+},
+{
+"vo": "v21",
+"who": "voice",
+"med": 84.37540216938498,
+"sd": 2.180661883106727,
+"rng": 6.956408897619431,
+"dur": 5.200045351473923,
+"text": "Somebody almost saved him. Almost is a hell of a word."
+},
+{
+"vo": "n52",
+"who": "narr",
+"med": 107.36798615825873,
+"sd": 2.3027694794455207,
+"rng": 6.777250877806546,
+"dur": 3.8224036281179137,
+"text": "I look at the four of them. Nobody looks back."
+},
+{
+"vo": "n53",
+"who": "narr",
+"med": 115.44280174124903,
+"sd": 1.9859453174168442,
+"rng": 6.123767964205984,
+"dur": 9.9697052154195,
+"text": "It rings nine times. I count. Then it stops, and the room breathes out, all at once, like it's been caught."
+},
+{
+"vo": "v22",
+"who": "voice",
+"med": 89.71428869829995,
+"sd": 2.7366721595295918,
+"rng": 9.114941379538156,
+"dur": 6.14108843537415,
+"text": "Interesting. Five people, one ringing telephone, and nobody wants to know who's calling."
+},
+{
+"vo": "n54",
+"who": "narr",
+"med": 115.76567469631325,
+"sd": 3.5753553108655445,
+"rng": 11.38631360909322,
+"dur": 8.419773242630386,
+"text": "Whoever it was, they'll call back. Or they won't. I add it to the list of things I didn't do tonight."
+},
+{
+"vo": "n55",
+"who": "narr",
+"med": 113.40097892019683,
+"sd": 3.010348816639474,
+"rng": 9.592280382068028,
+"dur": 14.615147392290249,
+"text": "The jukebox. The same four seconds of trumpet, over and over, since before I woke up. I give it the flat of my hand, low on the left, the way Danny does. Nothing. It only ever worked for him."
+},
+{
+"vo": "f12",
+"who": "frank",
+"med": 104.91517125886426,
+"sd": 3.5344752371210566,
+"rng": 11.118787065680817,
+"dur": 5.360045351473923,
+"text": "Sorry. Sorry, everyone. I thought I could \u2014 never mind."
+},
+{
+"vo": "v23",
+"who": "voice",
+"med": 85.82886894805043,
+"sd": 2.2161672689658745,
+"rng": 6.970287622516457,
+"dur": 8.320045351473922,
+"text": "Don't fix it. Read it. A record doesn't skip on its own. Something hit this floor hard enough to jump the needle."
+},
+{
+"vo": "v24",
+"who": "voice",
+"med": 89.71105914729897,
+"sd": 2.615183921588315,
+"rng": 8.347620207747465,
+"dur": 10.824353741496598,
+"text": "And the little counter in the window says it's played those four seconds seven hundred times. Do the sum. It's been stuck since ten to twelve."
+},
+{
+"vo": "f13",
+"who": "frank",
+"med": 122.73486333238377,
+"sd": 3.274748284695462,
+"rng": 10.300758654933084,
+"dur": 7.1164625850340135,
+"text": "You were owed it, Theo. And you didn't know. That's not the same as what the rest of us did."
+},
+{
+"vo": "t10",
+"who": "theo",
+"med": 131.65903531311818,
+"sd": 7.829325900980785,
+"rng": 20.601856668448157,
+"dur": 1.2091609977324262,
+"text": "It feels the same."
+},
+{
+"vo": "f14",
+"who": "frank",
+"med": 111.66289969255028,
+"sd": 2.314667893128546,
+"rng": 6.613203717210718,
+"dur": 3.7600453514739227,
+"text": "He was dying, Theo. And you counted it twice."
+},
+{
+"vo": "t11",
+"who": "theo",
+"med": 151.33554315402938,
+"sd": 4.503151459909604,
+"rng": 13.183437356967605,
+"dur": 1.9501587301587302,
+"text": "I know. I know I did."
+},
+{
+"vo": "l10",
+"who": "lenny",
+"med": 63.23155873589984,
+"sd": 1.794928887300349,
+"rng": 6.753352470417096,
+"dur": 4.871156462585034,
+"text": "In my car. Under the spare. You want it, you get a warrant."
+},
+{
+"vo": "v25",
+"who": "voice",
+"med": 86.32605993118129,
+"sd": 2.0191039204780727,
+"rng": 6.712843015866476,
+"dur": 5.22453514739229,
+"text": "He just told a drunk where the evidence is. He's more frightened than he looks."
+},
+{
+"vo": "v26",
+"who": "voice",
+"med": 85.27597628873554,
+"sd": 1.9354060439963077,
+"rng": 5.293270582724264,
+"dur": 4.800045351473923,
+"text": "Three digits, Lenny. You had a phone in your coat the whole time."
+},
+{
+"vo": "l11",
+"who": "lenny",
+"med": 65.58538562089956,
+"sd": 1.8395283972067544,
+"rng": 5.1553967307615345,
+"dur": 7.939138321995465,
+"text": "And say what? That I was standing over my partner with his books under my arm? I'm a businessman. I did the sums."
+},
+{
+"vo": "t05",
+"who": "theo",
+"med": 204.89409877180088,
+"sd": 6.45180412270836,
+"rng": 17.801659849496733,
+"dur": 2.400045351473923,
+"text": "I don't know anything about that. I swear."
+},
+{
+"vo": "t04",
+"who": "theo",
+"med": 184.72036099832332,
+"sd": 6.924859112526845,
+"rng": 18.28333133497985,
+"dur": 3.7226303854875282,
+"text": "Don't... don't look at me like that. I've got nothing to say to you."
+},
+{
+"vo": "l05",
+"who": "lenny",
+"med": 72.85265576500254,
+"sd": 1.8972977519482253,
+"rng": 6.4042772977561775,
+"dur": 2.160045351473923,
+"text": "And? That's supposed to scare me?"
+},
+{
+"vo": "l04",
+"who": "lenny",
+"med": 73.74240341042693,
+"sd": 2.908705088110367,
+"rng": 8.84607896609585,
+"dur": 4.960045351473923,
+"text": "Is that it? You want to accuse me, detective, bring somebody with a spine."
+},
+{
+"vo": "m05",
+"who": "mira",
+"med": 148.6626009475155,
+"sd": 2.8603780289865175,
+"rng": 8.020599652756113,
+"dur": 2.2295691609977326,
+"text": "That doesn't mean what you think it means."
+},
+{
+"vo": "m04",
+"who": "mira",
+"med": 173.43742145631276,
+"sd": 4.5915441747557715,
+"rng": 14.593854477946678,
+"dur": 3.5700226757369613,
+"text": "I'll talk to Frank. Not to whatever that is."
+},
+{
+"vo": "c02",
+"who": "connie",
+"med": 250.2675010594587,
+"sd": 5.478364158471415,
+"rng": 14.61576558078599,
+"dur": 2.777324263038549,
+"text": "That's not the question you want to ask me, dear."
+},
+{
+"vo": "c01",
+"who": "connie",
+"med": 195.3290263015899,
+"sd": 3.649619315619872,
+"rng": 11.015553278164859,
+"dur": 2.5308390022675735,
+"text": "Not you, dear. I'll wait for Frank."
+}
+]
