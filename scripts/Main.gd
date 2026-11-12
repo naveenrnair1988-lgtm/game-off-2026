@@ -558,7 +558,7 @@ func _build_hotspots() -> void:
 		var lbl := Label3D.new()
 		lbl.name = "Label"
 		lbl.text = "◆  " + str(h[0]).to_upper()
-		var lift: float = {"loc_bar": 0.25, "loc_booth": 0.75, "loc_floor": -0.1, "loc_office": 0.5, "int_mira": 0.55, "int_connie": -0.2, "int_lenny": 0.3, "int_theo": 0.3}.get(str(h[1]), 0.25)
+		var lift: float = {"loc_bar": 0.25, "loc_booth": 0.1, "loc_floor": -0.1, "loc_office": 0.5, "int_mira": 0.55, "int_connie": -0.2, "int_lenny": 0.3, "int_theo": 0.3}.get(str(h[1]), 0.25)
 		lbl.position = Vector3(0, h[3].y * 0.5 + lift, 0)
 		lbl.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 		lbl.font = load("res://assets/fonts/Inter.ttf")
@@ -1095,12 +1095,12 @@ func _build_room() -> void:
 	_tbox(Vector3(7.3, 0.45, -2.45), Vector3(0.5, 0.9, 0.5), wood_dark, "PH_desk_chair")
 	_tbox(Vector3(8.0, 0.45, 0.05), Vector3(0.6, 0.9, 0.6), _mat(Color(0.10, 0.20, 0.13), 0.6, 0.4), "PH_safe")
 	# the little sink in the corner, and the cloth
-	_box(Vector3(5.75, 0.82, -2.72), Vector3(0.5, 0.14, 0.36), Color(0.82, 0.82, 0.80), 0.25)
+	_box(Vector3(5.75, 0.82, -2.72), Vector3(0.5, 0.14, 0.36), Color(0.52, 0.52, 0.50), 0.3)
 	_box(Vector3(5.75, 0.88, -2.72), Vector3(0.40, 0.03, 0.26), Color(0.30, 0.30, 0.30), 0.2)
 	var tap := _cyl(Vector3(5.75, 0.99, -2.86), 0.012, 0.18, Color(1, 1, 1))
 	tap.material_override = brass
 	_box(Vector3(5.82, 0.9, -2.68), Vector3(0.2, 0.03, 0.14), Color(0.78, 0.62, 0.62), 1.0)
-	_box(Vector3(5.75, 0.4, -2.72), Vector3(0.08, 0.8, 0.08), Color(0.7, 0.7, 0.7), 0.3, 0.6)
+	_tbox(Vector3(5.75, 0.375, -2.74), Vector3(0.5, 0.75, 0.3), wood_dark)
 	# cigar ash on the carpet by the desk
 	_clue(_box(Vector3(6.55, 0.006, -1.05), Vector3(0.07, 0.01, 0.045), Color(0.62, 0.62, 0.60), 1.0))
 	# filing cabinet and a wall calendar so the back wall is not bare
