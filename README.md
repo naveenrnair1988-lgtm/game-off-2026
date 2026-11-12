@@ -25,6 +25,8 @@ The truth needs both.
 
 **From source:** open the project in [Godot 4.7.2](https://godotengine.org/download) and press Play. The bar is built from primitives in code, so it runs with zero imported assets.
 
+**Performance.** The game measures its own frame rate and steps down 3D resolution, anti-aliasing and shadows until it holds about 42 fps; the interface always stays sharp. To pin a level, add `?tier=0` (best) to `?tier=3` (fastest) to the page address.
+
 **Controls**
 - Keyboard: `Space`/`Enter` advance, `1–9` choose, **`Shift`** shifts between Sober and The Voice, `E` evidence board
 - In the room: click or tap what you want to look at — the booth, the rail, the body, the office, a person

@@ -139,7 +139,7 @@ func _build_hud() -> void:
 	hud.add_theme_constant_override("separation", 24)
 	add_child(hud)
 	lbl_clock = _hud_label("1:40 AM", AMBER)
-	lbl_flasks = _hud_label("▮▮▮", AMBER)
+	lbl_flasks = _hud_label("■■■", AMBER)
 	lbl_state = _hud_label("SOBER", AMBER)
 	var spacer := Control.new()
 	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -253,7 +253,8 @@ func _build_panel() -> void:
 	text.add_theme_constant_override("line_separation", 4)
 	v.add_child(text)
 	lbl_more = Label.new()
-	lbl_more.text = "▸"
+	lbl_more.text = "►"
+	lbl_more.add_theme_font_override("font", font_ui)
 	lbl_more.add_theme_color_override("font_color", AMBER)
 	lbl_more.add_theme_font_size_override("font_size", 16)
 	lbl_more.size_flags_vertical = Control.SIZE_SHRINK_END
@@ -649,7 +650,7 @@ func _finish_scene() -> void:
 	var sc: Dictionary = Story.scenes[scene_id]
 	var ev: Array = [] if not override_lines.is_empty() else Story.scene_evidence(scene_id)
 	for e in ev:
-		text.append_text("\n[color=#e0aa45][font_size=14]◆ EVIDENCE   %s[/font_size][/color]" % str(Story.evidence[e]["t"]).replace("[", "[lb]"))
+		text.append_text("\n[color=#e0aa45][font_size=14][font=res://assets/fonts/Inter.ttf]◆[/font] EVIDENCE   %s[/font_size][/color]" % str(Story.evidence[e]["t"]).replace("[", "[lb]"))
 	_clear_choices()
 	if bool(sc.get("ending", false)):
 		var box := PanelContainer.new()
@@ -748,7 +749,7 @@ func _update_clock(_m: int) -> void:
 
 
 func _update_flasks(n: int) -> void:
-	lbl_flasks.text = "▮".repeat(n) + "▯".repeat(Story.FLASKS - n)
+	lbl_flasks.text = "■".repeat(n) + "□".repeat(Story.FLASKS - n)
 
 
 func _update_state(s: String) -> void:

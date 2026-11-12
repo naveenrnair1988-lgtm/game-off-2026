@@ -55,9 +55,10 @@ void vertex() {
 	float inner = 1.0 - smoothstep(depth * 0.12, depth * 0.32, abs(p.x - head_c.x));
 	gap = 4.0 * ws * (1.0 - ws) * mask * inner * jaw;
 
-	// breathing: chest swells a little, forward
+	// breathing: the front of the chest swells a little
 	float wc = smoothstep(waist, waist + 0.12, hn) * (1.0 - smoothstep(neck - 0.07, neck, hn));
-	p += n * wc * breathe * 0.0035 * h * max(n.z, 0.0);
+	// (a function of position only: moving along the normal would open cracks at UV seams)
+	p.z += wc * breathe * 0.004 * h * smoothstep(-0.01 * h, 0.05 * h, p.z - head_c.y);
 
 	// head
 	float wh = smoothstep(neck - 0.012, neck + 0.022, hn);

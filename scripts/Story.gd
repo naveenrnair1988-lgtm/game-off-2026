@@ -304,6 +304,6 @@ func true_unlocked() -> bool:
 
 
 func true_progress() -> String:
-	var w := "✓" if found.has(WITNESS) else "✗"
-	var t := "✓" if has_flag("timeline") else "✗"
-	return "confessions %d/3 · Connie %s · timeline %s" % [cracked_count(), w, t]
+	var w := "yes" if found.has(WITNESS) else "not yet"
+	var t := "done" if has_flag("timeline") else "not yet"
+	return "confessions %d/3 · Connie: %s · timeline: %s" % [cracked_count(), w, t]

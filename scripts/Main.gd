@@ -178,6 +178,8 @@ var fps_t: float = 0.0
 var fps_n: int = 0
 var fps_grace: float = 4.0
 var shadow_lights: Array[Light3D] = []
+var good_windows: int = 0
+var stepped_up: bool = false
 
 
 func _set_tier(t: int) -> void:
@@ -197,10 +199,19 @@ func _set_tier(t: int) -> void:
 	print("quality tier ", t)
 
 
+## A fixed tier can be asked for: LS_TIER=0..3 on desktop, or ?tier=0..3 on the web page.
+func _forced_tier() -> int:
+	var v := OS.get_environment("LS_TIER")
+	if v == "" and OS.has_feature("web"):
+		var q: Variant = JavaScriptBridge.eval("new URLSearchParams(window.location.search).get('tier') || ''", true)
+		v = str(q) if q != null else ""
+	return int(v) if v.is_valid_int() else -1
+
+
 func _initial_tier() -> int:
-	var forced := OS.get_environment("LS_TIER")
-	if forced != "":
-		return int(forced)
+	var forced := _forced_tier()
+	if forced >= 0:
+		return forced
 	var px := float(get_viewport().size.x) * float(get_viewport().size.y)
 	if px > 5.0e6:
 		return 2
@@ -229,8 +240,17 @@ func _watch_fps(delta: float) -> void:
 		var fps := float(fps_n) / fps_t
 		fps_t = 0.0
 		fps_n = 0
-		if fps < FPS_FLOOR and tier < TIERS.size() - 1 and OS.get_environment("LS_TIER") == "":
+		if fps < FPS_FLOOR and tier < TIERS.size() - 1 and _forced_tier() < 0:
 			_set_tier(tier + 1)
+			good_windows = 0
+		elif fps > 57.0 and tier > 0 and not stepped_up and _forced_tier() < 0:
+			# plenty of headroom for a while: try one tier better, once
+			good_windows += 1
+			if good_windows >= 6:
+				stepped_up = true
+				_set_tier(tier - 1)
+		else:
+			good_windows = 0
 
 
 func _process(delta: float) -> void:
