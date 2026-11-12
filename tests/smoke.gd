@@ -1,10 +1,12 @@
 extends SceneTree
-## Headless smoke test: walks every scene in both states, checks links,
-## evidence grants, the clock and the shift mechanic.
+## Headless smoke test: plays the whole game by script — look, shift, confront, accuse —
+## and checks the rules along the way.
 ## Run:  godot --headless --path . -s tests/smoke.gd
 
 var fails := 0
 var st: Node
+var main: Node
+var ui: Node
 
 
 func check(cond: bool, msg: String) -> void:
@@ -17,144 +19,163 @@ func _init() -> void:
 	call_deferred("_run")
 
 
+func visit(id: String) -> void:
+	main.go(id)
+	await process_frame
+	while ui.line_idx < ui.lines.size():
+		ui._next_line()
+
+
 func _run() -> void:
 	st = root.get_node_or_null("Story")
-	if st == null:
-		st = load("res://scripts/Story.gd").new()
-		st.name = "Story"
-		root.add_child(st)
-	var main: Node = load("res://scenes/Main.tscn").instantiate()
+	main = load("res://scenes/Main.tscn").instantiate()
 	root.add_child(main)
 	await process_frame
 	await process_frame
-	var ui = main.get_node("UI")
+	ui = main.get_node("UI")
 
-	# 1. story data links
+	# 1. data integrity: links, evidence, confrontations, voice files
 	for id in st.scenes.keys():
 		for c in st.scenes[id]["choices"]:
 			check(c["next"].begins_with("__") or st.scenes.has(c["next"]), "%s -> %s missing" % [id, c["next"]])
 		for e in st.scenes[id].get("grant", []):
 			check(st.evidence.has(e), "%s grants unknown %s" % [id, e])
-	check(st.scenes.size() >= 20, "scene count")
+		for l in st.scenes[id]["lines"]:
+			if str(l.get("vo", "")) != "":
+				check(ResourceLoader.exists("res://assets/voice/%s.ogg" % l["vo"]), "missing voice file " + str(l["vo"]))
+		check(main.SCENE_STATION.has(id), "no camera station for scene " + id)
+	for sid in st.present_cfg.keys():
+		var cfg: Dictionary = st.present_cfg[sid]
+		check(st.scenes.has(sid) and st.scenes.has(cfg["crack"]), "confrontation scenes exist for " + sid)
+		for e in cfg["breaks"]:
+			check(st.evidence.has(e), "unknown breaking evidence " + str(e))
+		for k in ["wrong", "wrong_state"]:
+			check(ResourceLoader.exists("res://assets/voice/%s.ogg" % cfg[k]["vo"]), "missing voice file " + str(cfg[k]["vo"]))
 
-	# 2. title → ch1 → first drink forces Voice
+	# 2. Chapter One: the first drink forces the Voice
 	ui._start()
 	await process_frame
 	check(main.current_scene == "ch1_wake", "start at ch1_wake, got " + main.current_scene)
 	for id in ["ch1_body", "ch1_mira1", "ch1_others", "ch1_drink"]:
-		main.go(id)
-		await process_frame
+		await visit(id)
 	main._on_choice({"next": "ch1_voice", "shiftTo": "V"})
 	await process_frame
-	check(st.state == "V", "first drink shifts to Voice")
-	check(st.flasks == 2, "first drink costs a flask, flasks=%d" % st.flasks)
-
-	# 3. Voice sweep of the four key V locations (40 min) → 2:20
-	main.go("hub")
-	await process_frame
+	check(st.state == "V" and st.flasks == 2, "first drink: Voice, two flasks left")
+	await visit("ch2_brief")
+	await visit("hub")
 	check(main.in_hub, "hub enables hotspots")
+
+	# 3. the Voice finds things (three stops, thirty minutes)
 	var m0: int = st.minutes
-	for id in ["loc_bar", "loc_floor", "loc_office", "int_theo"]:
-		main.go(id)
-		await process_frame
-		check(not main.in_hub, "hotspots off inside " + id)
-		check(ui.lines.size() > 0, "lines visible in " + id)
-		while ui.line_idx < ui.lines.size():
-			ui._next_line()
-		main.go("hub")
-		await process_frame
-	check(st.minutes == m0 + 40, "each stop costs 10 min (got +%d)" % (st.minutes - m0))
-	var v: int = st.true_counts()["V"]
-	check(v >= 4, "voice sweep finds >=4 V items, got %d" % v)
-	check(not st.ch4_due(), "ch4 not due before 2:40 (now %s)" % st.fmt_clock())
+	for id in ["loc_bar", "loc_floor", "loc_office"]:
+		await visit(id)
+		await visit("hub")
+	check(st.minutes == m0 + 30, "three stops cost thirty minutes")
+	for e in ["E01v", "E04v", "E05v", "E07v", "E06v"]:
+		check(st.found.has(e), "Voice sweep found " + e)
 
-	# 4. sober up (+30 → 2:50) → next hub visit is Chapter Four
+	# 4. Lenny: wrong evidence costs five minutes; the right evidence, in the Voice, breaks him
+	await visit("int_lenny")
+	var m1: int = st.minutes
+	main._on_present("E01v")
+	await process_frame
+	check(st.minutes == m1 + 5 and not st.has_flag("cracked_lenny"), "wrong evidence costs five minutes")
+	check(ui.lines.size() == 1 and ui.lines[0]["who"] == "lenny", "Lenny answers the wrong evidence")
+	main._on_present("E05v")
+	await process_frame
+	check(main.current_scene == "crack_lenny" and st.has_flag("cracked_lenny"), "Lenny breaks to the Voice")
+	check(st.found.has("C2"), "Lenny's confession is on the board")
+
+	# 5. Theo will not confess to the Voice
+	await visit("int_theo")
+	var m2: int = st.minutes
+	main._on_present("E04v")
+	await process_frame
+	check(not st.has_flag("cracked_theo") and st.minutes == m2, "Theo shuts down in front of the Voice, no time lost")
+	check(ui.lines[0]["who"] == "theo", "Theo answers")
+
+	# 6. sober up (twenty minutes); the next hub visit is Chapter Four
 	check(st.shift("S"), "can sober up")
-	check(st.state == "S", "sober")
+	check(st.minutes == m2 + 20, "sobering up costs twenty minutes")
 	main.go("hub")
 	await process_frame
-	check(main.current_scene == "ch4_blackout", "hub at 2:50 routes to ch4_blackout, got " + main.current_scene)
-	check(st.has_flag("ch4"), "ch4 flag set")
-	check(not st.can_shift(), "no shifting inside ch4 choice")
-	# take the sober branch: office carbon + wet cloth
-	main.go("ch4_sober")
+	check(main.current_scene == "ch4_blackout", "Chapter Four fires at the hub after 2:40, got %s at %s" % [main.current_scene, st.fmt_clock()])
+	check(not st.can_shift(), "no shifting during the Chapter Four decision")
+	main._on_choice(st.scenes["ch4_blackout"]["choices"][1])   # put it away
 	await process_frame
-	check(st.found.has("E10") and st.found.has("E11"), "sober branch grants E10+E11")
-	main.go("hub")
-	await process_frame
-	check(main.current_scene == "hub", "ch4 fires only once")
-	check(st.can_shift(), "shifting allowed again in hub")
+	check(main.current_scene == "ch4_sober" and st.state == "S", "putting it away keeps you sober")
+	check(st.found.has("E10") and st.found.has("E11"), "sober branch finds the cloth and the carbon")
+	await visit("hub")
+	check(main.current_scene == "hub", "Chapter Four fires only once")
 
-	# 5. sober sweep: booth + bar (20 min → 3:10) for S items
-	for id in ["loc_booth", "loc_bar"]:
-		main.go(id)
-		await process_frame
-		main.go("hub")
-		await process_frame
-	var sc_: int = st.true_counts()["S"]
-	check(sc_ >= 4, "sober items >=4, got %d" % sc_)
-	check(not st.ready_for_timeline(), "not ready without Connie")
-
-	# 6. second drink, Connie's testimony via int_connie (10 min → 3:20)
-	check(st.shift("V"), "second drink")
-	check(st.flasks == 1, "flasks after second drink")
-	main.go("int_connie")
+	# 7. sober Frank gets the confessions
+	await visit("int_theo")
+	main._on_present("E04v")
 	await process_frame
+	check(main.current_scene == "crack_theo" and st.found.has("C1"), "Theo confesses to sober Frank")
+	await visit("int_mira")
+	main._on_present("E10")
+	await process_frame
+	check(main.current_scene == "crack_mira" and st.found.has("C3"), "Mira confesses to sober Frank")
+	check(st.cracked_count() == 3, "three confessions")
+	await visit("int_connie")
 	var opts: Array = st.visible_choices("int_connie")
-	check(opts.size() == 2 and opts[0]["next"] == "ch4_connie", "Connie offers testimony in V after ch4")
-	main.go("ch4_connie")
+	check(opts[0]["next"] == "__present", "Connie will not tell before you show her the glass")
+	main._on_present("E07v")
 	await process_frame
-	check(st.found.has("E08"), "Connie grants E08")
-	check(st.ready_for_timeline(), "ready for timeline: " + st.true_progress())
-	check(not st.true_unlocked(), "Frank card still locked before timeline")
+	check(main.current_scene == "crack_connie" and st.has_flag("connie_admits"), "Connie admits she never left")
+	await visit("int_connie")
+	opts = st.visible_choices("int_connie")
+	check(opts[0]["next"] == "ch4_connie", "Connie offers her account once all three have confessed")
+	await visit("ch4_connie")
+	check(st.found.has("E08") and st.ready_for_timeline(), "Connie's account unlocks the timeline")
+	check(not st.true_unlocked(), "Frank's card is locked until the timeline is built")
+	check(not st.over, "still time on the clock (%s)" % st.fmt_clock())
 
-	# 7. accuse → timeline → wrong pick resets → correct order → ch5_silence → accuse with Frank unlocked
-	main.go("accuse")
-	await process_frame
-	var acc: Array = st.visible_choices("accuse")
-	check(acc[0]["next"] == "ch5_intro", "timeline route visible on accuse")
-	main.go("ch5_intro")
-	await process_frame
+	# 8. timeline and the true ending
+	await visit("accuse")
+	check(st.fmt_clock() == "3:58 AM", "the accusation lands at 3:58")
+	await visit("ch5_intro")
 	main.go("__timeline")
 	await process_frame
-	check(ui.tl.visible, "timeline panel shown")
-	check(not st.can_shift(), "no shifting during the puzzle")
+	check(ui.tl.visible, "timeline shown")
 	ui._tl_pick("t3")
-	check(ui.tl_order.is_empty() and ui.tl_msg.text != "", "wrong pick resets with a contradiction")
+	check(ui.tl_order.is_empty() and ui.tl_msg.text != "", "a wrong pick resets with a contradiction")
 	for t in ["t1", "t2", "t3", "t4", "t5", "t6"]:
 		ui._tl_pick(t)
 	await process_frame
-	check(not ui.tl.visible, "timeline closes when solved")
-	check(main.current_scene == "ch5_silence", "solved timeline → ch5_silence, got " + main.current_scene)
-	check(st.has_flag("timeline"), "timeline flag set")
-	check(st.true_unlocked(), "Frank card unlocked: " + st.true_progress())
-	check(not st.over, "night not over yet (%s)" % st.fmt_clock())
-
-	# 8. true ending, both branches
-	main.go("end_true")
+	check(main.current_scene == "ch5_silence" and st.true_unlocked(), "solving the timeline unlocks Frank")
+	await visit("end_true")
+	check(st.found.has("E09"), "the Voice's confession is on the board")
+	check(ui.timer_left > 0.0, "the last choice is on a timer")
+	# silence is an answer: let the timer run out
+	ui._process(60.0)
 	await process_frame
-	check(st.found.has("E09"), "Voice confession on the board")
-	main.go("end_true_tell")
-	await process_frame
-	check(st.over and st.endings_seen.has("ending_tell"), "tell ending recorded")
+	check(main.current_scene == "end_true_stand", "saying nothing lets it stand, got " + main.current_scene)
+	check(st.over and st.endings_seen.has("ending_stand"), "ending recorded")
+	check(st.recap().contains("3 of 3 confessions"), "recap: " + st.recap())
 	main.go("hub")
 	await process_frame
-	check(main.current_scene == "end_true_tell", "non-ending scenes blocked after the night ends")
+	check(main.current_scene == "end_true_stand", "nothing but endings after the night is over")
 
-	# 9. restart resets, title shows the ending
+	# 9. restart, then: doing nothing at Chapter Four means the schedule wins
 	main.go("__restart")
 	await process_frame
-	check(st.minutes == st.START_MINUTES and st.flasks == 3 and st.found.is_empty() and st.flags.is_empty(), "restart resets state")
-	check(ui.title_visible, "restart shows title")
-	check(st.endings_seen.has("ending_tell"), "ending persists across restart")
-
-	# 10. timeout path still works
+	check(st.minutes == st.START_MINUTES and st.flasks == 3 and st.found.is_empty() and st.flags.is_empty(), "restart resets")
+	check(ui.title_visible, "restart shows the title")
 	ui._start()
 	await process_frame
+	await visit("ch4_blackout")
+	check(ui.timer_left > 0.0, "Chapter Four is on a timer")
+	ui._process(60.0)
+	await process_frame
+	check(main.current_scene == "ch4_drink" and st.state == "V", "if you do not choose, Frank drinks; got %s / %s" % [main.current_scene, st.state])
+
+	# 10. running out the clock
 	st.add_minutes(500)
 	await process_frame
 	await process_frame
-	check(main.current_scene == "end_timeout", "timeout routes to end_timeout, got " + main.current_scene)
+	check(main.current_scene == "end_timeout", "the clock running out ends the night, got " + main.current_scene)
 
 	print("SMOKE: %s (%d failures)" % ["PASS" if fails == 0 else "FAIL", fails])
 	quit(0 if fails == 0 else 1)

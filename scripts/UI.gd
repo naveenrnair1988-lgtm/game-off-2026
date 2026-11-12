@@ -8,6 +8,9 @@ signal shift_requested
 signal timeline_solved
 signal line_advanced
 signal line_voice(stem: String)
+signal line_who(who: String)
+signal present_picked(evidence_id: String)
+signal present_requested
 
 const WHO := {"frank": "FRANK", "mira": "MIRA ROARKE", "theo": "THEO PIKE", "lenny": "LENNY BAPTISTE", "connie": "CONNIE VALE"}
 const AMBER := Color(0.85, 0.64, 0.25)
@@ -28,6 +31,15 @@ var btn_shift: Button
 var btn_board: Button
 var panel: PanelContainer
 var dock: VBoxContainer
+var board_title: Label
+var pick_mode: bool = false
+var toast_lbl: Label
+var toast_tween: Tween
+var timer_bar: ProgressBar
+var timer_left: float = 0.0
+var timer_total: float = 0.0
+var timer_default: int = -1
+var override_lines: Array = []
 var lbl_more: Label
 var lbl_loc: Label
 var text: RichTextLabel
@@ -61,6 +73,7 @@ func _ready() -> void:
 	_build_board()
 	_build_timeline()
 	_build_title()
+	_build_feedback()
 	Story.clock_changed.connect(_update_clock)
 	Story.flasks_changed.connect(_update_flasks)
 	Story.state_changed.connect(_update_state)
@@ -86,14 +99,21 @@ func _unhandled_input(event: InputEvent) -> void:
 			_start()
 		elif line_idx < lines.size():
 			_next_line()
-		elif choices.get_child_count() == 1 and choices.get_child(0) is Button:
-			var b: Button = choices.get_child(0)
-			if not b.disabled:
-				b.pressed.emit()
+		else:
+			var only: Array = []
+			for c in choices.get_children():
+				if c is Button:
+					only.append(c)
+			if only.size() == 1 and not (only[0] as Button).disabled and timer_left <= 0.0:
+				(only[0] as Button).pressed.emit()
 	elif event is InputEventKey and event.pressed and event.keycode >= KEY_1 and event.keycode <= KEY_9:
 		var i: int = event.keycode - KEY_1
-		if i < choices.get_child_count() and choices.get_child(i) is Button:
-			var b: Button = choices.get_child(i)
+		var buttons: Array = []
+		for c in choices.get_children():
+			if c is Button:
+				buttons.append(c)
+		if i < buttons.size():
+			var b: Button = buttons[i]
 			if not b.disabled and b.visible:
 				b.pressed.emit()
 
@@ -132,8 +152,16 @@ func _build_hud() -> void:
 
 func _toggle_board() -> void:
 	board.visible = not board.visible
+	pick_mode = false
 	if board.visible:
 		_refresh_board()
+
+
+## The board in "show them something" mode: every piece you hold is a button.
+func open_present() -> void:
+	pick_mode = true
+	board.visible = true
+	_refresh_board()
 
 
 func _try_shift() -> void:
@@ -261,10 +289,11 @@ func _build_board() -> void:
 	add_child(board)
 	var v := VBoxContainer.new()
 	board.add_child(v)
-	var h := Label.new()
-	h.text = "EVIDENCE BOARD"
-	h.add_theme_color_override("font_color", MUTED)
-	v.add_child(h)
+	board_title = Label.new()
+	board_title.text = "EVIDENCE BOARD"
+	board_title.add_theme_font_override("font", font_ui)
+	board_title.add_theme_color_override("font_color", MUTED)
+	v.add_child(board_title)
 	var sc := ScrollContainer.new()
 	sc.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	v.add_child(sc)
@@ -274,6 +303,7 @@ func _build_board() -> void:
 	sc.add_child(board_list)
 	var close := Button.new()
 	close.text = "CLOSE  [Esc / Space]"
+	close.add_theme_font_override("font", font_ui)
 	close.pressed.connect(func(): board.visible = false)
 	v.add_child(close)
 	board.visible = false
@@ -520,7 +550,9 @@ func _start() -> void:
 func show_scene(id: String) -> void:
 	scene_id = id
 	lines = Story.visible_lines(id)
+	override_lines = []
 	line_idx = 0
+	timer_left = 0.0
 	dock.visible = true
 	board.visible = false
 	_next_line()
@@ -538,6 +570,7 @@ func _next_line() -> void:
 		panel.visible = true
 		_show_line(l)
 		var vo := str(l.get("vo", ""))
+		line_who.emit(str(l["who"]))
 		line_voice.emit(vo)
 		if line_idx > 1 and vo == "":
 			line_advanced.emit()
@@ -599,7 +632,7 @@ func _show_hub() -> void:
 	bar.add_theme_constant_override("separation", 16)
 	choices.add_child(bar)
 	var hint := Label.new()
-	hint.text = "Click a person or a place.  Each stop costs ten minutes."
+	hint.text = ("The Voice sees what they hide." if Story.state == "V" else "Sober, they will talk to you.") + "   Confessions %d/3.   Each stop costs ten minutes." % Story.cracked_count()
 	hint.add_theme_font_override("font", font_ui)
 	hint.add_theme_color_override("font_color", TEXT)
 	hint.add_theme_font_size_override("font_size", 14)
@@ -614,9 +647,46 @@ func _show_hub() -> void:
 
 func _finish_scene() -> void:
 	var sc: Dictionary = Story.scenes[scene_id]
-	for e in Story.scene_evidence(scene_id):
+	var ev: Array = [] if not override_lines.is_empty() else Story.scene_evidence(scene_id)
+	for e in ev:
 		text.append_text("\n[color=#e0aa45][font_size=14]◆ EVIDENCE   %s[/font_size][/color]" % str(Story.evidence[e]["t"]).replace("[", "[lb]"))
 	_clear_choices()
+	if bool(sc.get("ending", false)):
+		var box := PanelContainer.new()
+		var sb := StyleBoxFlat.new()
+		sb.bg_color = Color(0.03, 0.03, 0.04, 0.86)
+		sb.border_color = Color(AMBER, 0.55)
+		sb.border_width_left = 3
+		sb.content_margin_left = 16
+		sb.content_margin_right = 18
+		sb.content_margin_top = 9
+		sb.content_margin_bottom = 9
+		box.add_theme_stylebox_override("panel", sb)
+		var rc := Label.new()
+		rc.text = Story.recap() + "\nEndings seen:  %d of %d" % [Story.endings_seen.size(), Story.endings_total()]
+		rc.add_theme_font_override("font", font_ui)
+		rc.add_theme_font_size_override("font_size", 16)
+		rc.add_theme_color_override("font_color", AMBER)
+		box.add_child(rc)
+		choices.add_child(box)
+	var secs := float(sc.get("timer", 0))
+	if secs > 0.0 and override_lines.is_empty():
+		timer_bar = ProgressBar.new()
+		timer_bar.min_value = 0.0
+		timer_bar.max_value = 1.0
+		timer_bar.value = 1.0
+		timer_bar.show_percentage = false
+		timer_bar.custom_minimum_size = Vector2(420, 5)
+		var fill := StyleBoxFlat.new()
+		fill.bg_color = Color(0.92, 0.30, 0.36)
+		var back := StyleBoxFlat.new()
+		back.bg_color = Color(0, 0, 0, 0.6)
+		timer_bar.add_theme_stylebox_override("fill", fill)
+		timer_bar.add_theme_stylebox_override("background", back)
+		choices.add_child(timer_bar)
+		timer_total = secs
+		timer_left = secs
+		timer_default = int(sc.get("timerDefault", 0))
 	var i := 1
 	for c in Story.visible_choices(scene_id):
 		var label: String = "%d   %s" % [i, c["label"]]
@@ -628,9 +698,16 @@ func _finish_scene() -> void:
 			b.text += "   [locked: %s]" % Story.true_progress()
 		if c["next"] == "__restart":
 			b.pressed.connect(func(): restart_requested.emit())
+		elif c["next"] == "__present":
+			b.pressed.connect(func(): present_requested.emit())
 		else:
-			b.pressed.connect(func(): choice_made.emit(c))
+			b.pressed.connect(_choose.bind(c))
 		i += 1
+
+
+func _choose(c: Dictionary) -> void:
+	timer_left = 0.0
+	choice_made.emit(c)
 
 
 func _choice_button(t: String, subtle: bool = false) -> Button:
@@ -680,7 +757,7 @@ func _update_state(s: String) -> void:
 	lbl_state.add_theme_color_override("font_color", c)
 	lbl_clock.add_theme_color_override("font_color", c)
 	lbl_flasks.add_theme_color_override("font_color", c)
-	btn_shift.text = "⇧ SOBER UP  (+30 min)" if s == "V" else "⇧ DRINK"
+	btn_shift.text = "⇧ SOBER UP  (+%d min)" % Story.SHIFT_BACK_COST if s == "V" else "⇧ DRINK"
 	btn_shift.add_theme_color_override("font_color", c)
 	btn_board.add_theme_color_override("font_color", c)
 	panel.add_theme_stylebox_override("panel", _panel_style(s))
@@ -688,16 +765,111 @@ func _update_state(s: String) -> void:
 
 func _refresh_board() -> void:
 	for c in board_list.get_children():
+		board_list.remove_child(c)
 		c.queue_free()
+	board_title.text = "SHOW WHAT?   A wrong guess costs five minutes." if pick_mode else "EVIDENCE BOARD   %s" % Story.true_progress().to_upper()
+	var tags := {"S": "[color=#f2c97a]SOBER[/color]", "V": "[color=#70d3e6]VOICE[/color]", "C": "[color=#ff8a9a]TOLD TO YOU[/color]"}
 	for k in Story.evidence.keys():
 		var e: Dictionary = Story.evidence[k]
 		var have: bool = Story.found.has(k)
+		if pick_mode:
+			if not have or e["s"] == "C":
+				continue
+			var b := Button.new()
+			b.text = ("VOICE   " if e["s"] == "V" else "SOBER   ") + str(e["t"])
+			b.alignment = HORIZONTAL_ALIGNMENT_LEFT
+			b.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+			b.add_theme_font_override("font", font_serif)
+			b.add_theme_font_size_override("font_size", 17)
+			b.add_theme_color_override("font_color", TEXT)
+			var n := _style(Color(0.08, 0.065, 0.05), Color(0.25, 0.20, 0.14))
+			var h := _style(Color(0.13, 0.10, 0.07), CYAN if e["s"] == "V" else AMBER)
+			for sb in [n, h]:
+				sb.set_corner_radius_all(3)
+				sb.set_content_margin_all(10)
+			b.add_theme_stylebox_override("normal", n)
+			b.add_theme_stylebox_override("hover", h)
+			b.add_theme_stylebox_override("pressed", h)
+			b.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
+			b.pressed.connect(_on_pick.bind(k))
+			board_list.add_child(b)
+			continue
 		var l := RichTextLabel.new()
 		l.bbcode_enabled = true
 		l.fit_content = true
 		l.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		var tag := "[color=#70d3e6]VOICE[/color]" if e["s"] == "V" else "[color=#f2c97a]SOBER[/color]"
+		l.add_theme_font_override("normal_font", font_serif)
+		l.add_theme_font_size_override("normal_font_size", 17)
 		var body := str(e["t"]).replace("[", "[lb]") if have else "— — —"
-		l.append_text("[font_size=11]%s[/font_size]   %s" % [tag, body])
-		l.modulate = Color(1, 1, 1, 1.0 if have else 0.35)
+		l.append_text("[font_size=11]%s[/font_size]   %s" % [tags.get(e["s"], ""), body])
+		l.modulate = Color(1, 1, 1, 1.0 if have else 0.3)
 		board_list.add_child(l)
+	if pick_mode and board_list.get_child_count() == 0:
+		var none := Label.new()
+		none.text = "You have nothing to show anyone yet. Look around first."
+		none.add_theme_font_override("font", font_serif)
+		none.add_theme_color_override("font_color", MUTED)
+		board_list.add_child(none)
+
+
+func _on_pick(evidence_id: String) -> void:
+	board.visible = false
+	pick_mode = false
+	present_picked.emit(evidence_id)
+
+
+## A single line dropped into the current scene (a suspect's answer to what you showed them),
+## after which the scene's choices come back.
+func show_interject(l: Dictionary) -> void:
+	override_lines = [l]
+	lines = override_lines
+	line_idx = 0
+	dock.visible = true
+	_next_line()
+
+
+# ---------------------------------------------------------------- toast and timer
+
+func _build_feedback() -> void:
+	toast_lbl = Label.new()
+	toast_lbl.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+	toast_lbl.offset_left = 28
+	toast_lbl.offset_top = 78
+	toast_lbl.add_theme_font_override("font", font_ui)
+	toast_lbl.add_theme_font_size_override("font_size", 15)
+	toast_lbl.add_theme_color_override("font_color", Color(0.96, 0.92, 0.84))
+	toast_lbl.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.95))
+	toast_lbl.add_theme_constant_override("shadow_outline_size", 8)
+	toast_lbl.modulate.a = 0.0
+	toast_lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(toast_lbl)
+	Story.toast.connect(show_toast)
+
+
+func show_toast(t: String) -> void:
+	toast_lbl.text = "◆  " + t
+	if toast_tween:
+		toast_tween.kill()
+	toast_tween = create_tween()
+	toast_tween.tween_property(toast_lbl, "modulate:a", 1.0, 0.35)
+	toast_tween.tween_interval(3.2)
+	toast_tween.tween_property(toast_lbl, "modulate:a", 0.0, 0.9)
+
+
+func _process(delta: float) -> void:
+	if timer_left <= 0.0 or timer_bar == null or not is_instance_valid(timer_bar):
+		return
+	if board.visible or tl.visible:
+		return   # the clock on a decision stops while you look at the board
+	timer_left -= delta
+	timer_bar.value = maxf(timer_left, 0.0) / timer_total
+	if timer_left <= 0.0:
+		var i := timer_default
+		timer_left = 0.0
+		var buttons: Array = []
+		for c in choices.get_children():
+			if c is Button:
+				buttons.append(c)
+		if i >= 0 and i < buttons.size():
+			show_toast("You said nothing.")
+			(buttons[i] as Button).pressed.emit()

@@ -16,9 +16,9 @@
     },
     {
      "who": "narr",
-     "text": "You wake up with your cheek on something sticky and your mouth tasting like a coin. The booth. Your booth. The jukebox is skipping on the same four seconds of a trumpet.",
+     "text": "I wake up with my cheek on something sticky and my mouth tasting like a coin. My booth. The jukebox is skipping on the same four seconds of a trumpet.",
      "state": "S",
-     "vo": ""
+     "vo": "n01"
     },
     {
      "who": "frank",
@@ -28,15 +28,9 @@
     },
     {
      "who": "narr",
-     "text": "1:40. The bar should have been dark for an hour and a half. It isn't. Every light is on.",
+     "text": "One forty. The Last Call closes at midnight, and every light in the place is on. And somebody is crying behind the bar. Low. Controlled. The way you cry when you've decided to.",
      "state": "S",
-     "vo": ""
-    },
-    {
-     "who": "narr",
-     "text": "Somebody is crying behind the bar. Low, controlled, the way you cry when you've decided to.",
-     "state": "S",
-     "vo": ""
+     "vo": "n02"
     }
    ],
    "choices": [
@@ -48,14 +42,19 @@
      "shiftTo": "",
      "requiresTrue": false,
      "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
      "setsFlag": ""
     }
    ],
    "setsFlag": "",
-   "noShift": false
+   "noShift": false,
+   "timer": 0,
+   "timerDefault": 0,
+   "toast": ""
   },
   "ch1_body": {
-   "loc": "The Last Call · Bar floor",
+   "loc": "The Last Call · The end of the bar",
    "clock": 0,
    "hub": false,
    "ending": false,
@@ -63,9 +62,9 @@
    "lines": [
     {
      "who": "narr",
-     "text": "Danny Roarke is on the floor behind his own bar, on his side, one arm under him like he was reaching for something. There's a dark halo under his head and a broken bottle a foot from his hand.",
+     "text": "Danny Roarke is on the floor at the end of his own bar, under a bar sheet, one arm out like he was reaching for something. There's a dark halo under his head, and a broken bottle a foot from his hand.",
      "state": "S",
-     "vo": ""
+     "vo": "n03"
     },
     {
      "who": "frank",
@@ -75,9 +74,9 @@
     },
     {
      "who": "narr",
-     "text": "Mira Roarke is kneeling beside him with a phone in her lap. She looks up at you and her face does nothing at all.",
+     "text": "Mira Roarke is kneeling beside him with a phone in her lap. She looks up at me, and her face does nothing at all.",
      "state": "S",
-     "vo": ""
+     "vo": "n04"
     },
     {
      "who": "mira",
@@ -107,14 +106,19 @@
      "shiftTo": "",
      "requiresTrue": false,
      "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
      "setsFlag": ""
     }
    ],
    "setsFlag": "",
-   "noShift": false
+   "noShift": false,
+   "timer": 0,
+   "timerDefault": 0,
+   "toast": ""
   },
   "ch1_mira1": {
-   "loc": "The Last Call · Bar floor",
+   "loc": "The Last Call · The end of the bar",
    "clock": 0,
    "hub": false,
    "ending": false,
@@ -146,34 +150,33 @@
     },
     {
      "who": "narr",
-     "text": "Your hands are shaking. Not from the body. From the schedule. It's been two hours. You know exactly what you need and you hate that you know it.",
+     "text": "My hands are shaking. Not from the body. From the schedule. Ninety minutes between drinks, and it's been two hours. The flask is in my coat. Full. I don't remember filling it.",
      "state": "S",
-     "vo": ""
-    },
-    {
-     "who": "narr",
-     "text": "The flask is in your coat. Full. You don't remember filling it.",
-     "state": "S",
-     "vo": ""
+     "vo": "n05"
     }
    ],
    "choices": [
     {
-     "label": "Not yet. Look around first.",
+     "label": "Not yet. Look at who else is here.",
      "next": "ch1_others",
      "small": "",
      "state": "",
      "shiftTo": "",
      "requiresTrue": false,
      "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
      "setsFlag": ""
     }
    ],
    "setsFlag": "",
-   "noShift": false
+   "noShift": false,
+   "timer": 0,
+   "timerDefault": 0,
+   "toast": ""
   },
   "ch1_others": {
-   "loc": "The Last Call · Bar floor",
+   "loc": "The Last Call",
    "clock": 0,
    "hub": false,
    "ending": false,
@@ -181,15 +184,9 @@
    "lines": [
     {
      "who": "narr",
-     "text": "The front door opens and the room fills up like a bad joke walking into a bar.",
+     "text": "The front door opens, and the room fills up like a bad joke walking into a bar. Theo Pike, the barback. Twenty-two, and grey in the face. And behind him, Lenny Baptiste. Danny's partner. Camel coat. Already talking.",
      "state": "S",
-     "vo": ""
-    },
-    {
-     "who": "narr",
-     "text": "Theo Pike, the barback, twenty-two and grey in the face, hovering in the doorway like he needs permission to be sad. Behind him, Lenny Baptiste — Danny's partner — in a camel coat, already talking.",
-     "state": "S",
-     "vo": ""
+     "vo": "n06"
     },
     {
      "who": "lenny",
@@ -205,9 +202,9 @@
     },
     {
      "who": "narr",
-     "text": "And at the end of the bar, on the last stool, in the half dark, Connie Vale. Seventy, cardigan, handbag on her knees. You didn't see her come in.",
+     "text": "And at the end of the bar, on the last stool, Connie Vale. Seventy-one. Cardigan. Handbag on her knees. I didn't see her come in.",
      "state": "S",
-     "vo": ""
+     "vo": "n07"
     },
     {
      "who": "connie",
@@ -217,9 +214,9 @@
     },
     {
      "who": "narr",
-     "text": "Four people. One of them is lying. Probably more than one. You can feel the shape of it and you can't see it, the way you can feel a word you've forgotten.",
+     "text": "Four people. At least one of them is lying. I can feel the shape of it and I can't see it. Like a word I've forgotten.",
      "state": "S",
-     "vo": ""
+     "vo": "n08"
     },
     {
      "who": "frank",
@@ -237,14 +234,19 @@
      "shiftTo": "",
      "requiresTrue": false,
      "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
      "setsFlag": ""
     }
    ],
    "setsFlag": "",
-   "noShift": false
+   "noShift": false,
+   "timer": 0,
+   "timerDefault": 0,
+   "toast": ""
   },
   "ch1_drink": {
-   "loc": "The Last Call · Bar floor",
+   "loc": "The Last Call",
    "clock": 0,
    "hub": false,
    "ending": false,
@@ -252,27 +254,15 @@
    "lines": [
     {
      "who": "narr",
-     "text": "You turn your back on them. You unscrew the cap. The smell is a hand on the back of your neck.",
+     "text": "I turn my back on them and unscrew the cap. The rule is two swallows. One. Two.",
      "state": "S",
-     "vo": ""
-    },
-    {
-     "who": "narr",
-     "text": "Two swallows. The rule is two.",
-     "state": "S",
-     "vo": ""
-    },
-    {
-     "who": "narr",
-     "text": "You count. One. Two.",
-     "state": "S",
-     "vo": ""
+     "vo": "n09"
     },
     {
      "who": "narr",
      "text": "Three.",
      "state": "S",
-     "vo": ""
+     "vo": "n10"
     }
    ],
    "choices": [
@@ -284,24 +274,29 @@
      "shiftTo": "V",
      "requiresTrue": false,
      "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
      "setsFlag": ""
     }
    ],
    "setsFlag": "",
-   "noShift": false
+   "noShift": true,
+   "timer": 0,
+   "timerDefault": 0,
+   "toast": ""
   },
   "ch1_voice": {
-   "loc": "The Last Call · Bar floor",
+   "loc": "The Last Call",
    "clock": 0,
    "hub": false,
    "ending": false,
    "grant": [],
    "lines": [
     {
-     "who": "narr",
+     "who": "voice",
      "text": "And the room comes in.",
      "state": "V",
-     "vo": ""
+     "vo": "v01"
     },
     {
      "who": "voice",
@@ -335,7 +330,7 @@
     },
     {
      "who": "narr",
-     "text": "End of Chapter One.",
+     "text": "End of Chapter One",
      "state": "B",
      "vo": "",
      "card": true
@@ -343,18 +338,70 @@
    ],
    "choices": [
     {
-     "label": "Chapter Two — the sweep",
+     "label": "Chapter Two",
+     "next": "ch2_brief",
+     "small": "",
+     "state": "",
+     "shiftTo": "",
+     "requiresTrue": false,
+     "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
+     "setsFlag": ""
+    }
+   ],
+   "setsFlag": "",
+   "noShift": true,
+   "timer": 0,
+   "timerDefault": 0,
+   "toast": ""
+  },
+  "ch2_brief": {
+   "loc": "The Last Call",
+   "clock": 0,
+   "hub": false,
+   "ending": false,
+   "grant": [],
+   "lines": [
+    {
+     "who": "narr",
+     "text": "Chapter Two — The Sweep",
+     "state": "B",
+     "vo": "",
+     "card": true
+    },
+    {
+     "who": "voice",
+     "text": "Here's how tonight works, Frank. I see what they're hiding. But nobody confesses to me. They confess to you. The sorry, sober one. So look at the room with me. Then sober up, and show them what we found.",
+     "state": "V",
+     "vo": "v15"
+    },
+    {
+     "who": "voice",
+     "text": "Except the partner. He only respects a harder man. Him, you leave to me.",
+     "state": "V",
+     "vo": "v16"
+    }
+   ],
+   "choices": [
+    {
+     "label": "Look around.",
      "next": "hub",
      "small": "",
      "state": "",
      "shiftTo": "",
      "requiresTrue": false,
      "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
      "setsFlag": ""
     }
    ],
    "setsFlag": "",
-   "noShift": false
+   "noShift": true,
+   "timer": 0,
+   "timerDefault": 0,
+   "toast": ""
   },
   "hub": {
    "loc": "The Last Call",
@@ -365,114 +412,20 @@
    "lines": [
     {
      "who": "narr",
-     "text": "The room, as you see it right now. Pick where to go. Each stop costs ten minutes. The police arrive at four.",
-     "state": "S",
+     "text": "The room.",
+     "state": "B",
      "vo": ""
-    },
-    {
-     "who": "voice",
-     "text": "Everything you looked at sober, look at again. It's a different room.",
-     "state": "V",
-     "vo": "hub_01"
     }
    ],
-   "choices": [
-    {
-     "label": "The booth",
-     "next": "loc_booth",
-     "small": "where you woke up",
-     "state": "",
-     "shiftTo": "",
-     "requiresTrue": false,
-     "requiresFlag": "",
-     "setsFlag": ""
-    },
-    {
-     "label": "Behind the bar",
-     "next": "loc_bar",
-     "small": "the body, the till",
-     "state": "",
-     "shiftTo": "",
-     "requiresTrue": false,
-     "requiresFlag": "",
-     "setsFlag": ""
-    },
-    {
-     "label": "The bar floor",
-     "next": "loc_floor",
-     "small": "the rail, the stools",
-     "state": "",
-     "shiftTo": "",
-     "requiresTrue": false,
-     "requiresFlag": "",
-     "setsFlag": ""
-    },
-    {
-     "label": "The office",
-     "next": "loc_office",
-     "small": "the books",
-     "state": "",
-     "shiftTo": "",
-     "requiresTrue": false,
-     "requiresFlag": "",
-     "setsFlag": ""
-    },
-    {
-     "label": "Talk to Mira",
-     "next": "int_mira",
-     "small": "",
-     "state": "",
-     "shiftTo": "",
-     "requiresTrue": false,
-     "requiresFlag": "",
-     "setsFlag": ""
-    },
-    {
-     "label": "Talk to Theo",
-     "next": "int_theo",
-     "small": "",
-     "state": "",
-     "shiftTo": "",
-     "requiresTrue": false,
-     "requiresFlag": "",
-     "setsFlag": ""
-    },
-    {
-     "label": "Talk to Lenny",
-     "next": "int_lenny",
-     "small": "",
-     "state": "",
-     "shiftTo": "",
-     "requiresTrue": false,
-     "requiresFlag": "",
-     "setsFlag": ""
-    },
-    {
-     "label": "Talk to Connie",
-     "next": "int_connie",
-     "small": "",
-     "state": "",
-     "shiftTo": "",
-     "requiresTrue": false,
-     "requiresFlag": "",
-     "setsFlag": ""
-    },
-    {
-     "label": "Make an accusation",
-     "next": "accuse",
-     "small": "ends the night",
-     "state": "",
-     "shiftTo": "",
-     "requiresTrue": false,
-     "requiresFlag": "",
-     "setsFlag": ""
-    }
-   ],
+   "choices": [],
    "setsFlag": "",
-   "noShift": false
+   "noShift": false,
+   "timer": 0,
+   "timerDefault": 0,
+   "toast": ""
   },
   "loc_booth": {
-   "loc": "Booth",
+   "loc": "The booth",
    "clock": 10,
    "hub": false,
    "ending": false,
@@ -483,21 +436,9 @@
    "lines": [
     {
      "who": "narr",
-     "text": "Your booth. A coaster you've chewed the edge of. Your coat, half on the seat, half on the floor.",
+     "text": "My booth. A coaster I've chewed the edge off. My coat, half on the seat. I go through the pockets like I'm frisking a stranger. Keys. Flask. And a receipt, in Danny's big slanted capitals. Eleven forty-seven. Cut off. D. He does it every night. Puts it on the tab like a joke.",
      "state": "S",
-     "vo": ""
-    },
-    {
-     "who": "narr",
-     "text": "You go through the pockets like you're frisking a stranger. Keys. Flask. A receipt.",
-     "state": "S",
-     "vo": ""
-    },
-    {
-     "who": "narr",
-     "text": "Danny's handwriting, the big slanted capitals. \"11:47 — CUT OFF. — D.\" He does this every night. He puts it on the tab like a joke.",
-     "state": "S",
-     "vo": ""
+     "vo": "n12"
     },
     {
      "who": "frank",
@@ -507,9 +448,9 @@
     },
     {
      "who": "narr",
-     "text": "You don't remember being cut off. You don't remember much of anything after ten.",
+     "text": "I don't remember being cut off. I don't remember much of anything after ten.",
      "state": "S",
-     "vo": ""
+     "vo": "n13"
     },
     {
      "who": "voice",
@@ -518,10 +459,10 @@
      "vo": "loc_booth_05"
     },
     {
-     "who": "narr",
+     "who": "voice",
      "text": "Knuckles. Split on the second and third. Not from the booth. Booths don't do that.",
      "state": "V",
-     "vo": ""
+     "vo": "v02"
     },
     {
      "who": "voice",
@@ -539,14 +480,19 @@
      "shiftTo": "",
      "requiresTrue": false,
      "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
      "setsFlag": ""
     }
    ],
    "setsFlag": "",
-   "noShift": false
+   "noShift": false,
+   "timer": 0,
+   "timerDefault": 0,
+   "toast": ""
   },
   "loc_bar": {
-   "loc": "Behind the bar",
+   "loc": "Danny",
    "clock": 10,
    "hub": false,
    "ending": false,
@@ -559,9 +505,9 @@
    "lines": [
     {
      "who": "narr",
-     "text": "You don't look at his face. You look at the floor around him, the way you were taught. The bottle: brown glass, neck intact, the body shattered. The till: drawer out, empty, the little spring clips sticking up like fingers.",
+     "text": "I don't look at his face. I look at the floor around him, the way I was taught. The bottle. Brown glass, neck intact, the body shattered. And on the back counter, the till. Drawer out. Empty.",
      "state": "S",
-     "vo": ""
+     "vo": "n14"
     },
     {
      "who": "frank",
@@ -576,10 +522,10 @@
      "vo": "loc_bar_02"
     },
     {
-     "who": "narr",
-     "text": "The top-shelf bottle. The one with the hand-written tag. Danny didn't pour from it. Nobody poured from it. It lived on the highest shelf behind the register where you couldn't reach it in a fight if you tried.",
+     "who": "voice",
+     "text": "The top-shelf bottle. The one with the hand-written tag. Danny never poured from it. It lived on the highest shelf, where you couldn't reach it in a fight if you tried.",
      "state": "V",
-     "vo": ""
+     "vo": "v03"
     },
     {
      "who": "voice",
@@ -594,10 +540,10 @@
      "vo": "loc_bar_05"
     },
     {
-     "who": "narr",
-     "text": "A cracked phone, a sticker of a cartoon dog on the back. Theo's. Still charging.",
+     "who": "voice",
+     "text": "A cracked phone with a cartoon dog on the back. Theo's. Still charging.",
      "state": "V",
-     "vo": ""
+     "vo": "v04"
     },
     {
      "who": "voice",
@@ -615,14 +561,19 @@
      "shiftTo": "",
      "requiresTrue": false,
      "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
      "setsFlag": ""
     }
    ],
    "setsFlag": "",
-   "noShift": false
+   "noShift": false,
+   "timer": 0,
+   "timerDefault": 0,
+   "toast": ""
   },
   "loc_floor": {
-   "loc": "Bar floor",
+   "loc": "The rail",
    "clock": 10,
    "hub": false,
    "ending": false,
@@ -637,7 +588,7 @@
      "who": "narr",
      "text": "The brass rail along the bar gleams. It never gleams. Danny polishes it once a year and complains about it for a month.",
      "state": "S",
-     "vo": ""
+     "vo": "n15"
     },
     {
      "who": "frank",
@@ -647,9 +598,9 @@
     },
     {
      "who": "narr",
-     "text": "Connie is back on her stool at the end, the same one as every night. She told you she left at midnight and came back when she had a feeling.",
+     "text": "Connie's on her stool at the end, same as every night. She told me she went home at midnight, and came back when she had a feeling.",
      "state": "S",
-     "vo": ""
+     "vo": "n16"
     },
     {
      "who": "voice",
@@ -658,10 +609,10 @@
      "vo": "loc_floor_03"
     },
     {
-     "who": "narr",
-     "text": "A big hand. Four fingers and the heel of a palm, pressed hard, like somebody caught themselves.",
+     "who": "voice",
+     "text": "A big hand. Four fingers and the heel of a palm, pressed hard. Like somebody caught themselves.",
      "state": "V",
-     "vo": ""
+     "vo": "v05"
     },
     {
      "who": "voice",
@@ -670,10 +621,10 @@
      "vo": "loc_floor_05"
     },
     {
-     "who": "narr",
-     "text": "You don't.",
+     "who": "voice",
+     "text": "No? Thought not.",
      "state": "V",
-     "vo": ""
+     "vo": "v06"
     },
     {
      "who": "voice",
@@ -691,14 +642,19 @@
      "shiftTo": "",
      "requiresTrue": false,
      "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
      "setsFlag": ""
     }
    ],
    "setsFlag": "",
-   "noShift": false
+   "noShift": false,
+   "timer": 0,
+   "timerDefault": 0,
+   "toast": ""
   },
   "loc_office": {
-   "loc": "Office",
+   "loc": "The office",
    "clock": 10,
    "hub": false,
    "ending": false,
@@ -709,9 +665,9 @@
    "lines": [
     {
      "who": "narr",
-     "text": "A desk the size of a door, a lamp, a safe that's been open for years. The ledger — the big green one Danny did the tabs in — isn't on the desk. The deed Danny kept in a folder taped to the underside of the drawer isn't taped to the underside of the drawer.",
+     "text": "A desk the size of a door. A banker's lamp. A safe that's been open for years. The green ledger Danny kept the tabs in isn't on the desk. And the deed he kept taped under the drawer isn't under the drawer.",
      "state": "S",
-     "vo": ""
+     "vo": "n17"
     },
     {
      "who": "frank",
@@ -726,10 +682,10 @@
      "vo": "loc_office_02"
     },
     {
-     "who": "narr",
-     "text": "On the carpet by the chair: a grey crumb of ash. Cigar ash. The bar's been no-smoking for six years and Danny enforced it like scripture.",
+     "who": "voice",
+     "text": "On the carpet, by the chair. A grey crumb of cigar ash. This bar's been no-smoking for six years, and Danny enforced it like scripture.",
      "state": "V",
-     "vo": ""
+     "vo": "v07"
     },
     {
      "who": "voice",
@@ -747,11 +703,16 @@
      "shiftTo": "",
      "requiresTrue": false,
      "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
      "setsFlag": ""
     }
    ],
    "setsFlag": "",
-   "noShift": false
+   "noShift": false,
+   "timer": 0,
+   "timerDefault": 0,
+   "toast": ""
   },
   "int_mira": {
    "loc": "Mira Roarke",
@@ -791,10 +752,10 @@
      "vo": "int_mira_04"
     },
     {
-     "who": "narr",
-     "text": "Spotless. She found her husband in a pool of his own blood and knelt in it and her hands are spotless. Her sleeves are pushed up to the elbow. Her nails are clean.",
+     "who": "voice",
+     "text": "Spotless. She knelt in her husband's blood, and her hands are spotless. Sleeves pushed up. Nails clean.",
      "state": "V",
-     "vo": ""
+     "vo": "v08"
     },
     {
      "who": "voice",
@@ -817,6 +778,18 @@
    ],
    "choices": [
     {
+     "label": "Show her something…",
+     "next": "__present",
+     "small": "",
+     "state": "",
+     "shiftTo": "",
+     "requiresTrue": false,
+     "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "cracked_mira",
+     "setsFlag": ""
+    },
+    {
      "label": "Back",
      "next": "hub",
      "small": "",
@@ -824,11 +797,16 @@
      "shiftTo": "",
      "requiresTrue": false,
      "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
      "setsFlag": ""
     }
    ],
    "setsFlag": "",
-   "noShift": false
+   "noShift": false,
+   "timer": 0,
+   "timerDefault": 0,
+   "toast": ""
   },
   "int_theo": {
    "loc": "Theo Pike",
@@ -851,9 +829,9 @@
     },
     {
      "who": "narr",
-     "text": "He's nodding too much. But he's twenty-two and a man is dead, and you'd nod too.",
+     "text": "He's nodding too much. But he's twenty-two, and a man is dead. I'd nod too.",
      "state": "S",
-     "vo": ""
+     "vo": "n18"
     },
     {
      "who": "voice",
@@ -868,10 +846,10 @@
      "vo": "int_theo_04"
     },
     {
-     "who": "narr",
-     "text": "He pats his jacket. Both pockets. His face goes from grey to white.",
+     "who": "voice",
+     "text": "Both pockets. Look at his face go.",
      "state": "V",
-     "vo": ""
+     "vo": "v09"
     },
     {
      "who": "theo",
@@ -894,6 +872,18 @@
    ],
    "choices": [
     {
+     "label": "Show him something…",
+     "next": "__present",
+     "small": "",
+     "state": "",
+     "shiftTo": "",
+     "requiresTrue": false,
+     "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "cracked_theo",
+     "setsFlag": ""
+    },
+    {
      "label": "Back",
      "next": "hub",
      "small": "",
@@ -901,11 +891,16 @@
      "shiftTo": "",
      "requiresTrue": false,
      "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
      "setsFlag": ""
     }
    ],
    "setsFlag": "",
-   "noShift": false
+   "noShift": false,
+   "timer": 0,
+   "timerDefault": 0,
+   "toast": ""
   },
   "int_lenny": {
    "loc": "Lenny Baptiste",
@@ -959,6 +954,18 @@
    ],
    "choices": [
     {
+     "label": "Show him something…",
+     "next": "__present",
+     "small": "",
+     "state": "",
+     "shiftTo": "",
+     "requiresTrue": false,
+     "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "cracked_lenny",
+     "setsFlag": ""
+    },
+    {
      "label": "Back",
      "next": "hub",
      "small": "",
@@ -966,11 +973,16 @@
      "shiftTo": "",
      "requiresTrue": false,
      "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
      "setsFlag": ""
     }
    ],
    "setsFlag": "",
-   "noShift": false
+   "noShift": false,
+   "timer": 0,
+   "timerDefault": 0,
+   "toast": ""
   },
   "int_connie": {
    "loc": "Connie Vale",
@@ -999,45 +1011,15 @@
     },
     {
      "who": "narr",
-     "text": "She pats your hand. Her hand is cold and dry and it's the kindest thing anyone's done to you all night.",
+     "text": "She pats my hand. Her hand is cold and dry, and it's the kindest thing anyone's done to me all night.",
      "state": "S",
-     "vo": ""
+     "vo": "n19"
     },
     {
      "who": "voice",
      "text": "Her glass is sweating. Her stool is warm. She hasn't been anywhere.",
      "state": "V",
      "vo": "int_connie_04"
-    },
-    {
-     "who": "frank",
-     "text": "Connie. You didn't leave.",
-     "state": "V",
-     "vo": "int_connie_05"
-    },
-    {
-     "who": "narr",
-     "text": "She looks at you for a long time. Then she looks at your right hand, and then back at your face, and she smiles the way you smile at a child who's about to find out.",
-     "state": "V",
-     "vo": ""
-    },
-    {
-     "who": "connie",
-     "text": "No, dear. I didn't.",
-     "state": "V",
-     "vo": "int_connie_07"
-    },
-    {
-     "who": "connie",
-     "text": "But I'm not going to tell you what I saw. Not tonight. You're not ready, and I'm not sure you should ever be.",
-     "state": "V",
-     "vo": "int_connie_08"
-    },
-    {
-     "who": "voice",
-     "text": "She'll talk. Later. When you've had another drink and can't pretend you didn't hear it.",
-     "state": "V",
-     "vo": "int_connie_09"
     }
    ],
    "choices": [
@@ -1045,10 +1027,29 @@
      "label": "\"Tell me what you saw.\"",
      "next": "ch4_connie",
      "small": "",
-     "state": "V",
+     "state": "",
      "shiftTo": "",
      "requiresTrue": false,
-     "requiresFlag": "ch4",
+     "requiresFlag": "",
+     "requiresAll": [
+      "cracked_theo",
+      "cracked_lenny",
+      "cracked_mira",
+      "connie_admits"
+     ],
+     "hideIfFlag": "connie",
+     "setsFlag": ""
+    },
+    {
+     "label": "Show her something…",
+     "next": "__present",
+     "small": "",
+     "state": "",
+     "shiftTo": "",
+     "requiresTrue": false,
+     "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "connie_admits",
      "setsFlag": ""
     },
     {
@@ -1059,11 +1060,545 @@
      "shiftTo": "",
      "requiresTrue": false,
      "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
      "setsFlag": ""
     }
    ],
    "setsFlag": "",
-   "noShift": false
+   "noShift": false,
+   "timer": 0,
+   "timerDefault": 0,
+   "toast": ""
+  },
+  "crack_theo": {
+   "loc": "Theo Pike",
+   "clock": 0,
+   "hub": false,
+   "ending": false,
+   "grant": [
+    "C1"
+   ],
+   "lines": [
+    {
+     "who": "frank",
+     "text": "Theo. Your phone's on the charger behind the till. It's been there all night.",
+     "state": "B",
+     "vo": "f01"
+    },
+    {
+     "who": "theo",
+     "text": "I... okay. Okay. I didn't come back for the phone.",
+     "state": "B",
+     "vo": "t01"
+    },
+    {
+     "who": "theo",
+     "text": "He owed me six weeks. Eighteen hundred dollars. I counted it twice, so I wouldn't take a dollar more.",
+     "state": "B",
+     "vo": "t02"
+    },
+    {
+     "who": "frank",
+     "text": "And Danny?",
+     "state": "B",
+     "vo": "f02"
+    },
+    {
+     "who": "theo",
+     "text": "He was sitting on the floor with his back against the cooler. He looked at me and he said, 'Not now, Theo.' So I took it, and I ran. He was talking, Mr. Sable. He was fine. I thought he was fine.",
+     "state": "B",
+     "vo": "t03"
+    },
+    {
+     "who": "narr",
+     "text": "He wasn't fine. But the kid isn't lying anymore.",
+     "state": "B",
+     "vo": "n20"
+    }
+   ],
+   "choices": [
+    {
+     "label": "Back to the room.",
+     "next": "hub",
+     "small": "",
+     "state": "",
+     "shiftTo": "",
+     "requiresTrue": false,
+     "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
+     "setsFlag": ""
+    }
+   ],
+   "setsFlag": "cracked_theo",
+   "noShift": false,
+   "timer": 0,
+   "timerDefault": 0,
+   "toast": "Theo will remember that."
+  },
+  "crack_lenny": {
+   "loc": "Lenny Baptiste",
+   "clock": 0,
+   "hub": false,
+   "ending": false,
+   "grant": [
+    "C2"
+   ],
+   "lines": [
+    {
+     "who": "voice",
+     "text": "You ashed on his carpet, Lenny. And you said 'was' before anyone told you he was dead.",
+     "state": "B",
+     "vo": "v11"
+    },
+    {
+     "who": "lenny",
+     "text": "Who the hell is that talking? That's not you.",
+     "state": "B",
+     "vo": "l01"
+    },
+    {
+     "who": "voice",
+     "text": "It's the part of him that doesn't apologise. Half past twelve. The office. Say it.",
+     "state": "B",
+     "vo": "v12"
+    },
+    {
+     "who": "lenny",
+     "text": "Fine. The door was open. He was on the floor, mumbling. I stepped over him.",
+     "state": "B",
+     "vo": "l02"
+    },
+    {
+     "who": "lenny",
+     "text": "I took the ledger and the deed. Without paper, what he owed me is whatever I say it is. He was breathing when I left. I checked. I'm not an animal.",
+     "state": "B",
+     "vo": "l03"
+    },
+    {
+     "who": "voice",
+     "text": "No. An animal would have called someone.",
+     "state": "B",
+     "vo": "v13"
+    }
+   ],
+   "choices": [
+    {
+     "label": "Back to the room.",
+     "next": "hub",
+     "small": "",
+     "state": "",
+     "shiftTo": "",
+     "requiresTrue": false,
+     "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
+     "setsFlag": ""
+    }
+   ],
+   "setsFlag": "cracked_lenny",
+   "noShift": false,
+   "timer": 0,
+   "timerDefault": 0,
+   "toast": "Lenny will remember that."
+  },
+  "crack_mira": {
+   "loc": "Mira Roarke",
+   "clock": 0,
+   "hub": false,
+   "ending": false,
+   "grant": [
+    "C3"
+   ],
+   "lines": [
+    {
+     "who": "frank",
+     "text": "Mira. That bottle never came off the top shelf in a fight. Somebody lifted it down.",
+     "state": "B",
+     "vo": "f03"
+    },
+    {
+     "who": "mira",
+     "text": "You're better at this than you look.",
+     "state": "B",
+     "vo": "m01"
+    },
+    {
+     "who": "mira",
+     "text": "He was cold when I came down. No wound I could see. The till empty, the books gone. And I know what our policy pays on a robbery, and what it pays on a drunk man falling in his own bar.",
+     "state": "B",
+     "vo": "m02"
+    },
+    {
+     "who": "mira",
+     "text": "So I gave them a robbery. I broke the bottle. I wiped the rail. I washed my hands, and I sat with him. I did not kill my husband, Frank.",
+     "state": "B",
+     "vo": "m03"
+    },
+    {
+     "who": "frank",
+     "text": "I know. I'm sorry. I know.",
+     "state": "B",
+     "vo": "f04"
+    }
+   ],
+   "choices": [
+    {
+     "label": "Back to the room.",
+     "next": "hub",
+     "small": "",
+     "state": "",
+     "shiftTo": "",
+     "requiresTrue": false,
+     "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
+     "setsFlag": ""
+    }
+   ],
+   "setsFlag": "cracked_mira",
+   "noShift": false,
+   "timer": 0,
+   "timerDefault": 0,
+   "toast": "Mira will remember that."
+  },
+  "crack_connie": {
+   "loc": "Connie Vale",
+   "clock": 0,
+   "hub": false,
+   "ending": false,
+   "grant": [],
+   "lines": [
+    {
+     "who": "frank",
+     "text": "Your glass is still cold, Connie. You never went home.",
+     "state": "B",
+     "vo": "f05"
+    },
+    {
+     "who": "connie",
+     "text": "No, dear. I didn't.",
+     "state": "B",
+     "vo": "int_connie_07"
+    },
+    {
+     "who": "connie",
+     "text": "I'll tell you what I saw. But not before they do. Make the three of them say their part out loud. Then come and sit with me.",
+     "state": "B",
+     "vo": "c03"
+    }
+   ],
+   "choices": [
+    {
+     "label": "Back to the room.",
+     "next": "hub",
+     "small": "",
+     "state": "",
+     "shiftTo": "",
+     "requiresTrue": false,
+     "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
+     "setsFlag": ""
+    }
+   ],
+   "setsFlag": "connie_admits",
+   "noShift": false,
+   "timer": 0,
+   "timerDefault": 0,
+   "toast": "Connie is waiting for you."
+  },
+  "ch4_blackout": {
+   "loc": "The Last Call · The ninety-minute mark",
+   "clock": 0,
+   "hub": false,
+   "ending": false,
+   "grant": [],
+   "lines": [
+    {
+     "who": "narr",
+     "text": "Chapter Four — Blackout",
+     "state": "B",
+     "vo": "",
+     "card": true
+    },
+    {
+     "who": "narr",
+     "text": "Ninety minutes. I feel it before I check the clock. The floor tilts a quarter inch, and settles. The schedule is a dog that knows when it's fed.",
+     "state": "B",
+     "vo": "n21"
+    },
+    {
+     "who": "voice",
+     "text": "Here it comes. You can ride it out and stay useful for the police, or you can have the second drink and I'll show you the thing in the corner you keep not looking at. Your call. It's always your call. That's the joke.",
+     "state": "V",
+     "vo": "ch4_blackout_03"
+    },
+    {
+     "who": "narr",
+     "text": "Connie is watching me from the last stool. And the flask is in my hand. I don't remember taking it out.",
+     "state": "B",
+     "vo": "n22"
+    }
+   ],
+   "choices": [
+    {
+     "label": "Drink.",
+     "next": "ch4_drink",
+     "small": "lose ten minutes; see what the Voice has been hiding",
+     "state": "",
+     "shiftTo": "V",
+     "requiresTrue": false,
+     "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
+     "setsFlag": ""
+    },
+    {
+     "label": "Put it away.",
+     "next": "ch4_sober",
+     "small": "stay sober; find what a sober man finds",
+     "state": "",
+     "shiftTo": "S",
+     "requiresTrue": false,
+     "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
+     "setsFlag": ""
+    }
+   ],
+   "setsFlag": "ch4",
+   "noShift": true,
+   "timer": 14,
+   "timerDefault": 0,
+   "toast": ""
+  },
+  "ch4_drink": {
+   "loc": "The rail",
+   "clock": 10,
+   "hub": false,
+   "ending": false,
+   "grant": [
+    "E06v",
+    "E03"
+   ],
+   "lines": [
+    {
+     "who": "voice",
+     "text": "Three swallows, and the room goes under like a stone. And comes back up ten minutes on, with your hand flat on the end of the brass rail. Exactly over the print.",
+     "state": "B",
+     "vo": "v14"
+    },
+    {
+     "who": "voice",
+     "text": "There. Now you know what size it is.",
+     "state": "B",
+     "vo": "ch4_drink_02"
+    },
+    {
+     "who": "narr",
+     "text": "End of Chapter Four",
+     "state": "B",
+     "vo": "",
+     "card": true
+    }
+   ],
+   "choices": [
+    {
+     "label": "Back to the room.",
+     "next": "hub",
+     "small": "",
+     "state": "",
+     "shiftTo": "",
+     "requiresTrue": false,
+     "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
+     "setsFlag": ""
+    }
+   ],
+   "setsFlag": "",
+   "noShift": false,
+   "timer": 0,
+   "timerDefault": 0,
+   "toast": "You drank."
+  },
+  "ch4_sober": {
+   "loc": "The office",
+   "clock": 0,
+   "hub": false,
+   "ending": false,
+   "grant": [
+    "E10",
+    "E11"
+   ],
+   "lines": [
+    {
+     "who": "narr",
+     "text": "I screw the cap back on. The shake has to be lived with. I go and stand in the office, because it's the only room without a body or a witness in it.",
+     "state": "B",
+     "vo": "n23"
+    },
+    {
+     "who": "narr",
+     "text": "The little sink in the corner. A bar cloth, wrung out and dropped. Still wet. Pink at the edges.",
+     "state": "B",
+     "vo": "n24"
+    },
+    {
+     "who": "frank",
+     "text": "Somebody washed a cloth. After.",
+     "state": "B",
+     "vo": "ch4_sober_02"
+    },
+    {
+     "who": "narr",
+     "text": "And in the desk drawer, the carbon from the last page of Danny's tab book. Eleven forty-seven, cut off. And under it, shakier. Eleven fifty-two. F put hands on me. Went down. I'm okay. Sat him in his booth.",
+     "state": "B",
+     "vo": "n25"
+    },
+    {
+     "who": "frank",
+     "text": "Went down. I went down. I must have fallen, and he — he sat me in my booth. That's the knuckles. That's all that is.",
+     "state": "B",
+     "vo": "ch4_sober_05"
+    },
+    {
+     "who": "narr",
+     "text": "It reads that way if I want it to. And sober, I want it to.",
+     "state": "B",
+     "vo": "n26"
+    },
+    {
+     "who": "narr",
+     "text": "End of Chapter Four",
+     "state": "B",
+     "vo": "",
+     "card": true
+    }
+   ],
+   "choices": [
+    {
+     "label": "Back to the room.",
+     "next": "hub",
+     "small": "",
+     "state": "",
+     "shiftTo": "",
+     "requiresTrue": false,
+     "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
+     "setsFlag": ""
+    }
+   ],
+   "setsFlag": "",
+   "noShift": false,
+   "timer": 0,
+   "timerDefault": 0,
+   "toast": "You stayed sober."
+  },
+  "ch4_connie": {
+   "loc": "Connie Vale",
+   "clock": 0,
+   "hub": false,
+   "ending": false,
+   "grant": [
+    "E08"
+   ],
+   "lines": [
+    {
+     "who": "connie",
+     "text": "Sit down. I'm going to tell you about tonight.",
+     "state": "B",
+     "vo": "ch4_drink_05"
+    },
+    {
+     "who": "connie",
+     "text": "Danny cut you off at a quarter to twelve. He wrote it on your tab like he always does, and you laughed like you always do, and then you didn't. Something in you said something to him. About Mira. About upstairs.",
+     "state": "B",
+     "vo": "ch4_connie_00"
+    },
+    {
+     "who": "voice",
+     "text": "I remember what I said. You don't want it.",
+     "state": "B",
+     "vo": "ch4_connie_01"
+    },
+    {
+     "who": "connie",
+     "text": "He came round the bar and took you by the collar. Not hard. Like a father. And you put both hands on his chest and pushed, and he went backwards over the rail and sat down very suddenly, and hit his head on the brass on the way, and said — and I remember this exactly — 'Get out of my bar, Frank.'",
+     "state": "B",
+     "vo": "ch4_connie_02"
+    },
+    {
+     "who": "connie",
+     "text": "You went to your booth. You were asleep before you lay down.",
+     "state": "B",
+     "vo": "ch4_connie_03"
+    },
+    {
+     "who": "connie",
+     "text": "He sat there a while, rubbing his head. Then he got up. He wrote on the tab again. He was all right, Frank. He was walking. He was all right for a long time.",
+     "state": "B",
+     "vo": "ch4_connie_04"
+    },
+    {
+     "who": "connie",
+     "text": "The boy came in at ten past and Danny was sitting on the floor again by then, and he said, 'Not now, Theo.' The boy took money from the till. Danny watched him do it and didn't say a word. The boy ran.",
+     "state": "B",
+     "vo": "ch4_connie_05"
+    },
+    {
+     "who": "connie",
+     "text": "Lenny came at half past. Danny was lying down. Lenny stepped over him into the office. He came out with the green book and a folder and he lit a cigar in the doorway and looked at Danny for a long time and went home.",
+     "state": "B",
+     "vo": "ch4_connie_06"
+    },
+    {
+     "who": "connie",
+     "text": "Mira came down at quarter to one. She knelt. She stayed a while. Then she stood up and went and got the bottle from the top shelf and broke it beside him. She took a cloth to the rail. She went upstairs and washed, and she came back and sat with him until half past one, and then she rang.",
+     "state": "B",
+     "vo": "ch4_connie_07"
+    },
+    {
+     "who": "frank",
+     "text": "And you —",
+     "state": "B",
+     "vo": "ch4_connie_08"
+    },
+    {
+     "who": "connie",
+     "text": "I sat here, dear. I'm seventy-one. I sat here and I watched a man die slowly in front of four people who each had a reason not to call, and I was the fifth.",
+     "state": "B",
+     "vo": "ch4_connie_09"
+    },
+    {
+     "who": "connie",
+     "text": "Now you know what everyone did. What you do with it is the part I can't help you with.",
+     "state": "B",
+     "vo": "ch4_connie_10"
+    }
+   ],
+   "choices": [
+    {
+     "label": "Back to the room.",
+     "next": "hub",
+     "small": "",
+     "state": "",
+     "shiftTo": "",
+     "requiresTrue": false,
+     "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
+     "setsFlag": ""
+    }
+   ],
+   "setsFlag": "connie",
+   "noShift": false,
+   "timer": 0,
+   "timerDefault": 0,
+   "toast": "You know what you did."
   },
   "accuse": {
    "loc": "The Last Call · 3:58 AM",
@@ -1074,9 +1609,9 @@
    "lines": [
     {
      "who": "narr",
-     "text": "You stop looking. You sit, and you wait. At two minutes to four, headlights swing across the front window. You have one sentence left in you.",
+     "text": "I stop looking. I sit, and I wait. At two minutes to four, headlights swing across the front window. I've got one sentence left in me.",
      "state": "B",
-     "vo": ""
+     "vo": "n27"
     },
     {
      "who": "voice",
@@ -1087,13 +1622,17 @@
    ],
    "choices": [
     {
-     "label": "Build the timeline first",
+     "label": "Lay it all out first",
      "next": "ch5_intro",
-     "small": "the office — needs both sweeps and Connie",
+     "small": "the office — needs Connie's account",
      "state": "",
      "shiftTo": "",
      "requiresTrue": false,
-     "requiresFlag": "ready",
+     "requiresFlag": "",
+     "requiresAll": [
+      "connie"
+     ],
+     "hideIfFlag": "",
      "setsFlag": ""
     },
     {
@@ -1104,6 +1643,8 @@
      "shiftTo": "",
      "requiresTrue": false,
      "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
      "setsFlag": ""
     },
     {
@@ -1114,6 +1655,8 @@
      "shiftTo": "",
      "requiresTrue": false,
      "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
      "setsFlag": ""
     },
     {
@@ -1124,6 +1667,8 @@
      "shiftTo": "",
      "requiresTrue": false,
      "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
      "setsFlag": ""
     },
     {
@@ -1134,6 +1679,8 @@
      "shiftTo": "",
      "requiresTrue": false,
      "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
      "setsFlag": ""
     },
     {
@@ -1144,40 +1691,98 @@
      "shiftTo": "",
      "requiresTrue": true,
      "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
      "setsFlag": ""
     }
    ],
    "setsFlag": "",
-   "noShift": false
+   "noShift": true,
+   "timer": 0,
+   "timerDefault": 0,
+   "toast": ""
   },
-  "end_theo": {
-   "loc": "Ending — The Thief",
+  "ch5_intro": {
+   "loc": "The office",
    "clock": 0,
    "hub": false,
-   "ending": true,
+   "ending": false,
    "grant": [],
    "lines": [
     {
      "who": "narr",
-     "text": "Theo folds in about eleven seconds. The money's in his car. He cries and says Danny owed him and Danny was fine when he left, he was sitting up, he told me to get out.",
+     "text": "Chapter Five — Convergence",
      "state": "B",
-     "vo": ""
+     "vo": "",
+     "card": true
     },
     {
      "who": "narr",
-     "text": "The police write \"sitting up\" in a notebook and never read it again. The robbery story holds. Mira doesn't look at you.",
+     "text": "I have all of it. It's in pieces on the floor of my head, like a dropped tray. I lay it out on Danny's desk in a line. The carbon. The receipt. The ash. The glass.",
      "state": "B",
-     "vo": ""
+     "vo": "n28"
+    },
+    {
+     "who": "voice",
+     "text": "Order matters. Who was standing when. Who could have called and didn't. Get it wrong and one of them will tell you so.",
+     "state": "V",
+     "vo": "ch5_intro_02"
+    }
+   ],
+   "choices": [
+    {
+     "label": "Build the timeline.",
+     "next": "__timeline",
+     "small": "",
+     "state": "",
+     "shiftTo": "",
+     "requiresTrue": false,
+     "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
+     "setsFlag": ""
+    }
+   ],
+   "setsFlag": "",
+   "noShift": true,
+   "timer": 0,
+   "timerDefault": 0,
+   "toast": ""
+  },
+  "ch5_silence": {
+   "loc": "The office",
+   "clock": 0,
+   "hub": false,
+   "ending": false,
+   "grant": [],
+   "lines": [
+    {
+     "who": "narr",
+     "text": "Six events. One line. Every one of them walked past a dying man. And the line starts with my hands.",
+     "state": "B",
+     "vo": "n29"
+    },
+    {
+     "who": "frank",
+     "text": "It fits. All of it fits. Connie saw my hands on him. But I don't remember it. I've got her word for it, and I've got yours.",
+     "state": "B",
+     "vo": "ch5_silence_01"
+    },
+    {
+     "who": "frank",
+     "text": "And you've spent all night pointing me at everybody else.",
+     "state": "B",
+     "vo": "ch5_silence_02"
     },
     {
      "who": "narr",
-     "text": "You were wrong. You will never know.",
+     "text": "I wait for the Voice to say something. It always says something. It doesn't. For the first time all night, the inside of my head is quiet. It's the loudest thing I've ever heard.",
      "state": "B",
-     "vo": ""
+     "vo": "n30"
     },
     {
      "who": "narr",
-     "text": "Ending — The Thief",
+     "text": "End of Chapter Five",
      "state": "B",
      "vo": "",
      "card": true
@@ -1185,162 +1790,23 @@
    ],
    "choices": [
     {
-     "label": "Play again",
-     "next": "__restart",
+     "label": "3:58. Headlights.",
+     "next": "accuse",
      "small": "",
      "state": "",
      "shiftTo": "",
      "requiresTrue": false,
      "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
      "setsFlag": ""
     }
    ],
-   "setsFlag": "",
-   "noShift": false
-  },
-  "end_lenny": {
-   "loc": "Ending — The Partner",
-   "clock": 0,
-   "hub": false,
-   "ending": true,
-   "grant": [],
-   "lines": [
-    {
-     "who": "narr",
-     "text": "The ash does it, and the ledger in his car does the rest. Lenny Baptiste is charged with theft and with leaving a man to die, which turns out to be a crime with a name you didn't know.",
-     "state": "B",
-     "vo": ""
-    },
-    {
-     "who": "narr",
-     "text": "It feels like a win. The Voice doesn't say anything. That's how you know it isn't one.",
-     "state": "B",
-     "vo": ""
-    },
-    {
-     "who": "narr",
-     "text": "Ending — The Partner",
-     "state": "B",
-     "vo": "",
-     "card": true
-    }
-   ],
-   "choices": [
-    {
-     "label": "Play again",
-     "next": "__restart",
-     "small": "",
-     "state": "",
-     "shiftTo": "",
-     "requiresTrue": false,
-     "requiresFlag": "",
-     "setsFlag": ""
-    }
-   ],
-   "setsFlag": "",
-   "noShift": false
-  },
-  "end_mira": {
-   "loc": "Ending — The Widow",
-   "clock": 0,
-   "hub": false,
-   "ending": true,
-   "grant": [],
-   "lines": [
-    {
-     "who": "narr",
-     "text": "The bottle. The rail. The clean hands. She doesn't deny any of it. She says the insurance wouldn't have paid on a fall and she has a bar to keep.",
-     "state": "B",
-     "vo": ""
-    },
-    {
-     "who": "mira",
-     "text": "Fine. I staged it. Then who, Frank? Who put him on the floor?",
-     "state": "B",
-     "vo": "end_mira_01"
-    },
-    {
-     "who": "narr",
-     "text": "You open your mouth. Nothing comes out.",
-     "state": "B",
-     "vo": ""
-    },
-    {
-     "who": "narr",
-     "text": "Ending — The Widow",
-     "state": "B",
-     "vo": "",
-     "card": true
-    }
-   ],
-   "choices": [
-    {
-     "label": "Play again",
-     "next": "__restart",
-     "small": "",
-     "state": "",
-     "shiftTo": "",
-     "requiresTrue": false,
-     "requiresFlag": "",
-     "setsFlag": ""
-    }
-   ],
-   "setsFlag": "",
-   "noShift": false
-  },
-  "end_connie": {
-   "loc": "Ending — The Witness",
-   "clock": 0,
-   "hub": false,
-   "ending": true,
-   "grant": [],
-   "lines": [
-    {
-     "who": "narr",
-     "text": "She laughs. Not unkindly.",
-     "state": "B",
-     "vo": ""
-    },
-    {
-     "who": "connie",
-     "text": "Oh, Frank. All right. Since you asked.",
-     "state": "B",
-     "vo": "end_connie_01"
-    },
-    {
-     "who": "narr",
-     "text": "And she tells you. All of it. Eleven fifty. The rail. Your hand.",
-     "state": "B",
-     "vo": ""
-    },
-    {
-     "who": "narr",
-     "text": "You don't hear the police come in.",
-     "state": "B",
-     "vo": ""
-    },
-    {
-     "who": "narr",
-     "text": "Ending — The Witness — next time, drink before you ask her.",
-     "state": "B",
-     "vo": "",
-     "card": true
-    }
-   ],
-   "choices": [
-    {
-     "label": "Play again",
-     "next": "__restart",
-     "small": "",
-     "state": "",
-     "shiftTo": "",
-     "requiresTrue": false,
-     "requiresFlag": "",
-     "setsFlag": ""
-    }
-   ],
-   "setsFlag": "",
-   "noShift": false
+   "setsFlag": "timeline",
+   "noShift": true,
+   "timer": 0,
+   "timerDefault": 0,
+   "toast": ""
   },
   "end_true": {
    "loc": "Chapter Six — Shift Ends",
@@ -1360,9 +1826,9 @@
     },
     {
      "who": "narr",
-     "text": "Headlights fill the front window. Two doors slam. You have the time it takes a tired man to find the right key.",
+     "text": "Headlights fill the window. Two doors slam. I have the time it takes a tired man to find the right key.",
      "state": "B",
-     "vo": ""
+     "vo": "n31"
     },
     {
      "who": "frank",
@@ -1408,21 +1874,9 @@
     },
     {
      "who": "narr",
-     "text": "The Voice's confession goes on the board. Last card.",
+     "text": "The front door opens. The uniforms come in blinking. Mira stands. Theo backs into the wall. Lenny puts his cigar out on his own shoe. Connie doesn't move. One sentence.",
      "state": "B",
-     "vo": ""
-    },
-    {
-     "who": "narr",
-     "text": "The front door opens. The uniforms come in blinking. Mira stands. Theo backs into the wall. Lenny puts his cigar out on his own shoe. Connie doesn't move.",
-     "state": "B",
-     "vo": ""
-    },
-    {
-     "who": "narr",
-     "text": "You have one sentence.",
-     "state": "B",
-     "vo": ""
+     "vo": "n32"
     }
    ],
    "choices": [
@@ -1434,6 +1888,8 @@
      "shiftTo": "",
      "requiresTrue": false,
      "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
      "setsFlag": ""
     },
     {
@@ -1444,475 +1900,16 @@
      "shiftTo": "",
      "requiresTrue": false,
      "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
      "setsFlag": ""
     }
    ],
    "setsFlag": "",
-   "noShift": true
-  },
-  "end_timeout": {
-   "loc": "Ending — The Easy Answer",
-   "clock": 0,
-   "hub": false,
-   "ending": true,
-   "grant": [],
-   "lines": [
-    {
-     "who": "narr",
-     "text": "4:00 AM. Two uniforms, one of them yawning. They find the money in Theo's car in under a minute. That's the story now. That's the whole story.",
-     "state": "B",
-     "vo": ""
-    },
-    {
-     "who": "narr",
-     "text": "You have a drink. Nobody stops you. Nobody's left who would.",
-     "state": "B",
-     "vo": ""
-    },
-    {
-     "who": "narr",
-     "text": "Ending — The Easy Answer",
-     "state": "B",
-     "vo": "",
-     "card": true
-    }
-   ],
-   "choices": [
-    {
-     "label": "Play again",
-     "next": "__restart",
-     "small": "",
-     "state": "",
-     "shiftTo": "",
-     "requiresTrue": false,
-     "requiresFlag": "",
-     "setsFlag": ""
-    }
-   ],
-   "setsFlag": "",
-   "noShift": false
-  },
-  "ch4_blackout": {
-   "loc": "The Last Call · 2:40 AM",
-   "clock": 0,
-   "hub": false,
-   "ending": false,
-   "grant": [],
-   "lines": [
-    {
-     "who": "narr",
-     "text": "Chapter Four — Blackout",
-     "state": "B",
-     "vo": "",
-     "card": true
-    },
-    {
-     "who": "narr",
-     "text": "Ninety minutes. You feel it before you check the clock — the floor tilts a quarter inch and settles. The schedule is a dog that knows when it's fed.",
-     "state": "B",
-     "vo": ""
-    },
-    {
-     "who": "narr",
-     "text": "Sober, you can keep the clock. The Voice can't help you and you'll see only what's in front of you.",
-     "state": "S",
-     "vo": ""
-    },
-    {
-     "who": "voice",
-     "text": "Here it comes. You can ride it out and stay useful for the police, or you can have the second drink and I'll show you the thing in the corner you keep not looking at. Your call. It's always your call. That's the joke.",
-     "state": "V",
-     "vo": "ch4_blackout_03"
-    },
-    {
-     "who": "narr",
-     "text": "Connie is watching you from the last stool. She hasn't looked away in twenty minutes.",
-     "state": "B",
-     "vo": ""
-    },
-    {
-     "who": "narr",
-     "text": "The flask is in your hand. You don't remember taking it out.",
-     "state": "B",
-     "vo": ""
-    }
-   ],
-   "choices": [
-    {
-     "label": "Drink.",
-     "next": "ch4_drink",
-     "small": "lose the next twenty minutes; the Voice gets Connie",
-     "state": "",
-     "shiftTo": "V",
-     "requiresTrue": false,
-     "requiresFlag": "",
-     "setsFlag": ""
-    },
-    {
-     "label": "Put it away.",
-     "next": "ch4_sober",
-     "small": "keep the clock; find what a sober man finds",
-     "state": "",
-     "shiftTo": "S",
-     "requiresTrue": false,
-     "requiresFlag": "",
-     "setsFlag": ""
-    }
-   ],
-   "setsFlag": "ch4",
-   "noShift": true
-  },
-  "ch4_drink": {
-   "loc": "The Last Call · Bar floor",
-   "clock": 20,
-   "hub": false,
-   "ending": false,
-   "grant": [],
-   "lines": [
-    {
-     "who": "narr",
-     "text": "Two swallows. Three. The room goes under like a stone.",
-     "state": "B",
-     "vo": ""
-    },
-    {
-     "who": "narr",
-     "text": "— and comes back up with the clock twenty minutes on and your hand on the end of the brass rail, pressed flat, exactly over the print.",
-     "state": "V",
-     "vo": ""
-    },
-    {
-     "who": "voice",
-     "text": "There. Now you know what size it is.",
-     "state": "V",
-     "vo": "ch4_drink_02"
-    },
-    {
-     "who": "narr",
-     "text": "Connie has moved. She's standing next to you. She smells like gin and chalk dust.",
-     "state": "V",
-     "vo": ""
-    },
-    {
-     "who": "connie",
-     "text": "All right, dear. You've had enough now that you'll listen and not enough that you'll forget. That's the window. I used to wait for it with my husband.",
-     "state": "V",
-     "vo": "ch4_drink_04"
-    },
-    {
-     "who": "connie",
-     "text": "Sit down. I'm going to tell you about tonight.",
-     "state": "V",
-     "vo": "ch4_drink_05"
-    }
-   ],
-   "choices": [
-    {
-     "label": "Listen.",
-     "next": "ch4_connie",
-     "small": "",
-     "state": "",
-     "shiftTo": "",
-     "requiresTrue": false,
-     "requiresFlag": "",
-     "setsFlag": ""
-    }
-   ],
-   "setsFlag": "",
-   "noShift": false
-  },
-  "ch4_connie": {
-   "loc": "Connie Vale · 3:00 AM",
-   "clock": 0,
-   "hub": false,
-   "ending": false,
-   "grant": [
-    "E08"
-   ],
-   "lines": [
-    {
-     "who": "connie",
-     "text": "Danny cut you off at a quarter to twelve. He wrote it on your tab like he always does, and you laughed like you always do, and then you didn't. Something in you said something to him. About Mira. About upstairs.",
-     "state": "V",
-     "vo": "ch4_connie_00"
-    },
-    {
-     "who": "voice",
-     "text": "I remember what I said. You don't want it.",
-     "state": "V",
-     "vo": "ch4_connie_01"
-    },
-    {
-     "who": "connie",
-     "text": "He came round the bar and took you by the collar. Not hard. Like a father. And you put both hands on his chest and pushed, and he went backwards over the rail and sat down very suddenly, and hit his head on the brass on the way, and said — and I remember this exactly — 'Get out of my bar, Frank.'",
-     "state": "V",
-     "vo": "ch4_connie_02"
-    },
-    {
-     "who": "connie",
-     "text": "You went to your booth. You were asleep before you lay down.",
-     "state": "V",
-     "vo": "ch4_connie_03"
-    },
-    {
-     "who": "connie",
-     "text": "He sat there a while, rubbing his head. Then he got up. He wrote on the tab again. He was all right, Frank. He was walking. He was all right for a long time.",
-     "state": "V",
-     "vo": "ch4_connie_04"
-    },
-    {
-     "who": "connie",
-     "text": "The boy came in at ten past and Danny was sitting on the floor again by then, and he said, 'Not now, Theo.' The boy took money from the till. Danny watched him do it and didn't say a word. The boy ran.",
-     "state": "V",
-     "vo": "ch4_connie_05"
-    },
-    {
-     "who": "connie",
-     "text": "Lenny came at half past. Danny was lying down. Lenny stepped over him into the office. He came out with the green book and a folder and he lit a cigar in the doorway and looked at Danny for a long time and went home.",
-     "state": "V",
-     "vo": "ch4_connie_06"
-    },
-    {
-     "who": "connie",
-     "text": "Mira came down at quarter to one. She knelt. She stayed a while. Then she stood up and went and got the bottle from the top shelf and broke it beside him. She took a cloth to the rail. She went upstairs and washed, and she came back and sat with him until half past one, and then she rang.",
-     "state": "V",
-     "vo": "ch4_connie_07"
-    },
-    {
-     "who": "frank",
-     "text": "And you —",
-     "state": "V",
-     "vo": "ch4_connie_08"
-    },
-    {
-     "who": "connie",
-     "text": "I sat here, dear. I'm seventy-one. I sat here and I watched a man die slowly in front of four people who each had a reason not to call, and I was the fifth.",
-     "state": "V",
-     "vo": "ch4_connie_09"
-    },
-    {
-     "who": "connie",
-     "text": "Now you know what everyone did. What you do with it is the part I can't help you with.",
-     "state": "B",
-     "vo": "ch4_connie_10"
-    },
-    {
-     "who": "narr",
-     "text": "End of Chapter Four.",
-     "state": "B",
-     "vo": "",
-     "card": true
-    }
-   ],
-   "choices": [
-    {
-     "label": "Back to the room.",
-     "next": "hub",
-     "small": "",
-     "state": "",
-     "shiftTo": "",
-     "requiresTrue": false,
-     "requiresFlag": "",
-     "setsFlag": ""
-    }
-   ],
-   "setsFlag": "connie",
-   "noShift": false
-  },
-  "ch4_sober": {
-   "loc": "The Last Call · Office",
-   "clock": 0,
-   "hub": false,
-   "ending": false,
-   "grant": [
-    "E10",
-    "E11"
-   ],
-   "lines": [
-    {
-     "who": "narr",
-     "text": "You screw the cap back on. The shake in your hands has to be lived with. You go and stand in the office because it's the only room without a body or a witness in it.",
-     "state": "B",
-     "vo": ""
-    },
-    {
-     "who": "narr",
-     "text": "The little sink in the corner. A bar cloth, wrung out and dropped, still wet. The edges are pink.",
-     "state": "S",
-     "vo": ""
-    },
-    {
-     "who": "frank",
-     "text": "Somebody washed a cloth. After.",
-     "state": "B",
-     "vo": "ch4_sober_02"
-    },
-    {
-     "who": "narr",
-     "text": "And on the desk, under the lamp: the tab book is gone, but Danny used carbon paper like it was still 1988. The carbon of the last page is still in the drawer.",
-     "state": "S",
-     "vo": ""
-    },
-    {
-     "who": "narr",
-     "text": "'11:47 — CUT OFF. — D.' And under it, a shakier line: '11:52 — F. put hands on me. Went down. I'm OK. Sat him in his booth.'",
-     "state": "S",
-     "vo": ""
-    },
-    {
-     "who": "frank",
-     "text": "Went down. I went down. I must have fallen, and he — he sat me in my booth. That's the knuckles. That's all that is.",
-     "state": "B",
-     "vo": "ch4_sober_05"
-    },
-    {
-     "who": "narr",
-     "text": "It reads that way if you want it to. Sober, you want it to. But Danny wrote it down, which means he was alive and writing at 11:52, and he thought it mattered.",
-     "state": "B",
-     "vo": ""
-    },
-    {
-     "who": "narr",
-     "text": "Connie, from the doorway: 'When you're ready, dear. I'll be on my stool.'",
-     "state": "B",
-     "vo": ""
-    },
-    {
-     "who": "narr",
-     "text": "End of Chapter Four.",
-     "state": "B",
-     "vo": "",
-     "card": true
-    }
-   ],
-   "choices": [
-    {
-     "label": "Back to the room.",
-     "next": "hub",
-     "small": "",
-     "state": "",
-     "shiftTo": "",
-     "requiresTrue": false,
-     "requiresFlag": "",
-     "setsFlag": ""
-    }
-   ],
-   "setsFlag": "",
-   "noShift": false
-  },
-  "ch5_intro": {
-   "loc": "The Last Call · Office · 3:40 AM",
-   "clock": 0,
-   "hub": false,
-   "ending": false,
-   "grant": [],
-   "lines": [
-    {
-     "who": "narr",
-     "text": "Chapter Five — Convergence",
-     "state": "B",
-     "vo": "",
-     "card": true
-    },
-    {
-     "who": "narr",
-     "text": "You have it all. It's in pieces on the floor of your head like a dropped tray. Put it in order.",
-     "state": "B",
-     "vo": ""
-    },
-    {
-     "who": "voice",
-     "text": "Order matters. Who was standing when. Who could have called and didn't. Get it wrong and one of them will tell you so.",
-     "state": "V",
-     "vo": "ch5_intro_02"
-    },
-    {
-     "who": "narr",
-     "text": "You take the carbon, the receipt, the ash, the glass, and you lay them on Danny's desk in a line.",
-     "state": "S",
-     "vo": ""
-    }
-   ],
-   "choices": [
-    {
-     "label": "Build the timeline.",
-     "next": "__timeline",
-     "small": "",
-     "state": "",
-     "shiftTo": "",
-     "requiresTrue": false,
-     "requiresFlag": "",
-     "setsFlag": ""
-    }
-   ],
-   "setsFlag": "",
-   "noShift": true
-  },
-  "ch5_silence": {
-   "loc": "The Last Call · Office",
-   "clock": 0,
-   "hub": false,
-   "ending": false,
-   "grant": [],
-   "lines": [
-    {
-     "who": "narr",
-     "text": "Six events. One line. Every one of them walked past a dying man, and the line starts with your hands.",
-     "state": "B",
-     "vo": ""
-    },
-    {
-     "who": "frank",
-     "text": "It fits. All of it fits. Connie saw my hands on him. But I don't remember it. I've got her word for it, and I've got yours.",
-     "state": "B",
-     "vo": "ch5_silence_01"
-    },
-    {
-     "who": "frank",
-     "text": "And you've spent all night pointing me at everybody else.",
-     "state": "B",
-     "vo": "ch5_silence_02"
-    },
-    {
-     "who": "narr",
-     "text": "You wait for the Voice to say something. It always says something.",
-     "state": "B",
-     "vo": ""
-    },
-    {
-     "who": "narr",
-     "text": "It doesn't.",
-     "state": "B",
-     "vo": ""
-    },
-    {
-     "who": "narr",
-     "text": "For the first time all night, the inside of your head is quiet. It's the loudest thing you've ever heard.",
-     "state": "B",
-     "vo": ""
-    },
-    {
-     "who": "narr",
-     "text": "End of Chapter Five.",
-     "state": "B",
-     "vo": "",
-     "card": true
-    }
-   ],
-   "choices": [
-    {
-     "label": "3:58. Headlights.",
-     "next": "accuse",
-     "small": "",
-     "state": "",
-     "shiftTo": "",
-     "requiresTrue": false,
-     "requiresFlag": "",
-     "setsFlag": ""
-    }
-   ],
-   "setsFlag": "timeline",
-   "noShift": true
+   "noShift": true,
+   "timer": 18,
+   "timerDefault": 1,
+   "toast": ""
   },
   "end_true_tell": {
    "loc": "Ending — The Last Shift",
@@ -1923,27 +1920,21 @@
    "lines": [
     {
      "who": "narr",
-     "text": "You say it. All of it. The push, the rail, the hour and a half. Theo and the till. Lenny and the book. Mira and the bottle. Connie on her stool.",
+     "text": "I say it. All of it. The push, the rail, the hour and a half. Theo and the till. Lenny and the book. Mira and the bottle. Connie on her stool. Nobody argues. That's the thing about the truth in a room where everybody already knows it. It just lands. Like a glass set down.",
      "state": "B",
-     "vo": ""
+     "vo": "n33"
     },
     {
      "who": "narr",
-     "text": "Nobody argues. That's the thing about the truth in a room where everybody already knows it — it just lands, like a glass set down.",
+     "text": "Mira looks at me, and for the first time tonight her face does something. It isn't forgiveness. It's worse. It's relief.",
      "state": "B",
-     "vo": ""
+     "vo": "n34"
     },
     {
      "who": "narr",
-     "text": "Mira looks at you and for the first time tonight her face does something. It isn't forgiveness. It's worse. It's relief.",
+     "text": "On the way out, I stop at the bar and pour the flask into the sink. It takes longer than you'd think.",
      "state": "B",
-     "vo": ""
-    },
-    {
-     "who": "narr",
-     "text": "On the way out you stop at the bar and pour the flask into the sink. It takes longer than you'd think.",
-     "state": "B",
-     "vo": ""
+     "vo": "n35"
     },
     {
      "who": "voice",
@@ -1959,16 +1950,17 @@
     },
     {
      "who": "narr",
-     "text": "Ending — The Last Shift — you told them.",
+     "text": "Ending — The Last Shift: you told them",
      "state": "B",
      "vo": "",
      "card": true
     },
     {
      "who": "narr",
-     "text": "The game remembers this.",
+     "text": "Frank Sable will return.",
      "state": "B",
-     "vo": ""
+     "vo": "",
+     "card": true
     }
    ],
    "choices": [
@@ -1980,11 +1972,16 @@
      "shiftTo": "",
      "requiresTrue": false,
      "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
      "setsFlag": ""
     }
    ],
    "setsFlag": "ending_tell",
-   "noShift": false
+   "noShift": false,
+   "timer": 0,
+   "timerDefault": 0,
+   "toast": ""
   },
   "end_true_stand": {
    "loc": "Ending — The Last Shift",
@@ -1995,21 +1992,15 @@
    "lines": [
     {
      "who": "narr",
-     "text": "You point at the till. The uniforms find the money in Theo's car in under a minute. He cries. Mira says nothing. Lenny says 'tragic' and means the bar.",
+     "text": "I point at the till. They find the money in Theo's car in under a minute. He cries. Mira says nothing. Lenny says 'tragic,' and means the bar.",
      "state": "B",
-     "vo": ""
+     "vo": "n36"
     },
     {
      "who": "narr",
-     "text": "Insurance pays. Lenny gets the lease. Theo gets eighteen months. Connie finishes her drink.",
+     "text": "Insurance pays. Lenny gets the lease. Theo gets eighteen months. Connie finishes her drink. And I sit in my booth until they turn the lights off. Then I have the last of the flask. Because the schedule's the schedule.",
      "state": "B",
-     "vo": ""
-    },
-    {
-     "who": "narr",
-     "text": "You sit in the booth until they turn the lights off. Then you have the last of the flask, because the schedule's the schedule.",
-     "state": "B",
-     "vo": ""
+     "vo": "n37"
     },
     {
      "who": "voice",
@@ -2031,16 +2022,17 @@
     },
     {
      "who": "narr",
-     "text": "Ending — The Last Shift — you let it stand.",
+     "text": "Ending — The Last Shift: you let it stand",
      "state": "B",
      "vo": "",
      "card": true
     },
     {
      "who": "narr",
-     "text": "The game remembers this.",
+     "text": "Frank Sable will return.",
      "state": "B",
-     "vo": ""
+     "vo": "",
+     "card": true
     }
    ],
    "choices": [
@@ -2052,11 +2044,286 @@
      "shiftTo": "",
      "requiresTrue": false,
      "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
      "setsFlag": ""
     }
    ],
    "setsFlag": "ending_stand",
-   "noShift": false
+   "noShift": false,
+   "timer": 0,
+   "timerDefault": 0,
+   "toast": ""
+  },
+  "end_theo": {
+   "loc": "Ending — The Thief",
+   "clock": 0,
+   "hub": false,
+   "ending": true,
+   "grant": [],
+   "lines": [
+    {
+     "who": "narr",
+     "text": "Theo folds in about eleven seconds. The money's in his car. He cries, and says Danny owed him, and Danny was sitting up when he left. The police write 'sitting up' in a notebook, and never read it again.",
+     "state": "B",
+     "vo": "n38"
+    },
+    {
+     "who": "narr",
+     "text": "The robbery story holds. Mira doesn't look at me. I was wrong. And I'll never know it.",
+     "state": "B",
+     "vo": "n39"
+    },
+    {
+     "who": "narr",
+     "text": "Ending — The Thief",
+     "state": "B",
+     "vo": "",
+     "card": true
+    },
+    {
+     "who": "narr",
+     "text": "Frank Sable will return.",
+     "state": "B",
+     "vo": "",
+     "card": true
+    }
+   ],
+   "choices": [
+    {
+     "label": "Play again",
+     "next": "__restart",
+     "small": "",
+     "state": "",
+     "shiftTo": "",
+     "requiresTrue": false,
+     "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
+     "setsFlag": ""
+    }
+   ],
+   "setsFlag": "",
+   "noShift": false,
+   "timer": 0,
+   "timerDefault": 0,
+   "toast": ""
+  },
+  "end_lenny": {
+   "loc": "Ending — The Partner",
+   "clock": 0,
+   "hub": false,
+   "ending": true,
+   "grant": [],
+   "lines": [
+    {
+     "who": "narr",
+     "text": "The ash does it, and the ledger in his car does the rest. Lenny Baptiste is charged with theft, and with leaving a man to die, which turns out to be a crime with a name I didn't know. It feels like a win. The Voice doesn't say anything. That's how I know it isn't one.",
+     "state": "B",
+     "vo": "n40"
+    },
+    {
+     "who": "narr",
+     "text": "Ending — The Partner",
+     "state": "B",
+     "vo": "",
+     "card": true
+    },
+    {
+     "who": "narr",
+     "text": "Frank Sable will return.",
+     "state": "B",
+     "vo": "",
+     "card": true
+    }
+   ],
+   "choices": [
+    {
+     "label": "Play again",
+     "next": "__restart",
+     "small": "",
+     "state": "",
+     "shiftTo": "",
+     "requiresTrue": false,
+     "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
+     "setsFlag": ""
+    }
+   ],
+   "setsFlag": "",
+   "noShift": false,
+   "timer": 0,
+   "timerDefault": 0,
+   "toast": ""
+  },
+  "end_mira": {
+   "loc": "Ending — The Widow",
+   "clock": 0,
+   "hub": false,
+   "ending": true,
+   "grant": [],
+   "lines": [
+    {
+     "who": "narr",
+     "text": "The bottle. The rail. The clean hands. She doesn't deny any of it.",
+     "state": "B",
+     "vo": "n41"
+    },
+    {
+     "who": "mira",
+     "text": "Fine. I staged it. Then who, Frank? Who put him on the floor?",
+     "state": "B",
+     "vo": "end_mira_01"
+    },
+    {
+     "who": "narr",
+     "text": "I open my mouth. Nothing comes out.",
+     "state": "B",
+     "vo": "n42"
+    },
+    {
+     "who": "narr",
+     "text": "Ending — The Widow",
+     "state": "B",
+     "vo": "",
+     "card": true
+    },
+    {
+     "who": "narr",
+     "text": "Frank Sable will return.",
+     "state": "B",
+     "vo": "",
+     "card": true
+    }
+   ],
+   "choices": [
+    {
+     "label": "Play again",
+     "next": "__restart",
+     "small": "",
+     "state": "",
+     "shiftTo": "",
+     "requiresTrue": false,
+     "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
+     "setsFlag": ""
+    }
+   ],
+   "setsFlag": "",
+   "noShift": false,
+   "timer": 0,
+   "timerDefault": 0,
+   "toast": ""
+  },
+  "end_connie": {
+   "loc": "Ending — The Witness",
+   "clock": 0,
+   "hub": false,
+   "ending": true,
+   "grant": [],
+   "lines": [
+    {
+     "who": "narr",
+     "text": "She laughs. Not unkindly.",
+     "state": "B",
+     "vo": "n43"
+    },
+    {
+     "who": "connie",
+     "text": "Oh, Frank. All right. Since you asked.",
+     "state": "B",
+     "vo": "end_connie_01"
+    },
+    {
+     "who": "narr",
+     "text": "And she tells me. All of it. Eleven fifty. The rail. My hands. I don't hear the police come in.",
+     "state": "B",
+     "vo": "n44"
+    },
+    {
+     "who": "narr",
+     "text": "Ending — The Witness",
+     "state": "B",
+     "vo": "",
+     "card": true
+    },
+    {
+     "who": "narr",
+     "text": "Frank Sable will return.",
+     "state": "B",
+     "vo": "",
+     "card": true
+    }
+   ],
+   "choices": [
+    {
+     "label": "Play again",
+     "next": "__restart",
+     "small": "",
+     "state": "",
+     "shiftTo": "",
+     "requiresTrue": false,
+     "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
+     "setsFlag": ""
+    }
+   ],
+   "setsFlag": "",
+   "noShift": false,
+   "timer": 0,
+   "timerDefault": 0,
+   "toast": ""
+  },
+  "end_timeout": {
+   "loc": "Ending — The Easy Answer",
+   "clock": 0,
+   "hub": false,
+   "ending": true,
+   "grant": [],
+   "lines": [
+    {
+     "who": "narr",
+     "text": "Four o'clock. Two uniforms, one of them yawning. They find the money in Theo's car in under a minute. That's the story now. That's the whole story. I have a drink. Nobody stops me. Nobody's left who would.",
+     "state": "B",
+     "vo": "n45"
+    },
+    {
+     "who": "narr",
+     "text": "Ending — The Easy Answer",
+     "state": "B",
+     "vo": "",
+     "card": true
+    },
+    {
+     "who": "narr",
+     "text": "Frank Sable will return.",
+     "state": "B",
+     "vo": "",
+     "card": true
+    }
+   ],
+   "choices": [
+    {
+     "label": "Play again",
+     "next": "__restart",
+     "small": "",
+     "state": "",
+     "shiftTo": "",
+     "requiresTrue": false,
+     "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
+     "setsFlag": ""
+    }
+   ],
+   "setsFlag": "",
+   "noShift": false,
+   "timer": 0,
+   "timerDefault": 0,
+   "toast": ""
   }
  },
  "evidence": {
@@ -2109,11 +2376,11 @@
    "t": "Her glass is still sweating. She never left."
   },
   "E08": {
-   "s": "V",
-   "t": "Connie's testimony. She saw everything."
+   "s": "C",
+   "t": "Connie's account. She never left her stool. She saw all of it, starting with your hands."
   },
   "E09": {
-   "s": "V",
+   "s": "C",
    "t": "The Voice's confession."
   },
   "E10": {
@@ -2123,6 +2390,18 @@
   "E11": {
    "s": "S",
    "t": "The carbon under the last page of Danny's tab book: '11:47 — CUT OFF. — D.' and under it, '11:52 — F. put hands on me. Went down. I'm OK. Sat him in his booth.'"
+  },
+  "C1": {
+   "s": "C",
+   "t": "Theo: he took the eighteen hundred he was owed at ten past twelve. Danny was sitting up, and talking."
+  },
+  "C2": {
+   "s": "C",
+   "t": "Lenny: at half past twelve he stepped over Danny, took the ledger and the deed, and left him breathing."
+  },
+  "C3": {
+   "s": "C",
+   "t": "Mira: at quarter to one he was already cold. She staged a robbery for the insurance."
   }
  },
  "timeline": {
@@ -2171,6 +2450,89 @@
    "t6": "Connie: 'No, dear. She sat with him a good while before she rang. Try again.'",
    "t2": "The Voice: 'Before the cut-off? He hadn't written the tab yet. Think.'",
    "t1": "The Voice: 'Start at the beginning. He cut you off. Then what did you do?'"
+  }
+ },
+ "present": {
+  "int_theo": {
+   "breaks": [
+    "E04v"
+   ],
+   "state": "S",
+   "crack": "crack_theo",
+   "flag": "cracked_theo",
+   "wrong_state": {
+    "who": "theo",
+    "text": "Don't... don't look at me like that. I've got nothing to say to you.",
+    "state": "B",
+    "vo": "t04"
+   },
+   "wrong": {
+    "who": "theo",
+    "text": "I don't know anything about that. I swear.",
+    "state": "B",
+    "vo": "t05"
+   }
+  },
+  "int_lenny": {
+   "breaks": [
+    "E05v"
+   ],
+   "state": "V",
+   "crack": "crack_lenny",
+   "flag": "cracked_lenny",
+   "wrong_state": {
+    "who": "lenny",
+    "text": "Is that it? You want to accuse me, detective, bring somebody with a spine.",
+    "state": "B",
+    "vo": "l04"
+   },
+   "wrong": {
+    "who": "lenny",
+    "text": "And? That's supposed to scare me?",
+    "state": "B",
+    "vo": "l05"
+   }
+  },
+  "int_mira": {
+   "breaks": [
+    "E01v",
+    "E10"
+   ],
+   "state": "S",
+   "crack": "crack_mira",
+   "flag": "cracked_mira",
+   "wrong_state": {
+    "who": "mira",
+    "text": "I'll talk to Frank. Not to whatever that is.",
+    "state": "B",
+    "vo": "m04"
+   },
+   "wrong": {
+    "who": "mira",
+    "text": "That doesn't mean what you think it means.",
+    "state": "B",
+    "vo": "m05"
+   }
+  },
+  "int_connie": {
+   "breaks": [
+    "E07v"
+   ],
+   "state": "S",
+   "crack": "crack_connie",
+   "flag": "connie_admits",
+   "wrong_state": {
+    "who": "connie",
+    "text": "Not you, dear. I'll wait for Frank.",
+    "state": "B",
+    "vo": "c01"
+   },
+   "wrong": {
+    "who": "connie",
+    "text": "That's not the question you want to ask me, dear.",
+    "state": "B",
+    "vo": "c02"
+   }
   }
  }
 }

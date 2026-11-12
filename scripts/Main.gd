@@ -32,6 +32,7 @@ var cam_base: Transform3D
 var sway_t: float = 0.0
 var mats: Dictionary = {}           # named shared materials
 var fov_tween: Tween
+var cam_station: String = ""
 
 ## Drop GLB files here (assets/models/<name>.glb) and they replace the primitive at that slot.
 ## Each slot is a list of placements: [position, y-rotation in degrees, target size in metres,
@@ -41,7 +42,7 @@ var fov_tween: Tween
 const MODEL_SLOTS := {
 	"jukebox":  [[Vector3(-4.72, 0.0, -1.0), 90.0, 1.5, "y"]],
 	"body":     [[Vector3(-4.1, 0.0, -3.1), 0.0, 1.8, "long"]],
-	"mira":     [[Vector3(-3.5, 0.0, -2.2), -150.0, 1.2, "y"]],
+	"mira":     [[Vector3(-3.5, 0.0, -2.2), 25.0, 1.2, "y"]],
 	"theo":     [[Vector3(4.3, 0.0, 2.4), -90.0, 1.78, "y"]],
 	"lenny":    [[Vector3(-0.7, 0.0, 0.2), -55.0, 1.75, "y"]],
 	"connie":   [[Vector3(3.0, 0.0, -1.9), -45.0, 1.45, "y"]],
@@ -61,7 +62,7 @@ const STATIONS := {
 	"bar":    [Vector3(-2.5, 2.2, -0.9), Vector3(-4.0, 0.0, -3.0), 58.0],
 	"floor":  [Vector3(1.5, 1.3, -0.5), Vector3(3.0, 0.35, -2.2), 58.0],
 	"office": [Vector3(5.75, 1.65, 0.3), Vector3(7.3, 0.55, -1.6), 62.0],
-	"mira":   [Vector3(-2.75, 1.25, -3.55), Vector3(-3.85, 0.35, -2.55), 60.0],
+	"mira":   [Vector3(-2.1, 1.25, -0.7), Vector3(-3.5, 0.75, -2.2), 50.0],
 	"theo":   [Vector3(2.5, 1.5, 1.7),  Vector3(4.4, 1.0, 2.45), 54.0],
 	"lenny":  [Vector3(-2.2, 1.5, 1.7), Vector3(-0.65, 0.95, 0.2), 54.0],
 	"connie": [Vector3(1.5, 1.45, -0.6), Vector3(3.0, 0.85, -1.95), 54.0],
@@ -75,9 +76,12 @@ const SCENE_STATION := {
 	"accuse": "hub",
 	"ch4_blackout": "connie", "ch4_drink": "rail", "ch4_connie": "connie", "ch4_sober": "office",
 	"ch5_intro": "office", "ch5_silence": "office",
-	"end_true": "rail", "end_true_tell": "hub", "end_true_stand": "booth",
+	"end_true": "hub", "end_true_tell": "hub", "end_true_stand": "booth",
 	"end_theo": "theo", "end_lenny": "lenny", "end_mira": "mira", "end_connie": "connie", "end_timeout": "booth",
+	"ch2_brief": "hub", "crack_theo": "theo", "crack_lenny": "lenny", "crack_mira": "mira", "crack_connie": "connie",
 }
+# When one of these people speaks, the camera cuts to them, wherever the scene is set.
+const SPEAKER_STATION := {"mira": "mira", "theo": "theo", "lenny": "lenny", "connie": "connie"}
 
 # Hotspots in the hub: name, scene id, position, size
 const HOTSPOTS := [
@@ -129,6 +133,9 @@ func _ready() -> void:
 	_build_sfx()
 	_build_voice()
 	ui.line_voice.connect(_on_line_voice)
+	ui.line_who.connect(_on_line_who)
+	ui.present_requested.connect(func(): ui.open_present())
+	ui.present_picked.connect(_on_present)
 	ui.line_advanced.connect(func(): _play("page"))
 	Story.evidence_found.connect(_on_evidence_sfx)
 	_enter_title()
@@ -185,6 +192,30 @@ func go(id: String) -> void:
 	ui.show_scene(id)
 
 
+## Cut to whoever is speaking; fall back to the scene's own shot for Frank, the Voice and narration.
+func _on_line_who(who: String) -> void:
+	if in_title or current_scene == "":
+		return
+	var target: String = SPEAKER_STATION.get(who, SCENE_STATION.get(current_scene, "hub"))
+	if target != cam_station:
+		_move_camera(target, 0.7)
+
+
+## The player showed this suspect a piece of evidence.
+func _on_present(evidence_id: String) -> void:
+	var r: Dictionary = Story.present(current_scene, evidence_id)
+	match str(r["result"]):
+		"crack":
+			go(str(r["scene"]))
+		"wrong_state":
+			Story.toast.emit("Not to this Frank. Shift, then show it again.")
+			ui.show_interject(r["line"])
+		"wrong":
+			if not Story.over:
+				Story.toast.emit("Five minutes gone.")
+				ui.show_interject(r["line"])
+
+
 func _on_choice(choice: Dictionary) -> void:
 	if in_title:
 		_leave_title()
@@ -209,20 +240,22 @@ func _on_state_changed(s: String) -> void:
 
 # ---------------------------------------------------------------- camera
 
-func _move_camera(station: String) -> void:
+func _move_camera(station: String, dur: float = 1.2) -> void:
 	var st: Array = STATIONS[station]
+	cam_station = station
 	if cam_tween:
 		cam_tween.kill()
 	var target := Transform3D().looking_at(st[1] - st[0], Vector3.UP)
 	target.origin = st[0]
 	cam_base = target
 	cam_tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT).set_parallel(true)
-	cam_tween.tween_property(cam, "transform", target, 1.2)
-	cam_tween.tween_property(cam, "fov", float(st[2]), 1.2)
+	cam_tween.tween_property(cam, "transform", target, dur)
+	cam_tween.tween_property(cam, "fov", float(st[2]), dur)
 
 
 func _snap_camera(station: String) -> void:
 	var st: Array = STATIONS[station]
+	cam_station = station
 	cam.position = st[0]
 	cam.look_at(st[1], Vector3.UP)
 	cam.fov = float(st[2])

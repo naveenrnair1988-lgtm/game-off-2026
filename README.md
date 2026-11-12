@@ -10,9 +10,12 @@ The truth needs both.
 
 ## The SHIFT
 
-- **Mechanic:** Frank shifts between two states, *Sober* and *The Voice*. Every scene has two scripts. Clues found in one state are invisible in the other.
-- **Setting:** The night shift at a bar after last call. One body, four suspects, one detective who may not remember why he's there.
-- **Structure:** Six chapters, each ending on a cliffhanger. Chapter breaks are the 90-minute mark — drink or don't. The final accusation only works if you gathered evidence in both states.
+- **Mechanic:** Frank shifts between two states, *Sober* and *The Voice*. Every scene has two scripts. The Voice finds what people are hiding — but nobody confesses to the Voice. They confess to sober Frank. So you shift to look, and shift back to be heard. (One suspect works the other way round.)
+- **Confrontations:** show a suspect the right piece of evidence, as the right Frank, and they break. The wrong piece costs you five minutes.
+- **The clock:** 1:40 AM to 4:00 AM. Every stop costs ten minutes, sobering up costs twenty, and you have three drinks. Some decisions are timed — saying nothing is an answer.
+- **Setting:** The night shift at a bar after last call. One body, four people who stayed, one detective who may not remember why he's there.
+- **Structure:** Six chapters and seven endings. The true ending needs three confessions, one witness, and the night laid out in order.
+- **Fully voiced**, including Frank's inner monologue and The Voice.
 
 ## Play
 
@@ -34,7 +37,7 @@ scripts/Main.gd      builds THE LAST CALL in 3D, camera stations, hotspots, Shif
 scripts/Story.gd     autoload: story data, state, clock, flasks, evidence
 scripts/UI.gd        HUD, dialogue panel, choices, evidence board, title
 data/story.json      every scene and line, tagged S (sober) / V (voice) / B (both)
-tests/smoke.gd       headless test: godot --headless --path . -s tests/smoke.gd
+tests/smoke.gd       headless test that plays the whole game: godot --headless --path . -s tests/smoke.gd
 export_presets.cfg   Web export preset
 .github/workflows    CI: smoke test → web export → GitHub Pages
 prototype/           the day-one single-file HTML prototype (kept for history)

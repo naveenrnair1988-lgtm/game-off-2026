@@ -2,24 +2,32 @@ extends Node
 ## Story — autoload. Owns all game state and the story data.
 ## State 'S' = Sober Frank, 'V' = The Voice. Lines, choices and evidence are
 ## filtered by state. The clock runs out at 4:00 AM.
+##
+## The loop: the Voice finds what people are hiding; people only confess to sober Frank
+## (Lenny is the exception). So you shift to look, and shift back to be heard.
 
 signal state_changed(new_state: String)
 signal clock_changed(minutes: int)
 signal flasks_changed(n: int)
 signal evidence_found(id: String)
 signal timed_out
+signal toast(text: String)
 
 const START_MINUTES := 1 * 60 + 40   # 1:40 AM
 const END_MINUTES := 4 * 60          # 4:00 AM — police arrive
 const FLASKS := 3
-const SHIFT_BACK_COST := 30          # minutes to sober up
-const TRUE_NEEDS := {"S": 4, "V": 4, "witness": "E08"}
+const SHIFT_BACK_COST := 20          # minutes to sober up
+const WRONG_PRESENT_COST := 5        # minutes lost showing a suspect the wrong thing
+const WITNESS := "E08"                # Connie's account: the key to the true ending
+const SUSPECT_FLAGS := ["cracked_theo", "cracked_lenny", "cracked_mira"]
 const CH4_MINUTES := 2 * 60 + 40     # the 90-minute mark: Chapter Four fires on the next hub visit
 const SAVE_PATH := "user://last_shift.cfg"
 
 var scenes: Dictionary = {}
 var evidence: Dictionary = {}
 var timeline: Dictionary = {}
+var present_cfg: Dictionary = {}
+var stats: Dictionary = {}
 var flags: Dictionary = {}
 var endings_seen: Array = []
 
@@ -40,6 +48,7 @@ func _ready() -> void:
 	scenes = data["scenes"]
 	evidence = data["evidence"]
 	timeline = data.get("timeline", {})
+	present_cfg = data.get("present", {})
 	_load_save()
 	reset()
 
@@ -51,6 +60,7 @@ func reset() -> void:
 	found = {}
 	visited = {}
 	flags = {}
+	stats = {"drinks": 0, "stops": 0, "wrong": 0}
 	over = false
 	state_changed.emit(state)
 	clock_changed.emit(minutes)
@@ -97,6 +107,7 @@ func shift(to: String = "") -> bool:
 		if flasks <= 0:
 			return false
 		flasks -= 1
+		stats["drinks"] += 1
 		flasks_changed.emit(flasks)
 	else:
 		if add_minutes(SHIFT_BACK_COST):
@@ -108,9 +119,13 @@ func shift(to: String = "") -> bool:
 
 ## Forced shift from a story choice (Chapter 1 first drink). No refusal.
 func shift_forced(to: String) -> void:
-	if to == "V" and flasks > 0:
-		flasks -= 1
-		flasks_changed.emit(flasks)
+	if to == state:
+		return
+	if to == "V":
+		stats["drinks"] += 1
+		if flasks > 0:
+			flasks -= 1
+			flasks_changed.emit(flasks)
 	state = to
 	state_changed.emit(state)
 
@@ -121,9 +136,13 @@ func enter_scene(id: String) -> bool:
 	var sc: Dictionary = scenes[id]
 	var key := id + state
 	if int(sc.get("clock", 0)) > 0 and not visited.has(key):
+		stats["stops"] += 1
 		if add_minutes(int(sc["clock"])):
 			return false
+	var first := not visited.has(key)
 	visited[key] = true
+	if first and str(sc.get("toast", "")) != "":
+		toast.emit(str(sc["toast"]))
 	if str(sc.get("setsFlag", "")) != "":
 		set_flag(str(sc["setsFlag"]))
 	if id == "accuse" and minutes < END_MINUTES - 2:
@@ -150,19 +169,68 @@ func ch4_due() -> bool:
 	return minutes >= CH4_MINUTES and not has_flag("ch4") and not over
 
 
-## "Ready" = enough evidence in both states plus Connie's testimony; unlocks the timeline.
+## Connie's account unlocks laying the night out in order.
 func ready_for_timeline() -> bool:
-	var c := true_counts()
-	return c["S"] >= TRUE_NEEDS["S"] and c["V"] >= TRUE_NEEDS["V"] and found.has(TRUE_NEEDS["witness"])
+	return found.has(WITNESS)
+
+
+func cracked_count() -> int:
+	var n := 0
+	for f in SUSPECT_FLAGS:
+		if has_flag(f):
+			n += 1
+	return n
 
 
 func choice_available(c: Dictionary) -> bool:
 	var rf := str(c.get("requiresFlag", ""))
-	if rf == "ready":
-		return ready_for_timeline()
 	if rf != "" and not has_flag(rf):
 		return false
+	for f in c.get("requiresAll", []):
+		if not has_flag(str(f)):
+			return false
+	var hf := str(c.get("hideIfFlag", ""))
+	if hf != "" and has_flag(hf):
+		return false
 	return true
+
+
+## Showing a suspect a piece of evidence. Returns {"result": "crack" | "wrong_state" | "wrong" | "none", ...}.
+##  crack       -> "scene": the confession scene to play
+##  wrong_state -> "line": they will not say it to this Frank (shift, then try again)
+##  wrong       -> "line": that is not what breaks them (costs five minutes)
+func present(scene_id: String, evidence_id: String) -> Dictionary:
+	if not present_cfg.has(scene_id):
+		return {"result": "none"}
+	var cfg: Dictionary = present_cfg[scene_id]
+	if has_flag(str(cfg["flag"])):
+		return {"result": "none"}
+	if cfg["breaks"].has(evidence_id):
+		if state == str(cfg["state"]):
+			return {"result": "crack", "scene": str(cfg["crack"])}
+		return {"result": "wrong_state", "line": cfg["wrong_state"]}
+	stats["wrong"] += 1
+	add_minutes(WRONG_PRESENT_COST)
+	return {"result": "wrong", "line": cfg["wrong"]}
+
+
+## One-line summary of the night, shown with the ending.
+func recap() -> String:
+	var parts: Array = []
+	parts.append("%d drink%s" % [stats["drinks"], "" if stats["drinks"] == 1 else "s"])
+	parts.append("%d of 3 confessions" % cracked_count())
+	parts.append("Connie told you" if found.has(WITNESS) else "Connie kept it to herself")
+	parts.append("%d stops" % stats["stops"])
+	return "Your night:  " + "   ·   ".join(parts)
+
+
+func endings_total() -> int:
+	var seen: Dictionary = {}
+	for id in scenes.keys():
+		var f := str(scenes[id].get("setsFlag", ""))
+		if bool(scenes[id].get("ending", false)) and f.begins_with("ending_"):
+			seen[f] = true
+	return seen.size()
 
 
 func _record_ending(name: String) -> void:
@@ -200,7 +268,7 @@ func visible_choices(id: String) -> Array:
 func grant_evidence(id: String) -> Array[String]:
 	var newly: Array[String] = []
 	for e in scenes[id].get("grant", []):
-		if evidence[e]["s"] == state and not found.has(e):
+		if (evidence[e]["s"] == state or evidence[e]["s"] == "C") and not found.has(e):
 			found[e] = true
 			newly.append(e)
 			evidence_found.emit(e)
@@ -211,16 +279,9 @@ func grant_evidence(id: String) -> Array[String]:
 func scene_evidence(id: String) -> Array[String]:
 	var out: Array[String] = []
 	for e in scenes[id].get("grant", []):
-		if evidence[e]["s"] == state:
+		if evidence[e]["s"] == state or evidence[e]["s"] == "C":
 			out.append(e)
 	return out
-
-
-func true_counts() -> Dictionary:
-	var c := {"S": 0, "V": 0}
-	for e in found.keys():
-		c[evidence[e]["s"]] += 1
-	return c
 
 
 func true_unlocked() -> bool:
@@ -228,7 +289,6 @@ func true_unlocked() -> bool:
 
 
 func true_progress() -> String:
-	var c := true_counts()
-	var w := "✓" if found.has("E08") else "✗"
+	var w := "✓" if found.has(WITNESS) else "✗"
 	var t := "✓" if has_flag("timeline") else "✗"
-	return "sober %d/%d · voice %d/%d · witness %s · timeline %s" % [c["S"], TRUE_NEEDS["S"], c["V"], TRUE_NEEDS["V"], w, t]
+	return "confessions %d/3 · Connie %s · timeline %s" % [cracked_count(), w, t]
