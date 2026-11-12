@@ -162,7 +162,79 @@ func _ready() -> void:
 	_enter_title()
 
 
+# ---------------------------------------------------------------- adaptive quality
+## The game picks a quality tier from the size of the window, then steps down (never up)
+## whenever the frame rate stays low. Tiers trade 3D resolution, MSAA and shadows for speed;
+## the interface is always drawn at full resolution.
+const TIERS := [
+	{"scale": 1.0, "msaa": Viewport.MSAA_4X, "shadows": true},
+	{"scale": 0.77, "msaa": Viewport.MSAA_2X, "shadows": true},
+	{"scale": 0.62, "msaa": Viewport.MSAA_DISABLED, "shadows": true},
+	{"scale": 0.5, "msaa": Viewport.MSAA_DISABLED, "shadows": false},
+]
+const FPS_FLOOR := 42.0
+var tier: int = -1
+var fps_t: float = 0.0
+var fps_n: int = 0
+var fps_grace: float = 4.0
+var shadow_lights: Array[Light3D] = []
+
+
+func _set_tier(t: int) -> void:
+	t = clampi(t, 0, TIERS.size() - 1)
+	if t == tier:
+		return
+	tier = t
+	var q: Dictionary = TIERS[t]
+	var vp := get_viewport()
+	vp.scaling_3d_mode = Viewport.SCALING_3D_MODE_BILINEAR
+	# never render the room below about 600 lines, however small the window
+	vp.scaling_3d_scale = clampf(maxf(float(q["scale"]), 600.0 / maxf(1.0, float(vp.size.y))), 0.25, 1.0)
+	vp.msaa_3d = q["msaa"]
+	for l in shadow_lights:
+		l.shadow_enabled = q["shadows"]
+	fps_grace = 2.5
+	print("quality tier ", t)
+
+
+func _initial_tier() -> int:
+	var forced := OS.get_environment("LS_TIER")
+	if forced != "":
+		return int(forced)
+	var px := float(get_viewport().size.x) * float(get_viewport().size.y)
+	if px > 5.0e6:
+		return 2
+	if px > 2.4e6:
+		return 1
+	return 0
+
+
+func _watch_fps(delta: float) -> void:
+	if tier < 0:
+		for l in lights:
+			if l.shadow_enabled:
+				shadow_lights.append(l)
+		_set_tier(_initial_tier())
+		return
+	if fps_grace > 0.0:
+		fps_grace -= delta
+		fps_t = 0.0
+		fps_n = 0
+		return
+	if delta > 0.5:
+		return   # a hitch (tab switch, load), not a slow machine
+	fps_t += delta
+	fps_n += 1
+	if fps_t >= 1.5:
+		var fps := float(fps_n) / fps_t
+		fps_t = 0.0
+		fps_n = 0
+		if fps < FPS_FLOOR and tier < TIERS.size() - 1 and OS.get_environment("LS_TIER") == "":
+			_set_tier(tier + 1)
+
+
 func _process(delta: float) -> void:
+	_watch_fps(delta)
 	# slow handheld breathing on the camera, on top of whatever station it is at
 	sway_t += delta
 	if in_title:
@@ -314,6 +386,7 @@ func _enter_title() -> void:
 	_apply_palette(TITLE, 0.0)
 	if post_mat:
 		post_mat.set_shader_parameter("voice", 0.0)
+	title_key.visible = true
 	title_key.light_energy = 9.0
 	neon_light.light_energy = 2.3
 	_snap_camera("title")
@@ -342,6 +415,7 @@ func _leave_title() -> void:
 	_apply_palette(SOBER, 2.0)
 	var t := create_tween().set_parallel(true)
 	t.tween_property(title_key, "light_energy", 0.0, 2.0)
+	t.chain().tween_callback(func(): title_key.visible = false)
 	t.tween_property(neon_light, "light_energy", 0.9, 2.0)
 	if music:
 		t.tween_property(music, "volume_db", MUSIC_GAME_DB, 3.0)

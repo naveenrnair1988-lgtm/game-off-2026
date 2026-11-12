@@ -1,6 +1,6 @@
 extends SceneTree
 ## Renders every scene in both states to PNGs for visual review.
-## Run: SHOT_DIR=/some/dir xvfb-run godot --path . --rendering-driver opengl3 -s tests/playthrough_shots.gd
+## Run: SHOT_DIR=/some/dir LS_TIER=0 xvfb-run godot --path . --rendering-driver opengl3 -s tests/playthrough_shots.gd
 var main
 var st
 var n := 0
