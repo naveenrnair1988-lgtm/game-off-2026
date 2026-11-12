@@ -11,7 +11,8 @@
      "who": "narr",
      "text": "Chapter One — Last Call",
      "state": "B",
-     "vo": ""
+     "vo": "",
+     "card": true
     },
     {
      "who": "narr",
@@ -145,7 +146,7 @@
     },
     {
      "who": "narr",
-     "text": "Your hands are shaking. Not from the body. From the schedule. It's been three hours. You know exactly what you need and you hate that you know it.",
+     "text": "Your hands are shaking. Not from the body. From the schedule. It's been two hours. You know exactly what you need and you hate that you know it.",
      "state": "S",
      "vo": ""
     },
@@ -336,7 +337,8 @@
      "who": "narr",
      "text": "End of Chapter One.",
      "state": "B",
-     "vo": ""
+     "vo": "",
+     "card": true
     }
    ],
    "choices": [
@@ -645,7 +647,7 @@
     },
     {
      "who": "narr",
-     "text": "Connie's stool at the end is pushed in neatly. She told you she left at midnight and came back when she had a feeling.",
+     "text": "Connie is back on her stool at the end, the same one as every night. She told you she left at midnight and came back when she had a feeling.",
      "state": "S",
      "vo": ""
     },
@@ -1072,7 +1074,7 @@
    "lines": [
     {
      "who": "narr",
-     "text": "Headlights swing across the front window. You have one sentence left in you.",
+     "text": "You stop looking. You sit, and you wait. At two minutes to four, headlights swing across the front window. You have one sentence left in you.",
      "state": "B",
      "vo": ""
     },
@@ -1175,9 +1177,10 @@
     },
     {
      "who": "narr",
-     "text": "ENDING: THE THIEF",
+     "text": "Ending — The Thief",
      "state": "B",
-     "vo": ""
+     "vo": "",
+     "card": true
     }
    ],
    "choices": [
@@ -1216,9 +1219,10 @@
     },
     {
      "who": "narr",
-     "text": "ENDING: THE PARTNER",
+     "text": "Ending — The Partner",
      "state": "B",
-     "vo": ""
+     "vo": "",
+     "card": true
     }
    ],
    "choices": [
@@ -1263,9 +1267,10 @@
     },
     {
      "who": "narr",
-     "text": "ENDING: THE WIDOW",
+     "text": "Ending — The Widow",
      "state": "B",
-     "vo": ""
+     "vo": "",
+     "card": true
     }
    ],
    "choices": [
@@ -1316,9 +1321,10 @@
     },
     {
      "who": "narr",
-     "text": "ENDING: THE WITNESS — next time, drink before you ask her.",
+     "text": "Ending — The Witness — next time, drink before you ask her.",
      "state": "B",
-     "vo": ""
+     "vo": "",
+     "card": true
     }
    ],
    "choices": [
@@ -1349,7 +1355,8 @@
      "who": "narr",
      "text": "Chapter Six — Shift Ends",
      "state": "B",
-     "vo": ""
+     "vo": "",
+     "card": true
     },
     {
      "who": "narr",
@@ -1384,19 +1391,19 @@
     {
      "who": "voice",
      "text": "…You told him his wife only came downstairs to count the till. You told him that's why she lived upstairs. He put a hand on your collar and you put two on his chest.",
-     "state": "V",
+     "state": "B",
      "vo": "end_true_06"
     },
     {
      "who": "voice",
      "text": "He went over the rail. He hit his head. He sat down and said get out of my bar, Frank, and you went to your booth and you slept, and he died over the next hour and a half in front of four people and one of them was you.",
-     "state": "V",
+     "state": "B",
      "vo": "end_true_07"
     },
     {
      "who": "voice",
      "text": "I didn't tell you because I'm the part of you that's supposed to be useful. There's nothing useful in it. There's just a dead friend and a man who can't hold his drink.",
-     "state": "V",
+     "state": "B",
      "vo": "end_true_08"
     },
     {
@@ -1464,9 +1471,10 @@
     },
     {
      "who": "narr",
-     "text": "ENDING: THE EASY ANSWER",
+     "text": "Ending — The Easy Answer",
      "state": "B",
-     "vo": ""
+     "vo": "",
+     "card": true
     }
    ],
    "choices": [
@@ -1495,7 +1503,8 @@
      "who": "narr",
      "text": "Chapter Four — Blackout",
      "state": "B",
-     "vo": ""
+     "vo": "",
+     "card": true
     },
     {
      "who": "narr",
@@ -1534,7 +1543,7 @@
      "next": "ch4_drink",
      "small": "lose the next twenty minutes; the Voice gets Connie",
      "state": "",
-     "shiftTo": "",
+     "shiftTo": "V",
      "requiresTrue": false,
      "requiresFlag": "",
      "setsFlag": ""
@@ -1544,7 +1553,7 @@
      "next": "ch4_sober",
      "small": "keep the clock; find what a sober man finds",
      "state": "",
-     "shiftTo": "",
+     "shiftTo": "S",
      "requiresTrue": false,
      "requiresFlag": "",
      "setsFlag": ""
@@ -1691,7 +1700,8 @@
      "who": "narr",
      "text": "End of Chapter Four.",
      "state": "B",
-     "vo": ""
+     "vo": "",
+     "card": true
     }
    ],
    "choices": [
@@ -1745,19 +1755,19 @@
     },
     {
      "who": "narr",
-     "text": "'11:47 — CUT OFF. — D.' And under it, a shakier line: '11:52 — F. went over. OK. Sat him down.'",
+     "text": "'11:47 — CUT OFF. — D.' And under it, a shakier line: '11:52 — F. put hands on me. Went down. I'm OK. Sat him in his booth.'",
      "state": "S",
      "vo": ""
     },
     {
      "who": "frank",
-     "text": "F. went over. F. is — F. is me.",
+     "text": "Went down. I went down. I must have fallen, and he — he sat me in my booth. That's the knuckles. That's all that is.",
      "state": "B",
      "vo": "ch4_sober_05"
     },
     {
      "who": "narr",
-     "text": "You don't know what 'went over' means. Sober, you may never know. But Danny wrote it down, which means he was alive and writing at 11:52, and he thought it mattered.",
+     "text": "It reads that way if you want it to. Sober, you want it to. But Danny wrote it down, which means he was alive and writing at 11:52, and he thought it mattered.",
      "state": "B",
      "vo": ""
     },
@@ -1771,7 +1781,8 @@
      "who": "narr",
      "text": "End of Chapter Four.",
      "state": "B",
-     "vo": ""
+     "vo": "",
+     "card": true
     }
    ],
    "choices": [
@@ -1800,7 +1811,8 @@
      "who": "narr",
      "text": "Chapter Five — Convergence",
      "state": "B",
-     "vo": ""
+     "vo": "",
+     "card": true
     },
     {
      "who": "narr",
@@ -1845,19 +1857,19 @@
    "lines": [
     {
      "who": "narr",
-     "text": "Six events. One line. And a gap at 11:50 the shape of a man.",
+     "text": "Six events. One line. Every one of them walked past a dying man, and the line starts with your hands.",
      "state": "B",
      "vo": ""
     },
     {
      "who": "frank",
-     "text": "There's five minutes nobody accounts for. Between the cut-off and Theo. Danny went over the rail at 11:50 and nobody was behind the bar but him.",
+     "text": "It fits. All of it fits. Connie saw my hands on him. But I don't remember it. I've got her word for it, and I've got yours.",
      "state": "B",
      "vo": "ch5_silence_01"
     },
     {
      "who": "frank",
-     "text": "Except somebody was.",
+     "text": "And you've spent all night pointing me at everybody else.",
      "state": "B",
      "vo": "ch5_silence_02"
     },
@@ -1883,7 +1895,8 @@
      "who": "narr",
      "text": "End of Chapter Five.",
      "state": "B",
-     "vo": ""
+     "vo": "",
+     "card": true
     }
    ],
    "choices": [
@@ -1935,7 +1948,7 @@
     {
      "who": "voice",
      "text": "I'll be here when you want me.",
-     "state": "V",
+     "state": "B",
      "vo": "end_true_tell_04"
     },
     {
@@ -1946,9 +1959,10 @@
     },
     {
      "who": "narr",
-     "text": "ENDING: THE LAST SHIFT — you told them.",
+     "text": "Ending — The Last Shift — you told them.",
      "state": "B",
-     "vo": ""
+     "vo": "",
+     "card": true
     },
     {
      "who": "narr",
@@ -2000,7 +2014,7 @@
     {
      "who": "voice",
      "text": "Good. You'd have hated prison. No bar.",
-     "state": "V",
+     "state": "B",
      "vo": "end_true_stand_03"
     },
     {
@@ -2012,14 +2026,15 @@
     {
      "who": "voice",
      "text": "You first.",
-     "state": "V",
+     "state": "B",
      "vo": "end_true_stand_05"
     },
     {
      "who": "narr",
-     "text": "ENDING: THE LAST SHIFT — you let it stand.",
+     "text": "Ending — The Last Shift — you let it stand.",
      "state": "B",
-     "vo": ""
+     "vo": "",
+     "card": true
     },
     {
      "who": "narr",
@@ -2087,7 +2102,7 @@
   },
   "E07": {
    "s": "S",
-   "t": "Connie's stool is empty. She says she left at midnight."
+   "t": "Connie says she left at midnight and only came back at half past one."
   },
   "E07v": {
    "s": "V",
@@ -2107,7 +2122,7 @@
   },
   "E11": {
    "s": "S",
-   "t": "Danny's tab book is gone, but the carbon under the last page reads: '11:47 — CUT OFF. — D.' and under it, '11:52 — F. went over. OK. Sat him down.'"
+   "t": "The carbon under the last page of Danny's tab book: '11:47 — CUT OFF. — D.' and under it, '11:52 — F. put hands on me. Went down. I'm OK. Sat him in his booth.'"
   }
  },
  "timeline": {
@@ -2121,7 +2136,7 @@
    {
     "id": "t2",
     "time": "11:50",
-    "text": "Frank goes over the rail — no, Danny does. Frank's hands. The handprint.",
+    "text": "Two hands on Danny's chest. He goes back over the rail and hits the brass.",
     "needs": "E06v"
    },
    {

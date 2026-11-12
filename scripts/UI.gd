@@ -27,6 +27,8 @@ var lbl_state: Label
 var btn_shift: Button
 var btn_board: Button
 var panel: PanelContainer
+var dock: VBoxContainer
+var lbl_more: Label
 var lbl_loc: Label
 var text: RichTextLabel
 var choices: VBoxContainer
@@ -84,13 +86,13 @@ func _unhandled_input(event: InputEvent) -> void:
 			_start()
 		elif line_idx < lines.size():
 			_next_line()
-		elif choices.get_child_count() == 1:
+		elif choices.get_child_count() == 1 and choices.get_child(0) is Button:
 			var b: Button = choices.get_child(0)
 			if not b.disabled:
 				b.pressed.emit()
 	elif event is InputEventKey and event.pressed and event.keycode >= KEY_1 and event.keycode <= KEY_9:
 		var i: int = event.keycode - KEY_1
-		if i < choices.get_child_count():
+		if i < choices.get_child_count() and choices.get_child(i) is Button:
 			var b: Button = choices.get_child(i)
 			if not b.disabled and b.visible:
 				b.pressed.emit()
@@ -161,48 +163,91 @@ func _hud_button(t: String) -> Button:
 
 
 func _build_panel() -> void:
+	# A dock pinned to the bottom that only takes the height it needs and grows upward:
+	# choices on top, then one line of dialogue. The room stays visible above it.
+	dock = VBoxContainer.new()
+	dock.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
+	dock.offset_left = 110
+	dock.offset_right = -110
+	dock.offset_bottom = -78
+	dock.offset_top = -78
+	dock.grow_vertical = Control.GROW_DIRECTION_BEGIN
+	dock.alignment = BoxContainer.ALIGNMENT_END
+	dock.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	dock.add_theme_constant_override("separation", 8)
+	add_child(dock)
+	choices = VBoxContainer.new()
+	choices.add_theme_constant_override("separation", 4)
+	choices.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	choices.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	dock.add_child(choices)
 	panel = PanelContainer.new()
-	panel.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
-	panel.offset_left = 40
-	panel.offset_right = -40
-	panel.offset_top = -340
-	panel.offset_bottom = -72
-	panel.add_theme_stylebox_override("panel", _style(Color(0.06, 0.05, 0.04, 0.92), Color(0.25, 0.2, 0.15)))
-	add_child(panel)
+	panel.add_theme_stylebox_override("panel", _panel_style("S"))
+	panel.mouse_filter = Control.MOUSE_FILTER_STOP
+	panel.gui_input.connect(_on_panel_input)
+	dock.add_child(panel)
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 18)
+	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	panel.add_child(row)
+	portrait = TextureRect.new()
+	portrait.custom_minimum_size = Vector2(96, 128)
+	portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	portrait.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	portrait.visible = false
+	row.add_child(portrait)
 	var v := VBoxContainer.new()
-	v.add_theme_constant_override("separation", 8)
-	panel.add_child(v)
+	v.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	v.alignment = BoxContainer.ALIGNMENT_CENTER
+	v.add_theme_constant_override("separation", 4)
+	v.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	row.add_child(v)
 	lbl_loc = Label.new()
 	lbl_loc.add_theme_font_override("font", font_ui)
-	lbl_loc.add_theme_color_override("font_color", MUTED)
+	lbl_loc.add_theme_color_override("font_color", AMBER)
 	lbl_loc.add_theme_font_size_override("font_size", 12)
+	lbl_loc.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	v.add_child(lbl_loc)
 	text = RichTextLabel.new()
 	text.bbcode_enabled = true
-	text.scroll_following = true
-	text.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	text.fit_content = true
+	text.scroll_active = false
+	text.custom_minimum_size = Vector2(0, 64)
+	text.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	text.add_theme_font_override("normal_font", font_serif)
 	text.add_theme_font_override("italics_font", font_serif_italic)
 	text.add_theme_font_override("bold_font", font_serif)
-	text.add_theme_font_size_override("normal_font_size", 20)
-	text.add_theme_font_size_override("italics_font_size", 20)
+	text.add_theme_font_size_override("normal_font_size", 21)
+	text.add_theme_font_size_override("italics_font_size", 21)
 	text.add_theme_color_override("default_color", TEXT)
-	var row := HBoxContainer.new()
-	row.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	row.add_theme_constant_override("separation", 16)
-	v.add_child(row)
-	portrait = TextureRect.new()
-	portrait.custom_minimum_size = Vector2(132, 176)
-	portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
-	portrait.visible = false
-	row.add_child(portrait)
-	text.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	row.add_child(text)
-	choices = VBoxContainer.new()
-	choices.add_theme_constant_override("separation", 6)
-	v.add_child(choices)
-	panel.visible = false
+	text.add_theme_constant_override("line_separation", 4)
+	v.add_child(text)
+	lbl_more = Label.new()
+	lbl_more.text = "▸"
+	lbl_more.add_theme_color_override("font_color", AMBER)
+	lbl_more.add_theme_font_size_override("font_size", 16)
+	lbl_more.size_flags_vertical = Control.SIZE_SHRINK_END
+	lbl_more.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	row.add_child(lbl_more)
+	dock.visible = false
+
+
+func _panel_style(state: String) -> StyleBoxFlat:
+	var sb := _style(Color(0.035, 0.045, 0.06, 0.90) if state == "V" else Color(0.05, 0.04, 0.035, 0.90), Color(0.22, 0.42, 0.50, 0.9) if state == "V" else Color(0.42, 0.33, 0.20, 0.9))
+	sb.set_corner_radius_all(3)
+	sb.content_margin_left = 22
+	sb.content_margin_right = 22
+	sb.content_margin_top = 14
+	sb.content_margin_bottom = 14
+	return sb
+
+
+func _on_panel_input(event: InputEvent) -> void:
+	var click: bool = (event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT) or (event is InputEventScreenTouch and event.pressed)
+	if click and line_idx < lines.size():
+		_next_line()
 
 
 func _build_board() -> void:
@@ -278,7 +323,7 @@ func _build_timeline() -> void:
 
 
 func show_timeline() -> void:
-	panel.visible = false
+	dock.visible = false
 	board.visible = false
 	tl.visible = true
 	tl_order = []
@@ -448,7 +493,7 @@ func show_title() -> void:
 	hud.visible = false
 	title.modulate.a = 0.0
 	create_tween().tween_property(title, "modulate:a", 1.0, 1.8)
-	panel.visible = false
+	dock.visible = false
 	board.visible = false
 	tl.visible = false
 	var seen: Label = title.find_child("Seen", true, false)
@@ -474,31 +519,34 @@ func _start() -> void:
 
 func show_scene(id: String) -> void:
 	scene_id = id
-	var sc: Dictionary = Story.scenes[id]
-	lbl_loc.text = str(sc.get("loc", "")).to_upper()
-	text.clear()
 	lines = Story.visible_lines(id)
 	line_idx = 0
-	panel.visible = true
+	dock.visible = true
+	board.visible = false
 	_next_line()
 
 
 func _next_line() -> void:
 	_clear_choices()
+	var sc: Dictionary = Story.scenes[scene_id]
+	if bool(sc.get("hub", false)):
+		_show_hub()
+		return
 	if line_idx < lines.size():
 		var l: Dictionary = lines[line_idx]
 		line_idx += 1
-		_append_line(l)
+		panel.visible = true
+		_show_line(l)
 		var vo := str(l.get("vo", ""))
 		line_voice.emit(vo)
 		if line_idx > 1 and vo == "":
 			line_advanced.emit()
-		if line_idx < lines.size():
-			var b := _choice_button("continue", true)
-			b.pressed.connect(_next_line)
-		else:
+		lbl_more.visible = line_idx < lines.size()
+		if line_idx >= lines.size():
 			_finish_scene()
 	else:
+		panel.visible = lines.size() > 0
+		lbl_more.visible = false
 		_finish_scene()
 
 
@@ -513,47 +561,71 @@ func _set_portrait(who: String) -> void:
 	portrait.modulate = Color(0.75, 0.95, 1.0) if Story.state == "V" else Color(1.0, 0.92, 0.82)
 
 
-func _append_line(l: Dictionary) -> void:
+## One line at a time. The box holds the speaker and what they said, nothing else.
+func _show_line(l: Dictionary) -> void:
 	var who: String = l["who"]
-	if who == "narr":
-		portrait.visible = false
-	elif who == "voice":
-		_set_portrait("frank")   # the Voice wears Frank's face, lit cold
-	else:
-		_set_portrait(who)
 	var t: String = str(l["text"]).replace("[", "[lb]")
+	text.clear()
+	if bool(l.get("card", false)):
+		portrait.visible = false
+		lbl_loc.text = ""
+		lbl_loc.visible = false
+		text.append_text("[center][font_size=30]%s[/font_size][/center]" % t)
+		return
+	lbl_loc.visible = true
 	match who:
 		"narr":
-			text.append_text("[color=#9a8a74]%s[/color]\n\n" % t)
+			portrait.visible = false
+			lbl_loc.text = str(Story.scenes[scene_id].get("loc", "")).to_upper()
+			lbl_loc.add_theme_color_override("font_color", MUTED)
+			text.append_text("[color=#d8cdb8]%s[/color]" % t)
 		"voice":
-			text.append_text("[i][color=#70d3e6]%s[/color][/i]\n\n" % t)
+			_set_portrait("frank")   # the Voice wears Frank's face, lit cold
+			lbl_loc.text = "THE VOICE"
+			lbl_loc.add_theme_color_override("font_color", CYAN)
+			text.append_text("[i][color=#8fe0ee]%s[/color][/i]" % t)
 		_:
-			text.append_text("[color=#8a6a2e][font_size=11]%s[/font_size][/color]\n%s\n\n" % [WHO.get(who, who.to_upper()), t])
+			_set_portrait(who)
+			lbl_loc.text = WHO.get(who, who.to_upper())
+			lbl_loc.add_theme_color_override("font_color", AMBER)
+			text.append_text(t)
+
+
+func _show_hub() -> void:
+	line_idx = lines.size()
+	panel.visible = false
+	line_voice.emit("")
+	var bar := HBoxContainer.new()
+	bar.add_theme_constant_override("separation", 16)
+	choices.add_child(bar)
+	var hint := Label.new()
+	hint.text = "Click a person or a place.  Each stop costs ten minutes."
+	hint.add_theme_font_override("font", font_ui)
+	hint.add_theme_color_override("font_color", TEXT)
+	hint.add_theme_font_size_override("font_size", 14)
+	hint.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.9))
+	hint.add_theme_constant_override("shadow_outline_size", 6)
+	bar.add_child(hint)
+	var acc := _choice_button("Stop looking — make an accusation")
+	choices.remove_child(acc)
+	bar.add_child(acc)
+	acc.pressed.connect(func(): choice_made.emit({"next": "accuse", "shiftTo": ""}))
 
 
 func _finish_scene() -> void:
 	var sc: Dictionary = Story.scenes[scene_id]
 	for e in Story.scene_evidence(scene_id):
-		text.append_text("[color=#d9a441][font_size=13]EVIDENCE · %s[/font_size][/color]\n\n" % str(Story.evidence[e]["t"]).replace("[", "[lb]"))
+		text.append_text("\n[color=#e0aa45][font_size=14]◆ EVIDENCE   %s[/font_size][/color]" % str(Story.evidence[e]["t"]).replace("[", "[lb]"))
 	_clear_choices()
-	if bool(sc.get("hub", false)):
-		var hint := Label.new()
-		hint.text = "Click something in the room.  Each stop costs ten minutes."
-		hint.add_theme_color_override("font_color", MUTED)
-		hint.add_theme_font_size_override("font_size", 13)
-		choices.add_child(hint)
-		var acc := _choice_button("Make an accusation  —  ends the night")
-		acc.pressed.connect(func(): choice_made.emit({"next": "accuse", "shiftTo": ""}))
-		return
 	var i := 1
 	for c in Story.visible_choices(scene_id):
-		var label: String = "%d.  %s" % [i, c["label"]]
+		var label: String = "%d   %s" % [i, c["label"]]
 		if c.get("small", "") != "":
-			label += "   ·  " + c["small"]
+			label += "   ·   " + c["small"]
 		var b := _choice_button(label)
 		if bool(c.get("requiresTrue", false)) and not Story.true_unlocked():
 			b.disabled = true
-			b.text += "   [locked — %s]" % Story.true_progress()
+			b.text += "   [locked: %s]" % Story.true_progress()
 		if c["next"] == "__restart":
 			b.pressed.connect(func(): restart_requested.emit())
 		else:
@@ -564,25 +636,35 @@ func _finish_scene() -> void:
 func _choice_button(t: String, subtle: bool = false) -> Button:
 	var b := Button.new()
 	b.text = t
-	b.add_theme_font_override("font", font_ui)
 	b.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	b.add_theme_font_override("font", font_ui)
 	b.add_theme_font_size_override("font_size", 15)
 	b.add_theme_color_override("font_color", MUTED if subtle else TEXT)
-	b.add_theme_stylebox_override("normal", _style(Color(0.10, 0.08, 0.065), Color(0.22, 0.18, 0.13)))
-	b.add_theme_stylebox_override("hover", _style(Color(0.13, 0.10, 0.08), AMBER))
-	b.add_theme_stylebox_override("pressed", _style(Color(0.13, 0.10, 0.08), AMBER))
-	b.add_theme_stylebox_override("disabled", _style(Color(0.08, 0.07, 0.06), Color(0.16, 0.14, 0.11)))
+	b.add_theme_color_override("font_hover_color", Color(1, 1, 1))
+	var accent := CYAN if Story.state == "V" else AMBER
+	var n := _style(Color(0.04, 0.035, 0.03, 0.86), Color(0.30, 0.25, 0.18, 0.8))
+	var h := _style(Color(0.10, 0.08, 0.06, 0.95), accent)
+	var dd := _style(Color(0.04, 0.035, 0.03, 0.6), Color(0.16, 0.14, 0.11, 0.6))
+	for sb in [n, h, dd]:
+		sb.set_corner_radius_all(3)
+		sb.content_margin_top = 7
+		sb.content_margin_bottom = 7
+		sb.content_margin_left = 16
+		sb.content_margin_right = 20
+	b.add_theme_stylebox_override("normal", n)
+	b.add_theme_stylebox_override("hover", h)
+	b.add_theme_stylebox_override("pressed", h)
+	b.add_theme_stylebox_override("disabled", dd)
+	b.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
 	choices.add_child(b)
 	return b
 
 
 func _clear_choices() -> void:
 	for c in choices.get_children():
-		c.queue_free()
 		choices.remove_child(c)
+		c.queue_free()
 
-
-# ---------------------------------------------------------------- hud / board
 
 func _update_clock(_m: int) -> void:
 	lbl_clock.text = Story.fmt_clock()
@@ -601,7 +683,7 @@ func _update_state(s: String) -> void:
 	btn_shift.text = "⇧ SOBER UP  (+30 min)" if s == "V" else "⇧ DRINK"
 	btn_shift.add_theme_color_override("font_color", c)
 	btn_board.add_theme_color_override("font_color", c)
-	panel.add_theme_stylebox_override("panel", _style(Color(0.03, 0.045, 0.06, 0.92) if s == "V" else Color(0.06, 0.05, 0.04, 0.92), Color(0.15, 0.25, 0.30) if s == "V" else Color(0.25, 0.2, 0.15)))
+	panel.add_theme_stylebox_override("panel", _panel_style(s))
 
 
 func _refresh_board() -> void:

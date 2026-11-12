@@ -126,6 +126,10 @@ func enter_scene(id: String) -> bool:
 	visited[key] = true
 	if str(sc.get("setsFlag", "")) != "":
 		set_flag(str(sc["setsFlag"]))
+	if id == "accuse" and minutes < END_MINUTES - 2:
+		# you stop looking and wait: the accusation always happens as the police pull up
+		minutes = END_MINUTES - 2
+		clock_changed.emit(minutes)
 	if bool(sc.get("ending", false)):
 		over = true
 		if str(sc.get("setsFlag", "")).begins_with("ending_"):
