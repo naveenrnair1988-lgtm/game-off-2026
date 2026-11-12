@@ -1,5 +1,4 @@
 build/
 .godot/
-*.import
 .DS_Store
 Thumbs.db
