@@ -12,7 +12,7 @@ signal line_who(who: String)
 signal present_picked(evidence_id: String)
 signal present_requested
 
-const WHO := {"frank": "FRANK", "mira": "MIRA ROARKE", "theo": "THEO PIKE", "lenny": "LENNY BAPTISTE", "connie": "CONNIE VALE"}
+const WHO := {"frank": "FRANK", "mira": "MIRA ROARKE", "theo": "THEO PIKE", "lenny": "LENNY BAPTISTE", "connie": "CONNIE VALE", "disp": "COUNTY DISPATCH · ON THE PHONE"}
 const AMBER := Color(0.85, 0.64, 0.25)
 const CYAN := Color(0.44, 0.83, 0.90)
 const MUTED := Color(0.60, 0.54, 0.45)

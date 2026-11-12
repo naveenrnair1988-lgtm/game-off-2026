@@ -941,7 +941,7 @@
     },
     {
      "who": "lenny",
-     "text": "Prove it.",
+     "text": "Then prove it.",
      "state": "V",
      "vo": "int_lenny_05"
     },
@@ -1119,7 +1119,31 @@
    ],
    "choices": [
     {
-     "label": "Back to the room.",
+     "label": "\"It's not your fault, Theo.\"",
+     "next": "crack_theo_kind",
+     "small": "",
+     "state": "",
+     "shiftTo": "",
+     "requiresTrue": false,
+     "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
+     "setsFlag": ""
+    },
+    {
+     "label": "\"He was dying. And you counted money.\"",
+     "next": "crack_theo_hard",
+     "small": "",
+     "state": "",
+     "shiftTo": "",
+     "requiresTrue": false,
+     "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
+     "setsFlag": ""
+    },
+    {
+     "label": "Say nothing.",
      "next": "hub",
      "small": "",
      "state": "",
@@ -1133,9 +1157,9 @@
    ],
    "setsFlag": "cracked_theo",
    "noShift": false,
-   "timer": 0,
-   "timerDefault": 0,
-   "toast": "Theo will remember that."
+   "timer": 12,
+   "timerDefault": 2,
+   "toast": ""
   },
   "crack_lenny": {
    "loc": "Lenny Baptiste",
@@ -1185,7 +1209,31 @@
    ],
    "choices": [
     {
-     "label": "Back to the room.",
+     "label": "\"Where's the ledger now?\"",
+     "next": "crack_lenny_ledger",
+     "small": "",
+     "state": "",
+     "shiftTo": "",
+     "requiresTrue": false,
+     "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
+     "setsFlag": ""
+    },
+    {
+     "label": "\"You could have called someone.\"",
+     "next": "crack_lenny_call",
+     "small": "",
+     "state": "",
+     "shiftTo": "",
+     "requiresTrue": false,
+     "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
+     "setsFlag": ""
+    },
+    {
+     "label": "Say nothing.",
      "next": "hub",
      "small": "",
      "state": "",
@@ -1199,9 +1247,9 @@
    ],
    "setsFlag": "cracked_lenny",
    "noShift": false,
-   "timer": 0,
-   "timerDefault": 0,
-   "toast": "Lenny will remember that."
+   "timer": 12,
+   "timerDefault": 2,
+   "toast": ""
   },
   "crack_mira": {
    "loc": "Mira Roarke",
@@ -1241,6 +1289,17 @@
      "text": "I know. I'm sorry. I know.",
      "state": "B",
      "vo": "f04"
+    },
+    {
+     "who": "voice",
+     "text": "That's the last one. Three liars, three true things. Now go and sit with the old woman.",
+     "state": "B",
+     "vo": "v27",
+     "ifAll": [
+      "cracked_theo",
+      "cracked_lenny",
+      "cracked_mira"
+     ]
     }
    ],
    "choices": [
@@ -1572,6 +1631,27 @@
      "text": "I sat here, dear. I'm seventy-one. I sat here and I watched a man die slowly in front of four people who each had a reason not to call, and I was the fifth.",
      "state": "B",
      "vo": "ch4_connie_09"
+    },
+    {
+     "who": "frank",
+     "text": "The call, Connie. Twelve twenty. Eleven seconds.",
+     "state": "B",
+     "vo": "f11",
+     "ifFound": "E12"
+    },
+    {
+     "who": "connie",
+     "text": "That was me, dear. I had the telephone in my hand. And I thought about who they'd find asleep in the booth, with his knuckles split. So I put it down.",
+     "state": "B",
+     "vo": "c10",
+     "ifFound": "E12"
+    },
+    {
+     "who": "connie",
+     "text": "I chose you over him. I've been sitting here ever since, deciding whether I'd do it again.",
+     "state": "B",
+     "vo": "c11",
+     "ifFound": "E12"
     },
     {
      "who": "connie",
@@ -1923,6 +2003,40 @@
      "text": "I say it. All of it. The push, the rail, the hour and a half. Theo and the till. Lenny and the book. Mira and the bottle. Connie on her stool. Nobody argues. That's the thing about the truth in a room where everybody already knows it. It just lands. Like a glass set down.",
      "state": "B",
      "vo": "n33"
+    },
+    {
+     "who": "narr",
+     "text": "Theo says his part before anyone asks him. He says it to Mira. Not to the police.",
+     "state": "B",
+     "vo": "n56",
+     "ifAll": [
+      "theo_kind"
+     ]
+    },
+    {
+     "who": "narr",
+     "text": "Theo can't get his part out. So I say it for him. He lets me.",
+     "state": "B",
+     "vo": "n57",
+     "ifAll": [
+      "theo_hard"
+     ]
+    },
+    {
+     "who": "narr",
+     "text": "I tell them where the ledger is. Under the spare. Lenny looks at me like I've picked his pocket.",
+     "state": "B",
+     "vo": "n58",
+     "ifAll": [
+      "lenny_ledger"
+     ]
+    },
+    {
+     "who": "narr",
+     "text": "And Connie tells them about the telephone. Eleven seconds. Nobody asks her why. I already know.",
+     "state": "B",
+     "vo": "n59",
+     "ifFound": "E12"
     },
     {
      "who": "narr",
@@ -2324,6 +2438,450 @@
    "timer": 0,
    "timerDefault": 0,
    "toast": ""
+  },
+  "ch3_phone": {
+   "loc": "The Last Call · Behind the bar",
+   "clock": 0,
+   "hub": false,
+   "ending": false,
+   "grant": [],
+   "setsFlag": "ch3",
+   "noShift": true,
+   "timer": 10,
+   "timerDefault": 1,
+   "toast": "",
+   "lines": [
+    {
+     "who": "narr",
+     "text": "Chapter Three — The Phone",
+     "state": "B",
+     "vo": "",
+     "card": true
+    },
+    {
+     "who": "narr",
+     "text": "The phone behind the bar rings. The landline. Nobody's called that number in years. Everybody in the room looks at it. Nobody moves.",
+     "state": "B",
+     "vo": "n50"
+    },
+    {
+     "who": "mira",
+     "text": "Leave it.",
+     "state": "B",
+     "vo": "m10"
+    }
+   ],
+   "choices": [
+    {
+     "label": "Answer it.",
+     "next": "ch3_answer",
+     "small": "",
+     "state": "",
+     "shiftTo": "",
+     "requiresTrue": false,
+     "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
+     "setsFlag": ""
+    },
+    {
+     "label": "Let it ring.",
+     "next": "ch3_ring",
+     "small": "",
+     "state": "",
+     "shiftTo": "",
+     "requiresTrue": false,
+     "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
+     "setsFlag": ""
+    }
+   ]
+  },
+  "ch3_answer": {
+   "loc": "The Last Call · Behind the bar",
+   "clock": 0,
+   "hub": false,
+   "ending": false,
+   "grant": [
+    "E12"
+   ],
+   "setsFlag": "answered",
+   "noShift": true,
+   "timer": 0,
+   "timerDefault": 0,
+   "toast": "",
+   "lines": [
+    {
+     "who": "disp",
+     "text": "This is county dispatch, calling back for the Last Call, on Mercer. We're showing a second call from this number tonight. Twelve twenty a.m. Eleven seconds. Nobody spoke. Is everyone all right there?",
+     "state": "B",
+     "vo": "d01"
+    },
+    {
+     "who": "frank",
+     "text": "Twelve twenty. You're sure.",
+     "state": "B",
+     "vo": "f10"
+    },
+    {
+     "who": "disp",
+     "text": "It's on the log, sir. Open line, eleven seconds. We could hear music. A trumpet. Then it hung up. Units are still forty minutes out.",
+     "state": "B",
+     "vo": "d02"
+    },
+    {
+     "who": "narr",
+     "text": "I put the phone down. Twelve twenty. Danny was on the floor, and alive. And somebody in this room picked up a telephone, and listened to it for eleven seconds, and put it back.",
+     "state": "B",
+     "vo": "n51"
+    },
+    {
+     "who": "voice",
+     "text": "Somebody almost saved him. Almost is a hell of a word.",
+     "state": "V",
+     "vo": "v21"
+    },
+    {
+     "who": "narr",
+     "text": "I look at the four of them. Nobody looks back.",
+     "state": "S",
+     "vo": "n52"
+    },
+    {
+     "who": "narr",
+     "text": "End of Chapter Three",
+     "state": "B",
+     "vo": "",
+     "card": true
+    }
+   ],
+   "choices": [
+    {
+     "label": "Back to the room.",
+     "next": "hub",
+     "small": "",
+     "state": "",
+     "shiftTo": "",
+     "requiresTrue": false,
+     "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
+     "setsFlag": ""
+    }
+   ]
+  },
+  "ch3_ring": {
+   "loc": "The Last Call · Behind the bar",
+   "clock": 0,
+   "hub": false,
+   "ending": false,
+   "grant": [],
+   "setsFlag": "",
+   "noShift": true,
+   "timer": 0,
+   "timerDefault": 0,
+   "toast": "You let it ring.",
+   "lines": [
+    {
+     "who": "narr",
+     "text": "It rings nine times. I count. Then it stops, and the room breathes out, all at once, like it's been caught.",
+     "state": "B",
+     "vo": "n53"
+    },
+    {
+     "who": "voice",
+     "text": "Interesting. Five people, one ringing telephone, and nobody wants to know who's calling.",
+     "state": "V",
+     "vo": "v22"
+    },
+    {
+     "who": "narr",
+     "text": "Whoever it was, they'll call back. Or they won't. I add it to the list of things I didn't do tonight.",
+     "state": "S",
+     "vo": "n54"
+    },
+    {
+     "who": "narr",
+     "text": "End of Chapter Three",
+     "state": "B",
+     "vo": "",
+     "card": true
+    }
+   ],
+   "choices": [
+    {
+     "label": "Back to the room.",
+     "next": "hub",
+     "small": "",
+     "state": "",
+     "shiftTo": "",
+     "requiresTrue": false,
+     "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
+     "setsFlag": ""
+    }
+   ]
+  },
+  "loc_jukebox": {
+   "loc": "The Last Call · The jukebox",
+   "clock": 10,
+   "hub": false,
+   "ending": false,
+   "grant": [
+    "E14",
+    "E14v"
+   ],
+   "setsFlag": "",
+   "noShift": false,
+   "timer": 0,
+   "timerDefault": 0,
+   "toast": "",
+   "lines": [
+    {
+     "who": "narr",
+     "text": "The jukebox. The same four seconds of trumpet, over and over, since before I woke up. I give it the flat of my hand, low on the left, the way Danny does. Nothing. It only ever worked for him.",
+     "state": "S",
+     "vo": "n55"
+    },
+    {
+     "who": "frank",
+     "text": "Sorry. Sorry, everyone. I thought I could — never mind.",
+     "state": "S",
+     "vo": "f12"
+    },
+    {
+     "who": "voice",
+     "text": "Don't fix it. Read it. A record doesn't skip on its own. Something hit this floor hard enough to jump the needle.",
+     "state": "V",
+     "vo": "v23"
+    },
+    {
+     "who": "voice",
+     "text": "And the little counter in the window says it's played those four seconds seven hundred times. Do the sum. It's been stuck since ten to twelve.",
+     "state": "V",
+     "vo": "v24"
+    }
+   ],
+   "choices": [
+    {
+     "label": "Back",
+     "next": "hub",
+     "small": "",
+     "state": "",
+     "shiftTo": "",
+     "requiresTrue": false,
+     "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
+     "setsFlag": ""
+    }
+   ]
+  },
+  "crack_theo_kind": {
+   "loc": "Theo Pike",
+   "clock": 0,
+   "hub": false,
+   "ending": false,
+   "grant": [],
+   "setsFlag": "theo_kind",
+   "noShift": false,
+   "timer": 0,
+   "timerDefault": 0,
+   "toast": "Theo will remember that.",
+   "lines": [
+    {
+     "who": "frank",
+     "text": "You were owed it, Theo. And you didn't know. That's not the same as what the rest of us did.",
+     "state": "B",
+     "vo": "f13"
+    },
+    {
+     "who": "theo",
+     "text": "It feels the same.",
+     "state": "B",
+     "vo": "t10"
+    },
+    {
+     "who": "voice",
+     "text": "That's the last one. Three liars, three true things. Now go and sit with the old woman.",
+     "state": "B",
+     "vo": "v27",
+     "ifAll": [
+      "cracked_theo",
+      "cracked_lenny",
+      "cracked_mira"
+     ]
+    }
+   ],
+   "choices": [
+    {
+     "label": "Back to the room.",
+     "next": "hub",
+     "small": "",
+     "state": "",
+     "shiftTo": "",
+     "requiresTrue": false,
+     "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
+     "setsFlag": ""
+    }
+   ]
+  },
+  "crack_theo_hard": {
+   "loc": "Theo Pike",
+   "clock": 0,
+   "hub": false,
+   "ending": false,
+   "grant": [],
+   "setsFlag": "theo_hard",
+   "noShift": false,
+   "timer": 0,
+   "timerDefault": 0,
+   "toast": "Theo will remember that.",
+   "lines": [
+    {
+     "who": "frank",
+     "text": "He was dying, Theo. And you counted it twice.",
+     "state": "B",
+     "vo": "f14"
+    },
+    {
+     "who": "theo",
+     "text": "I know. I know I did.",
+     "state": "B",
+     "vo": "t11"
+    },
+    {
+     "who": "voice",
+     "text": "That's the last one. Three liars, three true things. Now go and sit with the old woman.",
+     "state": "B",
+     "vo": "v27",
+     "ifAll": [
+      "cracked_theo",
+      "cracked_lenny",
+      "cracked_mira"
+     ]
+    }
+   ],
+   "choices": [
+    {
+     "label": "Back to the room.",
+     "next": "hub",
+     "small": "",
+     "state": "",
+     "shiftTo": "",
+     "requiresTrue": false,
+     "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
+     "setsFlag": ""
+    }
+   ]
+  },
+  "crack_lenny_ledger": {
+   "loc": "Lenny Baptiste",
+   "clock": 0,
+   "hub": false,
+   "ending": false,
+   "grant": [],
+   "setsFlag": "lenny_ledger",
+   "noShift": false,
+   "timer": 0,
+   "timerDefault": 0,
+   "toast": "Lenny will remember that.",
+   "lines": [
+    {
+     "who": "lenny",
+     "text": "In my car. Under the spare. You want it, you get a warrant.",
+     "state": "B",
+     "vo": "l10"
+    },
+    {
+     "who": "voice",
+     "text": "He just told a drunk where the evidence is. He's more frightened than he looks.",
+     "state": "B",
+     "vo": "v25"
+    },
+    {
+     "who": "voice",
+     "text": "That's the last one. Three liars, three true things. Now go and sit with the old woman.",
+     "state": "B",
+     "vo": "v27",
+     "ifAll": [
+      "cracked_theo",
+      "cracked_lenny",
+      "cracked_mira"
+     ]
+    }
+   ],
+   "choices": [
+    {
+     "label": "Back to the room.",
+     "next": "hub",
+     "small": "",
+     "state": "",
+     "shiftTo": "",
+     "requiresTrue": false,
+     "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
+     "setsFlag": ""
+    }
+   ]
+  },
+  "crack_lenny_call": {
+   "loc": "Lenny Baptiste",
+   "clock": 0,
+   "hub": false,
+   "ending": false,
+   "grant": [],
+   "setsFlag": "lenny_pressed",
+   "noShift": false,
+   "timer": 0,
+   "timerDefault": 0,
+   "toast": "Lenny will remember that.",
+   "lines": [
+    {
+     "who": "voice",
+     "text": "Three digits, Lenny. You had a phone in your coat the whole time.",
+     "state": "B",
+     "vo": "v26"
+    },
+    {
+     "who": "lenny",
+     "text": "And say what? That I was standing over my partner with his books under my arm? I'm a businessman. I did the sums.",
+     "state": "B",
+     "vo": "l11"
+    },
+    {
+     "who": "voice",
+     "text": "That's the last one. Three liars, three true things. Now go and sit with the old woman.",
+     "state": "B",
+     "vo": "v27",
+     "ifAll": [
+      "cracked_theo",
+      "cracked_lenny",
+      "cracked_mira"
+     ]
+    }
+   ],
+   "choices": [
+    {
+     "label": "Back to the room.",
+     "next": "hub",
+     "small": "",
+     "state": "",
+     "shiftTo": "",
+     "requiresTrue": false,
+     "requiresFlag": "",
+     "requiresAll": [],
+     "hideIfFlag": "",
+     "setsFlag": ""
+    }
+   ]
   }
  },
  "evidence": {
@@ -2402,6 +2960,18 @@
   "C3": {
    "s": "C",
    "t": "Mira: at quarter to one he was already cold. She staged a robbery for the insurance."
+  },
+  "E12": {
+   "s": "C",
+   "t": "12:20 — an eleven-second call to dispatch from the bar phone. Nobody spoke."
+  },
+  "E14": {
+   "s": "S",
+   "t": "The jukebox is stuck on four seconds of trumpet. It only ever worked for Danny."
+  },
+  "E14v": {
+   "s": "V",
+   "t": "The jukebox has been skipping since 11:50. Something hit the floor hard enough to jump the needle."
   }
  },
  "timeline": {

@@ -66,6 +66,8 @@ const STATIONS := {
 	"theo":   [Vector3(2.5, 1.5, 1.7),  Vector3(4.4, 1.0, 2.45), 54.0],
 	"lenny":  [Vector3(-2.2, 1.5, 1.7), Vector3(-0.65, 0.95, 0.2), 54.0],
 	"connie": [Vector3(1.5, 1.45, -0.6), Vector3(3.0, 0.85, -1.95), 54.0],
+	"phone":  [Vector3(-0.45, 1.5, -1.9), Vector3(0.25, 1.05, -3.72), 42.0],
+	"jukebox": [Vector3(-2.9, 1.35, -0.2), Vector3(-4.7, 0.85, -1.0), 50.0],
 	"rail":   [Vector3(0.9, 0.5, -1.45), Vector3(3.3, 0.3, -2.1), 46.0],
 }
 const SCENE_STATION := {
@@ -78,9 +80,22 @@ const SCENE_STATION := {
 	"ch5_intro": "office", "ch5_silence": "office",
 	"end_true": "hub", "end_true_tell": "hub", "end_true_stand": "booth",
 	"end_theo": "theo", "end_lenny": "lenny", "end_mira": "mira", "end_connie": "connie", "end_timeout": "booth",
+	"ch3_phone": "phone", "ch3_answer": "phone", "ch3_ring": "hub", "loc_jukebox": "jukebox",
+	"crack_theo_kind": "theo", "crack_theo_hard": "theo", "crack_lenny_ledger": "lenny", "crack_lenny_call": "lenny",
 	"ch2_brief": "hub", "crack_theo": "theo", "crack_lenny": "lenny", "crack_mira": "mira", "crack_connie": "connie",
 }
 # When one of these people speaks, the camera cuts to them, wherever the scene is set.
+## Shader-rig settings per character, as fractions of the model's height:
+## waist, neck, mouth line, neck pivot (x, z), face surface z. See shaders/puppet.gdshader.
+const RIG := {
+	"mira":   {"waist": 0.45, "neck": 0.768, "mouth": 0.826, "chin": 0.786, "c": Vector2(0.0, 0.0), "face": 0.105},
+	"theo":   {"waist": 0.55, "neck": 0.872, "mouth": 0.888, "chin": 0.872, "c": Vector2(0.0, 0.005), "face": 0.058},
+	"lenny":  {"waist": 0.55, "neck": 0.890, "mouth": 0.886, "chin": 0.863, "c": Vector2(0.005, 0.02), "face": 0.100},
+	"connie": {"waist": 0.50, "neck": 0.838, "mouth": 0.880, "chin": 0.858, "c": Vector2(-0.007, -0.087), "face": -0.008},
+}
+var puppets: Dictionary = {}       # name -> Puppet
+var speaker: String = ""           # who is talking right now
+var lipsync: Dictionary = {}       # voice file stem -> loudness envelope
 const SPEAKER_STATION := {"mira": "mira", "theo": "theo", "lenny": "lenny", "connie": "connie"}
 
 # Hotspots in the hub: name, scene id, position, size
@@ -89,6 +104,7 @@ const HOTSPOTS := [
 	["Danny", "loc_bar", Vector3(-4.1, 0.3, -3.1), Vector3(1.9, 0.7, 0.9)],
 	["The rail", "loc_floor", Vector3(1.3, 0.35, -2.1), Vector3(2.2, 0.7, 0.5)],
 	["The office", "loc_office", Vector3(5.1, 1.05, -0.8), Vector3(0.5, 2.1, 1.0)],
+	["The jukebox", "loc_jukebox", Vector3(-4.6, 0.8, -1.0), Vector3(0.9, 1.6, 1.0)],
 	["Mira", "int_mira", Vector3(-3.5, 0.6, -2.2), Vector3(0.7, 1.2, 0.7)],
 	["Theo", "int_theo", Vector3(4.3, 0.9, 2.4), Vector3(0.7, 1.8, 0.7)],
 	["Lenny", "int_lenny", Vector3(-0.7, 0.9, 0.2), Vector3(0.9, 1.8, 0.9)],
@@ -132,6 +148,11 @@ func _ready() -> void:
 	_build_music()
 	_build_sfx()
 	_build_voice()
+	var lf := FileAccess.open("res://data/lipsync.json", FileAccess.READ)
+	if lf:
+		var parsed: Variant = JSON.parse_string(lf.get_as_text())
+		if parsed is Dictionary:
+			lipsync = parsed
 	ui.line_voice.connect(_on_line_voice)
 	ui.line_who.connect(_on_line_who)
 	ui.present_requested.connect(func(): ui.open_present())
@@ -167,7 +188,9 @@ func go(id: String) -> void:
 		Story.current_no_shift = true
 		ui.show_timeline()
 		return
-	if id == "hub" and Story.ch4_due():
+	if id == "hub" and Story.ch3_due():
+		id = "ch3_phone"
+	elif id == "hub" and Story.ch4_due():
 		id = "ch4_blackout"
 	if id == "__restart":
 		_set_headlights(false)
@@ -188,6 +211,10 @@ func go(id: String) -> void:
 	_set_headlights(id == "accuse" or id == "end_true" or id == "end_timeout")
 	_set_hub(bool(sc.get("hub", false)))
 	_move_camera(SCENE_STATION.get(id, "hub"))
+	if id == "ch3_phone":
+		_play("phone")
+	else:
+		_stop("phone")
 	Story.grant_evidence(id)
 	ui.show_scene(id)
 
@@ -199,6 +226,14 @@ func _on_line_who(who: String) -> void:
 	var target: String = SPEAKER_STATION.get(who, SCENE_STATION.get(current_scene, "hub"))
 	if target != cam_station:
 		_move_camera(target, 0.7)
+	_direct_cast(who)
+	# a confession gets a slow push-in while they talk
+	if current_scene.begins_with("crack_") and puppets.has(who):
+		if fov_tween:
+			fov_tween.kill()
+		fov_tween = create_tween()
+		fov_tween.tween_interval(0.75)
+		fov_tween.tween_property(cam, "fov", float(STATIONS[target][2]) - 9.0, 7.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 
 
 ## The player showed this suspect a piece of evidence.
@@ -206,7 +241,10 @@ func _on_present(evidence_id: String) -> void:
 	var r: Dictionary = Story.present(current_scene, evidence_id)
 	match str(r["result"]):
 		"crack":
+			var who := current_scene.trim_prefix("int_")
 			go(str(r["scene"]))
+			if puppets.has(who):
+				puppets[who].react(1.0, -1.0 if who == "lenny" else 1.0)
 		"wrong_state":
 			Story.toast.emit("Not to this Frank. Shift, then show it again.")
 			ui.show_interject(r["line"])
@@ -353,6 +391,8 @@ func _on_line_voice(stem: String) -> void:
 	var pl := head_player if _is_voice_line(stem) else voice_player
 	pl.stream = load(path)
 	pl.play()
+	if puppets.has(speaker):
+		puppets[speaker].speak(str(lipsync.get(stem, "")))
 
 
 func _is_voice_line(stem: String) -> bool:
@@ -366,14 +406,14 @@ func _is_voice_line(stem: String) -> bool:
 
 ## Sound effects live in assets/audio/<name>.(ogg|mp3|wav). Any that are missing are skipped.
 func _build_sfx() -> void:
-	var defs := {"drink": -4.0, "sober": -6.0, "room": -24.0, "police": -8.0, "page": -16.0, "evidence": -8.0}
+	var defs := {"drink": -4.0, "sober": -6.0, "room": -24.0, "police": -8.0, "page": -16.0, "evidence": -8.0, "phone": -7.0}
 	for n in defs.keys():
 		for ext in ["ogg", "mp3", "wav"]:
 			var path := "res://assets/audio/%s.%s" % [n, ext]
 			if not ResourceLoader.exists(path):
 				continue
 			var stream: AudioStream = load(path)
-			if n == "room":
+			if n == "room" or n == "phone":
 				if stream is AudioStreamMP3:
 					(stream as AudioStreamMP3).loop = true
 				elif stream is AudioStreamOggVorbis:
@@ -533,11 +573,88 @@ func _load_models() -> void:
 			pivot.add_child(inst)
 			_fit_model(inst, float(cfg[2]), str(cfg[3]))
 			add_child(pivot)
+			if RIG.has(slot) and i == 0:
+				_make_puppet(str(slot), pivot, inst, float(cfg[2]))
 			i += 1
 		# hide the primitive placeholder(s) for this slot
 		for c in get_children():
 			if c.name == "PH_" + slot or str(c.name).begins_with("PH_" + slot + "_"):
 				c.visible = false
+
+
+func _find_mesh(n: Node) -> MeshInstance3D:
+	if n is MeshInstance3D:
+		return n
+	for c in n.get_children():
+		var m := _find_mesh(c)
+		if m:
+			return m
+	return null
+
+
+## Swap a character's material for the shader rig and give it a Puppet to drive it.
+func _make_puppet(slot: String, pivot: Node3D, inst: Node3D, height: float) -> void:
+	var mi := _find_mesh(inst)
+	if mi == null or mi.mesh == null:
+		return
+	var box: AABB = mi.mesh.get_aabb()
+	var rig: Dictionary = RIG[slot]
+	var sm := ShaderMaterial.new()
+	sm.shader = load("res://shaders/puppet.gdshader")
+	var src := mi.get_active_material(0) as BaseMaterial3D
+	if src:
+		sm.set_shader_parameter("albedo_tex", src.albedo_texture)
+		sm.set_shader_parameter("tint", Vector3(src.albedo_color.r, src.albedo_color.g, src.albedo_color.b))
+		if src.normal_enabled and src.normal_texture:
+			sm.set_shader_parameter("normal_tex", src.normal_texture)
+			sm.set_shader_parameter("use_normal", true)
+		if src.roughness_texture:
+			sm.set_shader_parameter("orm_tex", src.roughness_texture)
+			sm.set_shader_parameter("use_orm", true)
+			sm.set_shader_parameter("rough", src.roughness)
+			sm.set_shader_parameter("metal", src.metallic)
+		else:
+			sm.set_shader_parameter("rough", src.roughness)
+			sm.set_shader_parameter("metal", src.metallic)
+	var h := box.size.y
+	var cx := box.get_center().x
+	var cz := box.get_center().z
+	sm.set_shader_parameter("y0", box.position.y)
+	sm.set_shader_parameter("h", h)
+	sm.set_shader_parameter("waist", rig["waist"])
+	sm.set_shader_parameter("neck", rig["neck"])
+	sm.set_shader_parameter("mouth", rig["mouth"])
+	sm.set_shader_parameter("chin", rig["chin"])
+	sm.set_shader_parameter("head_c", Vector2(cx + rig["c"].x * h, cz + rig["c"].y * h))
+	sm.set_shader_parameter("face_z", cz + float(rig["face"]) * h)
+	for si in mi.mesh.get_surface_count():
+		mi.set_surface_override_material(si, sm)
+	mi.extra_cull_margin = 0.5
+	var pp := Puppet.new()
+	pp.name = "Puppet_" + slot
+	add_child(pp)
+	pp.setup(pivot, sm, height * (float(rig["neck"]) + 1.0) * 0.5, slot.hash())
+	puppets[slot] = pp
+
+
+func _head_pos(slot: String) -> Vector3:
+	var pp: Puppet = puppets[slot]
+	return pp.pivot.global_position + Vector3(0, pp.head_height, 0)
+
+
+## Point everyone's attention: at the speaker if one of them is talking, otherwise at Frank (the camera).
+func _direct_cast(who: String) -> void:
+	speaker = who if puppets.has(who) else ""
+	for n in puppets.keys():
+		var pp: Puppet = puppets[n]
+		if n == speaker:
+			pp.look_at_point(cam_base.origin, 1.0)
+		elif speaker != "":
+			pp.look_at_point(_head_pos(speaker), 0.85)
+			pp.hush()
+		else:
+			pp.look_at_point(cam_base.origin, 0.75 if not in_hub else 0.35)
+			pp.hush()
 
 
 ## Bounding box of every mesh under `n`, in the space of `n`'s parent.
@@ -621,6 +738,8 @@ func _on_hotspot_input(_cam: Node, event: InputEvent, _pos: Vector3, _normal: Ve
 
 func _set_hub(on: bool) -> void:
 	in_hub = on
+	if on:
+		_direct_cast("")
 	for a in hotspots:
 		a.input_ray_pickable = on
 		a.get_node("Label").visible = on
@@ -1027,6 +1146,11 @@ func _build_room() -> void:
 	# register placeholder, drawer out
 	_tbox(Vector3(0.7, 1.17, -3.72), Vector3(0.45, 0.38, 0.4), brass, "PH_register")
 	_tbox(Vector3(0.7, 1.03, -3.5), Vector3(0.4, 0.08, 0.3), wood_dark, "PH_register_drawer")
+	# the bar's landline: an old black desk phone on the back counter
+	_box(Vector3(0.05, 0.99, -3.72), Vector3(0.24, 0.07, 0.2), Color(0.03, 0.03, 0.035), 0.35)
+	_box(Vector3(0.05, 1.035, -3.76), Vector3(0.2, 0.05, 0.1), Color(0.03, 0.03, 0.035), 0.35)
+	_cyl(Vector3(0.05, 1.085, -3.76), 0.028, 0.26, Color(0.03, 0.03, 0.035), 0.3, 0.0, PI * 0.5)
+	_cyl(Vector3(0.05, 1.03, -3.66), 0.055, 0.012, Color(0.75, 0.72, 0.62), 0.5)
 	# Theo's phone on the charger beside the register
 	_clue(_box(Vector3(1.2, 1.0, -3.8), Vector3(0.075, 0.012, 0.15), Color(0.04, 0.04, 0.05), 0.15))
 	_box(Vector3(1.2, 0.997, -3.93), Vector3(0.03, 0.01, 0.12), Color(0.85, 0.85, 0.85), 0.6)

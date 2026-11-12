@@ -20,6 +20,7 @@ const SHIFT_BACK_COST := 20          # minutes to sober up
 const WRONG_PRESENT_COST := 5        # minutes lost showing a suspect the wrong thing
 const WITNESS := "E08"                # Connie's account: the key to the true ending
 const SUSPECT_FLAGS := ["cracked_theo", "cracked_lenny", "cracked_mira"]
+const CH3_MINUTES := 2 * 60 + 10     # the phone rings on the next hub visit after this
 const CH4_MINUTES := 2 * 60 + 40     # the 90-minute mark: Chapter Four fires on the next hub visit
 const SAVE_PATH := "user://last_shift.cfg"
 
@@ -163,6 +164,11 @@ func has_flag(f: String) -> bool:
 	return flags.has(f)
 
 
+## Chapter Three fires once, on the first hub visit at or after 2:10 AM.
+func ch3_due() -> bool:
+	return minutes >= CH3_MINUTES and not has_flag("ch3") and not over
+
+
 ## Chapter Four fires once, on the first hub visit at or after 2:40 AM.
 func ch4_due() -> bool:
 	return minutes >= CH4_MINUTES and not has_flag("ch4") and not over
@@ -248,10 +254,19 @@ func _load_save() -> void:
 				endings_seen.append(e)
 
 
+## Lines can depend on what happened earlier: "ifAll" (flags) and "ifFound" (evidence).
+func line_available(l: Dictionary) -> bool:
+	for f in l.get("ifAll", []):
+		if not has_flag(str(f)):
+			return false
+	var e := str(l.get("ifFound", ""))
+	return e == "" or found.has(e)
+
+
 func visible_lines(id: String) -> Array:
 	var out: Array = []
 	for l in scenes[id]["lines"]:
-		if l["state"] == "B" or l["state"] == state:
+		if (l["state"] == "B" or l["state"] == state) and line_available(l):
 			out.append(l)
 	return out
 

@@ -15,7 +15,9 @@ The truth needs both.
 - **The clock:** 1:40 AM to 4:00 AM. Every stop costs ten minutes, sobering up costs twenty, and you have three drinks. Some decisions are timed — saying nothing is an answer.
 - **Setting:** The night shift at a bar after last call. One body, four people who stayed, one detective who may not remember why he's there.
 - **Structure:** Six chapters and seven endings. The true ending needs three confessions, one witness, and the night laid out in order.
-- **Fully voiced**, including Frank's inner monologue and The Voice.
+- **Fully voiced** (27 minutes of recorded dialogue), including Frank's inner monologue and The Voice.
+- **Choices are remembered:** how you treat the people who confess, and whether you answer the phone, change what Connie tells you and how the true ending plays.
+- **Characters move:** they breathe, turn to whoever is speaking, flinch when caught, and their mouths follow the recorded voice.
 
 ## Play
 
@@ -36,6 +38,10 @@ scenes/Main.tscn     root scene: camera + UI layer
 scripts/Main.gd      builds THE LAST CALL in 3D, camera stations, hotspots, Shift lighting
 scripts/Story.gd     autoload: story data, state, clock, flasks, evidence
 scripts/UI.gd        HUD, dialogue panel, choices, evidence board, title
+scripts/Puppet.gd    per-character animation: look-at, idle, speech, reactions
+shaders/puppet.gdshader   two-bone vertex-shader rig (torso, head, jaw) for the scanned characters
+data/lipsync.json    loudness envelope per voice line, drives the jaw
+docs/voice-check.json    speech-recognition transcript, pace and level of every voice line
 data/story.json      every scene and line, tagged S (sober) / V (voice) / B (both)
 tests/smoke.gd       headless test that plays the whole game: godot --headless --path . -s tests/smoke.gd
 export_presets.cfg   Web export preset
@@ -51,7 +57,7 @@ LICENSE              MIT for code; story, characters and art are CC BY-NC 4.0
 
 **Pre-existing material.** Frank Sable and The Voice are characters from the author's unreleased whodunnit series *On the Rocks*. The character concept predates the jam. Everything in this repository — the game, the case, the dialogue, the puzzle design, the code — was created during the Game Off 2026 submission window (Nov 1 – Dec 1, 2026). No prose from the series was imported.
 
-**AI use.** Code (GDScript, Godot scene construction), dialogue drafting and design iteration were done with Claude (Anthropic). Character, furniture and prop 3D models were generated with Higgsfield (reference images, then image-to-3D). The title theme was generated with ElevenLabs Music (via Higgsfield). Dialogue portraits, environment textures and sound effects were generated with Higgsfield. Character voices are synthetic (ElevenLabs preset voices via Higgsfield); no real person's voice was cloned. Direction, story, puzzle logic, editing and all decisions are the author's.
+**AI use.** Code (GDScript, Godot scene construction), dialogue drafting and design iteration were done with Claude (Anthropic). Character, furniture and prop 3D models were generated with Higgsfield (reference images, then image-to-3D). The title theme was generated with ElevenLabs Music (via Higgsfield). Dialogue portraits, environment textures and sound effects were generated with Higgsfield. Every voice line was checked by machine transcription against the script and level-matched (docs/voice-check.json). Character voices are synthetic (ElevenLabs preset voices via Higgsfield); no real person's voice was cloned. Direction, story, puzzle logic, editing and all decisions are the author's.
 
 **Content.** The protagonist's drinking is the game's central mechanic and is treated as a cost, not a power-up. Mild language, implied violence, no gore.
 

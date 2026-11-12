@@ -44,6 +44,12 @@ func _run() -> void:
 			if str(l.get("vo", "")) != "":
 				check(ResourceLoader.exists("res://assets/voice/%s.ogg" % l["vo"]), "missing voice file " + str(l["vo"]))
 		check(main.SCENE_STATION.has(id), "no camera station for scene " + id)
+		check(main.STATIONS.has(main.SCENE_STATION.get(id, "")), "unknown camera station for scene " + id)
+	for stem in st.scenes.keys():
+		for l in st.scenes[stem]["lines"]:
+			if str(l.get("vo", "")) != "":
+				check(main.lipsync.has(l["vo"]), "no lip-sync data for " + str(l["vo"]))
+	check(main.puppets.size() == 4, "four characters are rigged")
 	for sid in st.present_cfg.keys():
 		var cfg: Dictionary = st.present_cfg[sid]
 		check(st.scenes.has(sid) and st.scenes.has(cfg["crack"]), "confrontation scenes exist for " + sid)
@@ -69,8 +75,25 @@ func _run() -> void:
 	var m0: int = st.minutes
 	for id in ["loc_bar", "loc_floor", "loc_office"]:
 		await visit(id)
-		await visit("hub")
+		if id != "loc_office":
+			await visit("hub")
 	check(st.minutes == m0 + 30, "three stops cost thirty minutes")
+
+	# 3b. Chapter Three: at 2:10 the phone rings; answering it is evidence
+	main.go("hub")
+	await process_frame
+	check(main.current_scene == "ch3_phone", "the phone rings at 2:10, got %s at %s" % [main.current_scene, st.fmt_clock()])
+	while ui.line_idx < ui.lines.size():
+		ui._next_line()
+	check(ui.timer_left > 0.0, "the phone is on a timer")
+	main._on_choice(st.scenes["ch3_phone"]["choices"][0])
+	await process_frame
+	check(main.current_scene == "ch3_answer" and st.found.has("E12"), "answering gets the 12:20 call")
+	await visit("hub")
+	check(main.current_scene == "hub", "Chapter Three fires only once")
+	await visit("loc_jukebox")
+	check(st.found.has("E14v"), "the Voice reads the jukebox")
+	await visit("hub")
 	for e in ["E01v", "E04v", "E05v", "E07v", "E06v"]:
 		check(st.found.has(e), "Voice sweep found " + e)
 
@@ -85,6 +108,9 @@ func _run() -> void:
 	await process_frame
 	check(main.current_scene == "crack_lenny" and st.has_flag("cracked_lenny"), "Lenny breaks to the Voice")
 	check(st.found.has("C2"), "Lenny's confession is on the board")
+	main._on_choice(st.scenes["crack_lenny"]["choices"][0])
+	await process_frame
+	check(main.current_scene == "crack_lenny_ledger" and st.has_flag("lenny_ledger"), "Lenny gives up where the ledger is")
 
 	# 5. Theo will not confess to the Voice
 	await visit("int_theo")
@@ -113,6 +139,12 @@ func _run() -> void:
 	main._on_present("E04v")
 	await process_frame
 	check(main.current_scene == "crack_theo" and st.found.has("C1"), "Theo confesses to sober Frank")
+	while ui.line_idx < ui.lines.size():
+		ui._next_line()
+	check(ui.timer_left > 0.0, "how you answer Theo is on a timer")
+	main._on_choice(st.scenes["crack_theo"]["choices"][0])
+	await process_frame
+	check(main.current_scene == "crack_theo_kind" and st.has_flag("theo_kind"), "being kind to Theo is remembered")
 	await visit("int_mira")
 	main._on_present("E10")
 	await process_frame
@@ -129,6 +161,10 @@ func _run() -> void:
 	check(opts[0]["next"] == "ch4_connie", "Connie offers her account once all three have confessed")
 	await visit("ch4_connie")
 	check(st.found.has("E08") and st.ready_for_timeline(), "Connie's account unlocks the timeline")
+	var said: Array = []
+	for cl in st.visible_lines("ch4_connie"):
+		said.append(cl["vo"])
+	check(said.has("c10"), "Connie owns up to the 12:20 call when you answered the phone")
 	check(not st.true_unlocked(), "Frank's card is locked until the timeline is built")
 	check(not st.over, "still time on the clock (%s)" % st.fmt_clock())
 
@@ -153,6 +189,10 @@ func _run() -> void:
 	await process_frame
 	check(main.current_scene == "end_true_stand", "saying nothing lets it stand, got " + main.current_scene)
 	check(st.over and st.endings_seen.has("end_true_stand"), "ending recorded")
+	var told: Array = []
+	for el in st.visible_lines("end_true_tell"):
+		told.append(el["vo"])
+	check(told.has("n56") and told.has("n58") and told.has("n59") and not told.has("n57"), "the ending remembers what you did: " + str(told))
 	check(st.recap().contains("3 of 3 confessions"), "recap: " + st.recap())
 	main.go("hub")
 	await process_frame
@@ -165,6 +205,10 @@ func _run() -> void:
 	check(ui.title_visible, "restart shows the title")
 	ui._start()
 	await process_frame
+	await visit("ch3_phone")
+	ui._process(60.0)
+	await process_frame
+	check(main.current_scene == "ch3_ring" and not st.found.has("E12"), "if you do nothing, the phone rings out; got " + main.current_scene)
 	await visit("ch4_blackout")
 	check(ui.timer_left > 0.0, "Chapter Four is on a timer")
 	ui._process(60.0)
