@@ -141,6 +141,9 @@ void fragment() {
 		ROUGHNESS = rough;
 		METALLIC = metal;
 	}
+	// a soft edge light, so a figure separates from the baked room behind it
+	RIM = 0.45;
+	RIM_TINT = 0.55;
 	if (use_normal) {
 		NORMAL_MAP = texture(normal_tex, UV).rgb;
 	}

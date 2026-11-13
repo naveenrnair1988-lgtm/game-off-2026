@@ -142,6 +142,8 @@ func _ready() -> void:
 	_build_lighting()
 	_build_hotspots()
 	_build_post()
+	_build_title_set()
+	_apply_bake()
 	ui.choice_made.connect(_on_choice)
 	ui.back_requested.connect(func(): go("hub"))
 	ui.restart_requested.connect(func(): go("__restart"))
@@ -149,7 +151,6 @@ func _ready() -> void:
 	ui.timeline_solved.connect(func(): go("ch5_silence"))
 	Story.state_changed.connect(_on_state_changed)
 	Story.timed_out.connect(func(): call_deferred("go", "end_timeout"))
-	_build_title_set()
 	_build_music()
 	_build_sfx()
 	_build_voice()
@@ -165,6 +166,180 @@ func _ready() -> void:
 	ui.line_advanced.connect(func(): _play("page"))
 	Story.evidence_found.connect(_on_evidence_sfx)
 	_enter_title()
+
+
+# ---------------------------------------------------------------- baked lighting
+## If assets/baked/room.glb exists, the static room is swapped for the Blender-baked version:
+## the same geometry merged into a few meshes, lit by path-traced lightmaps (shaders/baked.gdshader).
+## Characters, bottles, clue props and anything that glows stay live. Rebuild the bake with
+## tools/export_scene.gd then tools/bake_room.py. Set LS_NOBAKE=1 to see the unbaked room.
+const BAKE_DIR := "res://assets/baked/"
+const LAMP_GAIN := 2.5          # palette lamp energy -> lightmap gain
+const AMBIENT_GAIN := 0.10
+var baked_root: Node3D
+var baked_mats: Array[ShaderMaterial] = []
+var baked := false
+
+
+## The static meshes that the bake replaces. tools/export_scene.gd uses the same rule.
+func _is_static_mesh(c: Node) -> bool:
+	var mi := c as MeshInstance3D
+	if mi == null or not mi.visible or clue_meshes.has(mi) or str(mi.name).begins_with("PH_lamp_"):
+		return false
+	var sm := mi.material_override as StandardMaterial3D
+	if sm == null or sm.transparency != BaseMaterial3D.TRANSPARENCY_DISABLED:
+		return false
+	return not (sm.emission_enabled or sm.shading_mode == BaseMaterial3D.SHADING_MODE_UNSHADED)
+
+
+func _collect_meshes(n: Node, acc: Array) -> void:
+	if n is MeshInstance3D:
+		acc.append(n)
+	for c in n.get_children():
+		_collect_meshes(c, acc)
+
+
+func _apply_bake() -> void:
+	if OS.get_environment("LS_NOBAKE") != "" or not ResourceLoader.exists(BAKE_DIR + "room.glb"):
+		return
+	var f := FileAccess.open(BAKE_DIR + "lightmaps.json", FileAccess.READ)
+	if f == null:
+		return
+	var meta: Variant = JSON.parse_string(f.get_as_text())
+	if not (meta is Dictionary):
+		return
+	var packed: PackedScene = load(BAKE_DIR + "room.glb")
+	if packed == null:
+		return
+	# hide what the bake replaces
+	for c in get_children():
+		if _is_static_mesh(c):
+			(c as Node3D).visible = false
+		elif c is Node3D and str(c.name).begins_with("Model_") and not RIG.has(str(c.name).trim_prefix("Model_").get_slice("_", 0)):
+			(c as Node3D).visible = false
+		elif str(c.name).begins_with("PH_lamp_"):
+			(c as Node3D).visible = false
+	baked_root = packed.instantiate()
+	baked_root.name = "Baked"
+	add_child(baked_root)
+	var lamp_pos: Array = []
+	for l in lights:
+		lamp_pos.append(l.position)
+	var tex_cache := {}
+	var lm := func(atlas: String, group: String) -> Texture2D:
+		var k := "%s_%s" % [atlas, group]
+		if not tex_cache.has(k):
+			tex_cache[k] = load(BAKE_DIR + str(meta[k]["file"])) if meta.has(k) else null
+		return tex_cache[k]
+	var acc: Array = []
+	_collect_meshes(baked_root, acc)
+	var by_key := {}
+	for mi in acc:
+		(mi as MeshInstance3D).cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		for si in mi.mesh.get_surface_count():
+			var src: Material = mi.mesh.surface_get_material(si)
+			var key := str(src.resource_name) if src else ""
+			if not by_key.has(key):
+				var atlas := "props" if key.begins_with("prop:") else "room"
+				var sm := ShaderMaterial.new()
+				sm.shader = load("res://shaders/baked.gdshader")
+				sm.set_shader_parameter("lm_lamps", lm.call(atlas, "lamps"))
+				sm.set_shader_parameter("lm_accent", lm.call(atlas, "accent"))
+				sm.set_shader_parameter("lm_head", lm.call(atlas, "head"))
+				sm.set_shader_parameter("lm_scale", Vector3(float(meta.get(atlas + "_lamps", {}).get("scale", 1.0)), float(meta.get(atlas + "_accent", {}).get("scale", 1.0)), float(meta.get(atlas + "_head", {}).get("scale", 1.0))))
+				sm.set_shader_parameter("lamp_pos", lamp_pos)
+				sm.set_shader_parameter("lamp_count", lamp_pos.size())
+				if key.begins_with("prop:"):
+					var slot := key.trim_prefix("prop:")
+					sm.set_shader_parameter("triplanar", false)
+					sm.set_shader_parameter("use_tex", true)
+					sm.set_shader_parameter("albedo_tex", load("res://assets/models/%s_Image_0.webp" % slot))
+					sm.set_shader_parameter("rough", 0.6)
+				else:
+					var info: Dictionary = meta["materials"].get(key, {})
+					var col: Array = info.get("color", [0.6, 0.6, 0.6])
+					sm.set_shader_parameter("tint", Vector3(col[0], col[1], col[2]))
+					sm.set_shader_parameter("rough", float(info.get("rough", 0.8)))
+					sm.set_shader_parameter("metal", float(info.get("metal", 0.0)))
+					sm.set_shader_parameter("tile", float(info.get("scale", 1.0)))
+					if str(info.get("tex", "")) != "":
+						sm.set_shader_parameter("use_tex", true)
+						sm.set_shader_parameter("albedo_tex", load(str(info["tex"])))
+					if str(info.get("normal", "")) != "":
+						sm.set_shader_parameter("use_normal", true)
+						sm.set_shader_parameter("normal_tex", load(str(info["normal"])))
+						sm.set_shader_parameter("normal_scale", float(info.get("normal_scale", 1.0)))
+				by_key[key] = sm
+				baked_mats.append(sm)
+			mi.set_surface_override_material(si, by_key[key])
+	# nothing left for the live lights to cast shadows onto
+	for l in lights:
+		l.shadow_enabled = false
+	baked = true
+	_build_atmosphere()
+	print("baked room: ", acc.size(), " meshes, ", baked_mats.size(), " materials")
+
+
+## Light you can see in the air: a soft cone under each pendant and a halo round each bulb and the neon.
+var glow_lamps: Array[ShaderMaterial] = []
+var glow_neon: ShaderMaterial
+
+
+func _glow(mode: int, mesh: Mesh, pos: Vector3, col: Color, strength: float) -> ShaderMaterial:
+	var sm := ShaderMaterial.new()
+	sm.shader = load("res://shaders/glow.gdshader")
+	sm.set_shader_parameter("mode", mode)
+	sm.set_shader_parameter("color", Vector3(col.r, col.g, col.b))
+	sm.set_shader_parameter("strength", strength)
+	var mi := MeshInstance3D.new()
+	mi.mesh = mesh
+	mi.position = pos
+	mi.material_override = sm
+	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	mi.extra_cull_margin = 2.0
+	add_child(mi)
+	return sm
+
+
+func _build_atmosphere() -> void:
+	var halo := QuadMesh.new()
+	halo.size = Vector2(1.1, 1.1)
+	for cfg in MODEL_SLOTS["lamp"]:
+		var p: Vector3 = cfg[0]
+		var cone := CylinderMesh.new()
+		cone.top_radius = 0.10
+		cone.bottom_radius = 1.25
+		cone.height = p.y - 0.05
+		cone.radial_segments = 28
+		cone.rings = 1
+		cone.cap_top = false
+		cone.cap_bottom = false
+		glow_lamps.append(_glow(0, cone, Vector3(p.x, (p.y - 0.05) * 0.5 + 0.02, p.z), Color(1, 1, 1), 0.20))
+		glow_lamps.append(_glow(1, halo, p + Vector3(0, 0.02, 0), Color(1, 1, 1), 0.55))
+	var nh := QuadMesh.new()
+	nh.size = Vector2(3.2, 1.6)
+	glow_neon = _glow(1, nh, Vector3(5.05, 2.3, -2.85), Color(1.0, 0.16, 0.34), 0.35)
+
+
+## The palette tweens drive the live lights; the baked room follows them every frame.
+func _update_bake() -> void:
+	if not baked or lights.is_empty():
+		return
+	var l0: Light3D = lights[0]
+	var lc := l0.light_color * (l0.light_energy * LAMP_GAIN)
+	var amb := env.ambient_light_color * (env.ambient_light_energy * AMBIENT_GAIN)
+	var accent := neon_light.light_energy / 0.9 if neon_light else 1.0
+	var head := headlight.light_energy / 6.0 * 0.4 if headlight and headlight.visible else 0.0
+	var gl := l0.light_color * (l0.light_energy / 3.4)
+	for g in glow_lamps:
+		g.set_shader_parameter("color", Vector3(gl.r, gl.g, gl.b))
+	if glow_neon:
+		glow_neon.set_shader_parameter("strength", 0.35 * accent)
+	for sm in baked_mats:
+		sm.set_shader_parameter("lamp_col", Vector3(lc.r, lc.g, lc.b))
+		sm.set_shader_parameter("ambient", Vector3(amb.r, amb.g, amb.b))
+		sm.set_shader_parameter("accent_gain", accent)
+		sm.set_shader_parameter("head_gain", head)
 
 
 # ---------------------------------------------------------------- adaptive quality
@@ -317,6 +492,7 @@ func _watch_fps(delta: float) -> void:
 
 func _process(delta: float) -> void:
 	_watch_fps(delta)
+	_update_bake()
 	# slow handheld breathing on the camera, on top of whatever station it is at
 	sway_t += delta
 	if in_title:
@@ -481,11 +657,15 @@ func _enter_title() -> void:
 
 
 func _set_cast_visible(on: bool) -> void:
+	if baked_root:
+		var bb := baked_root.find_child("Model_body", true, false) as Node3D
+		if bb:
+			bb.visible = on
 	for n in ["Model_lenny", "Model_theo", "Model_mira", "Model_body", "PH_lenny", "PH_theo", "PH_mira", "PH_body"]:
 		var node := get_node_or_null(n) as Node3D
 		if node:
 			# a placeholder stays hidden if its model replaced it
-			if n.begins_with("PH_") and get_node_or_null("Model_" + n.substr(3)) != null:
+			if n.begins_with("PH_") and (get_node_or_null("Model_" + n.substr(3)) != null or baked_root != null):
 				node.visible = false
 			else:
 				node.visible = on
@@ -717,8 +897,15 @@ func _build_post() -> void:
 # ---------------------------------------------------------------- models
 
 func _load_models() -> void:
+	# with a bake present the furniture comes from assets/baked/room.glb, already lit
+	var use_bake := OS.get_environment("LS_NOBAKE") == "" and ResourceLoader.exists(BAKE_DIR + "room.glb")
 	for slot in MODEL_SLOTS.keys():
 		var path := "res://assets/models/%s.glb" % slot
+		if use_bake and not RIG.has(slot):
+			for c in get_children():
+				if c.name == "PH_" + slot or str(c.name).begins_with("PH_" + slot + "_"):
+					c.visible = false
+			continue
 		if not ResourceLoader.exists(path):
 			continue
 		var scene: PackedScene = load(path)
@@ -1257,6 +1444,11 @@ func _build_room() -> void:
 	var pane := _tbox(Vector3(5.11, 1.5, 2.4), Vector3(0.02, 0.8, 0.6), _emissive(Color(0.20, 0.30, 0.45), 0.7))
 	pane.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	_tbox(Vector3(5.09, 1.02, 2.72), Vector3(0.05, 0.04, 0.12), brass)
+	# a pair of wall sconces either side of the entrance, so the door end of the room has its own light
+	for sz in [1.5, 3.3]:
+		_tbox(Vector3(5.15, 2.0, sz), Vector3(0.03, 0.30, 0.14), brass)
+		var sc := _tbox(Vector3(5.10, 2.03, sz), Vector3(0.07, 0.18, 0.10), _emissive(Color(1.0, 0.72, 0.40), 3.0))
+		sc.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	# window: street glow behind venetian blinds
 	var win := _tbox(Vector3(-1.6, 1.85, 4.17), Vector3(4.0, 1.4, 0.03), _emissive(Color(0.16, 0.24, 0.40), 0.9), "Window")
 	win.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF

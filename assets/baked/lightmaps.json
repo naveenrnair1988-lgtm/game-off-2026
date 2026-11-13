@@ -1,0 +1,482 @@
+{
+ "room_lamps": {
+  "file": "lm_room_lamps.webp",
+  "scale": 2.3897366523742676,
+  "mean": 0.13339082896709442
+ },
+ "props_lamps": {
+  "file": "lm_props_lamps.webp",
+  "scale": 3.718302011489868,
+  "mean": 0.2810612916946411
+ },
+ "room_accent": {
+  "file": "lm_room_accent.webp",
+  "scale": 3.7570879459381104,
+  "mean": 0.1462462693452835
+ },
+ "props_accent": {
+  "file": "lm_props_accent.webp",
+  "scale": 0.07546485215425491,
+  "mean": 0.004704812075942755
+ },
+ "room_head": {
+  "file": "lm_room_head.webp",
+  "scale": 32.1448974609375,
+  "mean": 0.987732470035553
+ },
+ "props_head": {
+  "file": "lm_props_head.webp",
+  "scale": 0.11666302382946014,
+  "mean": 0.006216899957507849
+ },
+ "materials": {
+  "bartop": {
+   "color": [
+    0.949999988079071,
+    0.879999995231628,
+    0.819999992847443
+   ],
+   "metal": 0.0,
+   "normal": "res://assets/textures/bartop_n.jpg",
+   "normal_scale": 0.600000023841858,
+   "rough": 0.219999998807907,
+   "scale": 0.625,
+   "tex": "res://assets/textures/bartop.jpg",
+   "triplanar": true
+  },
+  "brass": {
+   "color": [
+    0.800000011920929,
+    0.600000023841858,
+    0.259999990463257
+   ],
+   "metal": 0.949999988079071,
+   "normal": "",
+   "normal_scale": 1.0,
+   "rough": 0.280000001192093,
+   "scale": 1.0,
+   "tex": "",
+   "triplanar": false
+  },
+  "carpet": {
+   "color": [
+    0.800000011920929,
+    0.779999971389771,
+    0.779999971389771
+   ],
+   "metal": 0.0,
+   "normal": "res://assets/textures/carpet_n.jpg",
+   "normal_scale": 0.800000011920929,
+   "rough": 1.0,
+   "scale": 0.833333313465118,
+   "tex": "res://assets/textures/carpet.jpg",
+   "triplanar": true
+  },
+  "ceiling": {
+   "color": [
+    0.75,
+    0.75,
+    0.779999971389771
+   ],
+   "metal": 0.0,
+   "normal": "res://assets/textures/ceiling_n.jpg",
+   "normal_scale": 1.39999997615814,
+   "rough": 0.699999988079071,
+   "scale": 0.416666656732559,
+   "tex": "res://assets/textures/ceiling.jpg",
+   "triplanar": true
+  },
+  "col:080809:30:0": {
+   "color": [
+    0.0299999993294477,
+    0.0299999993294477,
+    0.0350000001490116
+   ],
+   "metal": 0.0,
+   "normal": "",
+   "normal_scale": 1.0,
+   "rough": 0.300000011920929,
+   "scale": 1.0,
+   "tex": "",
+   "triplanar": false
+  },
+  "col:080809:34:0": {
+   "color": [
+    0.0299999993294477,
+    0.0299999993294477,
+    0.0350000001490116
+   ],
+   "metal": 0.0,
+   "normal": "",
+   "normal_scale": 1.0,
+   "rough": 0.349999994039536,
+   "scale": 1.0,
+   "tex": "",
+   "triplanar": false
+  },
+  "col:171614:60:0": {
+   "color": [
+    0.0900000035762787,
+    0.0850000008940697,
+    0.0799999982118607
+   ],
+   "metal": 0.0,
+   "normal": "",
+   "normal_scale": 1.0,
+   "rough": 0.600000023841858,
+   "scale": 1.0,
+   "tex": "",
+   "triplanar": false
+  },
+  "col:1a2126:3:89": {
+   "color": [
+    0.100000001490116,
+    0.129999995231628,
+    0.150000005960464
+   ],
+   "metal": 0.899999976158142,
+   "normal": "",
+   "normal_scale": 1.0,
+   "rough": 0.0399999991059303,
+   "scale": 1.0,
+   "tex": "",
+   "triplanar": false
+  },
+  "col:1a3824:69:0": {
+   "color": [
+    0.100000001490116,
+    0.219999998807907,
+    0.140000000596046
+   ],
+   "metal": 0.0,
+   "normal": "",
+   "normal_scale": 1.0,
+   "rough": 0.699999988079071,
+   "scale": 1.0,
+   "tex": "",
+   "triplanar": false
+  },
+  "col:211f1c:100:0": {
+   "color": [
+    0.129999995231628,
+    0.119999997317791,
+    0.109999999403954
+   ],
+   "metal": 0.0,
+   "normal": "",
+   "normal_scale": 1.0,
+   "rough": 1.0,
+   "scale": 1.0,
+   "tex": "",
+   "triplanar": false
+  },
+  "col:290303:11:0": {
+   "color": [
+    0.159999996423721,
+    0.0120000001043081,
+    0.0120000001043081
+   ],
+   "metal": 0.0,
+   "normal": "",
+   "normal_scale": 1.0,
+   "rough": 0.119999997317791,
+   "scale": 1.0,
+   "tex": "",
+   "triplanar": false
+  },
+  "col:291408:11:0": {
+   "color": [
+    0.159999996423721,
+    0.0799999982118607,
+    0.0299999993294477
+   ],
+   "metal": 0.0,
+   "normal": "",
+   "normal_scale": 1.0,
+   "rough": 0.119999997317791,
+   "scale": 1.0,
+   "tex": "",
+   "triplanar": false
+  },
+  "col:332b21:50:0": {
+   "color": [
+    0.200000002980232,
+    0.170000001788139,
+    0.129999995231628
+   ],
+   "metal": 0.0,
+   "normal": "",
+   "normal_scale": 1.0,
+   "rough": 0.5,
+   "scale": 1.0,
+   "tex": "",
+   "triplanar": false
+  },
+  "col:383d38:50:50": {
+   "color": [
+    0.219999998807907,
+    0.239999994635582,
+    0.219999998807907
+   ],
+   "metal": 0.5,
+   "normal": "",
+   "normal_scale": 1.0,
+   "rough": 0.5,
+   "scale": 1.0,
+   "tex": "",
+   "triplanar": false
+  },
+  "col:4d290d:7:0": {
+   "color": [
+    0.300000011920929,
+    0.159999996423721,
+    0.0500000007450581
+   ],
+   "metal": 0.0,
+   "normal": "",
+   "normal_scale": 1.0,
+   "rough": 0.0799999982118607,
+   "scale": 1.0,
+   "tex": "",
+   "triplanar": false
+  },
+  "col:4d4d4d:20:0": {
+   "color": [
+    0.300000011920929,
+    0.300000011920929,
+    0.300000011920929
+   ],
+   "metal": 0.0,
+   "normal": "",
+   "normal_scale": 1.0,
+   "rough": 0.200000002980232,
+   "scale": 1.0,
+   "tex": "",
+   "triplanar": false
+  },
+  "col:5c3312:5:0": {
+   "color": [
+    0.360000014305115,
+    0.200000002980232,
+    0.0700000002980232
+   ],
+   "metal": 0.0,
+   "normal": "",
+   "normal_scale": 1.0,
+   "rough": 0.0599999986588955,
+   "scale": 1.0,
+   "tex": "",
+   "triplanar": false
+  },
+  "col:858580:30:0": {
+   "color": [
+    0.519999980926514,
+    0.519999980926514,
+    0.5
+   ],
+   "metal": 0.0,
+   "normal": "",
+   "normal_scale": 1.0,
+   "rough": 0.300000011920929,
+   "scale": 1.0,
+   "tex": "",
+   "triplanar": false
+  },
+  "col:8c1f1a:89:0": {
+   "color": [
+    0.550000011920929,
+    0.119999997317791,
+    0.100000001490116
+   ],
+   "metal": 0.0,
+   "normal": "",
+   "normal_scale": 1.0,
+   "rough": 0.899999976158142,
+   "scale": 1.0,
+   "tex": "",
+   "triplanar": false
+  },
+  "col:bfb89e:50:0": {
+   "color": [
+    0.75,
+    0.720000028610229,
+    0.620000004768372
+   ],
+   "metal": 0.0,
+   "normal": "",
+   "normal_scale": 1.0,
+   "rough": 0.5,
+   "scale": 1.0,
+   "tex": "",
+   "triplanar": false
+  },
+  "col:c79e9e:100:0": {
+   "color": [
+    0.779999971389771,
+    0.620000004768372,
+    0.620000004768372
+   ],
+   "metal": 0.0,
+   "normal": "",
+   "normal_scale": 1.0,
+   "rough": 1.0,
+   "scale": 1.0,
+   "tex": "",
+   "triplanar": false
+  },
+  "col:ccc4ad:89:0": {
+   "color": [
+    0.800000011920929,
+    0.769999980926514,
+    0.680000007152557
+   ],
+   "metal": 0.0,
+   "normal": "",
+   "normal_scale": 1.0,
+   "rough": 0.899999976158142,
+   "scale": 1.0,
+   "tex": "",
+   "triplanar": false
+  },
+  "col:d1c29e:89:0": {
+   "color": [
+    0.819999992847443,
+    0.759999990463257,
+    0.620000004768372
+   ],
+   "metal": 0.0,
+   "normal": "",
+   "normal_scale": 1.0,
+   "rough": 0.899999976158142,
+   "scale": 1.0,
+   "tex": "",
+   "triplanar": false
+  },
+  "col:d9d9d9:60:0": {
+   "color": [
+    0.850000023841858,
+    0.850000023841858,
+    0.850000023841858
+   ],
+   "metal": 0.0,
+   "normal": "",
+   "normal_scale": 1.0,
+   "rough": 0.600000023841858,
+   "scale": 1.0,
+   "tex": "",
+   "triplanar": false
+  },
+  "col:dbd4bd:89:0": {
+   "color": [
+    0.860000014305115,
+    0.829999983310699,
+    0.740000009536743
+   ],
+   "metal": 0.0,
+   "normal": "",
+   "normal_scale": 1.0,
+   "rough": 0.899999976158142,
+   "scale": 1.0,
+   "tex": "",
+   "triplanar": false
+  },
+  "floor": {
+   "color": [
+    0.5,
+    0.469999998807907,
+    0.430000007152557
+   ],
+   "metal": 0.0,
+   "normal": "res://assets/textures/floor_n.jpg",
+   "normal_scale": 0.699999988079071,
+   "rough": 0.340000003576279,
+   "scale": 1.38888883590698,
+   "tex": "res://assets/textures/floor.jpg",
+   "triplanar": true
+  },
+  "iron": {
+   "color": [
+    0.100000001490116,
+    0.100000001490116,
+    0.109999999403954
+   ],
+   "metal": 0.800000011920929,
+   "normal": "",
+   "normal_scale": 1.0,
+   "rough": 0.5,
+   "scale": 1.0,
+   "tex": "",
+   "triplanar": false
+  },
+  "panel": {
+   "color": [
+    0.579999983310699,
+    0.5,
+    0.479999989271164
+   ],
+   "metal": 0.0,
+   "normal": "res://assets/textures/panel_n.jpg",
+   "normal_scale": 1.20000004768372,
+   "rough": 0.419999986886978,
+   "scale": 0.5,
+   "tex": "res://assets/textures/panel.jpg",
+   "triplanar": true
+  },
+  "plaster": {
+   "color": [
+    0.200000002980232,
+    0.189999997615814,
+    0.180000007152557
+   ],
+   "metal": 0.0,
+   "normal": "",
+   "normal_scale": 1.0,
+   "rough": 0.949999988079071,
+   "scale": 1.0,
+   "tex": "",
+   "triplanar": false
+  },
+  "wall": {
+   "color": [
+    0.800000011920929,
+    0.850000023841858,
+    0.800000011920929
+   ],
+   "metal": 0.0,
+   "normal": "res://assets/textures/wall_n.jpg",
+   "normal_scale": 0.800000011920929,
+   "rough": 0.920000016689301,
+   "scale": 0.769230782985687,
+   "tex": "res://assets/textures/wall.jpg",
+   "triplanar": true
+  },
+  "wood": {
+   "color": [
+    0.5,
+    0.419999986886978,
+    0.379999995231628
+   ],
+   "metal": 0.0,
+   "normal": "res://assets/textures/bartop_n.jpg",
+   "normal_scale": 0.800000011920929,
+   "rough": 0.5,
+   "scale": 0.909090876579285,
+   "tex": "res://assets/textures/bartop.jpg",
+   "triplanar": true
+  },
+  "wood_dark": {
+   "color": [
+    0.259999990463257,
+    0.209999993443489,
+    0.189999997615814
+   ],
+   "metal": 0.0,
+   "normal": "res://assets/textures/bartop_n.jpg",
+   "normal_scale": 0.800000011920929,
+   "rough": 0.550000011920929,
+   "scale": 0.909090876579285,
+   "tex": "res://assets/textures/bartop.jpg",
+   "triplanar": true
+  }
+ }
+}

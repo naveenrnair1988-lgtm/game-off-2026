@@ -24,7 +24,17 @@ The truth needs both.
 
 **Browser build:** published to GitHub Pages on every push to `main` (see Actions). Also uploaded to itch.io.
 
-**From source:** open the project in [Godot 4.7.2](https://godotengine.org/download) and press Play. The bar is built from primitives in code, so it runs with zero imported assets.
+**From source:** open the project in [Godot 4.7.2](https://godotengine.org/download) and press Play.
+
+**Lighting.** The room's light is path-traced in Blender and baked into lightmaps, one per group of lights (lamps, neon and street, police headlights), so the game can still dim and recolour each group when Frank shifts. To rebuild it after changing the room:
+
+```
+godot --headless --path . -s tools/export_scene.gd -- /tmp/bake      # write the room out
+python3 tools/bake_room.py /tmp/bake --size 2048 --samples 112       # needs: pip install bpy scipy pillow
+godot --headless --path . --import
+```
+
+Set `LS_NOBAKE=1` to run with live lights only.
 
 **Performance.** The game measures its own frame rate and steps down quality until it holds about 42 fps. In the browser that means drawing fewer lines and letting the page stretch them (1440, 1080, 810 or 630 lines; it starts at 1080); on desktop it scales the 3D view. Press `F3` to see the frame rate and tier. To pin a level, add `?tier=0` (best) to `?tier=3` (fastest) to the page address. On a laptop with two graphics chips, browsers usually pick the slow one: in Windows, Settings → System → Display → Graphics lets you set your browser to High performance.
 
@@ -42,6 +52,11 @@ scripts/Main.gd      builds THE LAST CALL in 3D, camera stations, hotspots, Shif
 scripts/Story.gd     autoload: story data, state, clock, flasks, evidence
 scripts/UI.gd        HUD, dialogue panel, choices, evidence board, title
 scripts/Puppet.gd    per-character animation: look-at, idle, speech, reactions
+shaders/baked.gdshader    the baked room: lightmaps x palette, triplanar surfaces, lamp highlights
+shaders/glow.gdshader     light cones and halos
+tools/export_scene.gd     bake step 1: export the static room for Blender
+tools/bake_room.py        bake step 2: Blender (bpy) unwraps, path-traces and writes assets/baked/
+assets/baked/        room.glb + lightmaps (generated)
 shaders/puppet.gdshader   two-bone vertex-shader rig (torso, head, jaw) for the scanned characters
 data/lipsync.json    loudness envelope per voice line, drives the jaw
 docs/voice-check.json    speech-recognition transcript, pace and level of every voice line
@@ -61,7 +76,7 @@ LICENSE              MIT for code; story, characters and art are CC BY-NC 4.0
 
 **Pre-existing material.** Frank Sable and The Voice are characters from the author's unreleased whodunnit series *On the Rocks*. The character concept predates the jam. Everything in this repository — the game, the case, the dialogue, the puzzle design, the code — was created during the Game Off 2026 submission window (Nov 1 – Dec 1, 2026). No prose from the series was imported.
 
-**AI use.** Code (GDScript, Godot scene construction), dialogue drafting and design iteration were done with Claude (Anthropic). Character, furniture and prop 3D models were generated with Higgsfield (reference images, then image-to-3D). The title theme was generated with ElevenLabs Music (via Higgsfield). Dialogue portraits, environment textures and sound effects were generated with Higgsfield. Every voice line was checked by machine transcription against the script and level-matched (docs/voice-check.json). Character voices are synthetic (ElevenLabs preset voices via Higgsfield); no real person's voice was cloned. Direction, story, puzzle logic, editing and all decisions are the author's.
+**AI use.** Code (GDScript, Godot scene construction), dialogue drafting and design iteration were done with Claude (Anthropic). Character, furniture and prop 3D models were generated with Higgsfield (reference images, then image-to-3D). Room lighting is baked with Blender's Cycles renderer through a script written with Claude. The title theme was generated with ElevenLabs Music (via Higgsfield). Dialogue portraits, environment textures and sound effects were generated with Higgsfield. Every voice line was checked by machine transcription against the script and level-matched (docs/voice-check.json). Character voices are synthetic (ElevenLabs preset voices via Higgsfield); no real person's voice was cloned. Direction, story, puzzle logic, editing and all decisions are the author's.
 
 **Content.** The protagonist's drinking is the game's central mechanic and is treated as a cost, not a power-up. Mild language, implied violence, no gore.
 
