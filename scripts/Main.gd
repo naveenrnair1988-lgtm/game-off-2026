@@ -174,8 +174,8 @@ func _ready() -> void:
 ## Characters, bottles, clue props and anything that glows stay live. Rebuild the bake with
 ## tools/export_scene.gd then tools/bake_room.py. Set LS_NOBAKE=1 to see the unbaked room.
 const BAKE_DIR := "res://assets/baked/"
-const LAMP_GAIN := 2.5          # palette lamp energy -> lightmap gain
-const AMBIENT_GAIN := 0.10
+const LAMP_GAIN := 3.4          # palette lamp energy -> lightmap gain
+const AMBIENT_GAIN := 0.42
 var baked_root: Node3D
 var baked_mats: Array[ShaderMaterial] = []
 var baked := false
@@ -327,7 +327,8 @@ func _update_bake() -> void:
 		return
 	var l0: Light3D = lights[0]
 	var lc := l0.light_color * (l0.light_energy * LAMP_GAIN)
-	var amb := env.ambient_light_color * (env.ambient_light_energy * AMBIENT_GAIN)
+	# sky-coloured ambient from the palette, plus a little warm spill that rises and falls with the lamps
+	var amb := env.ambient_light_color * (env.ambient_light_energy * AMBIENT_GAIN) + Color(0.075, 0.060, 0.048) * (l0.light_energy / 3.4)
 	var accent := neon_light.light_energy / 0.9 if neon_light else 1.0
 	var head := headlight.light_energy / 6.0 * 0.4 if headlight and headlight.visible else 0.0
 	var gl := l0.light_color * (l0.light_energy / 3.4)
