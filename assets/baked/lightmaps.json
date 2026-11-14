@@ -1,33 +1,33 @@
 {
  "room_lamps": {
   "file": "lm_room_lamps.webp",
-  "scale": 2.3897366523742676,
-  "mean": 0.13339082896709442
+  "scale": 2.387155532836914,
+  "mean": 0.13331733644008636
  },
  "props_lamps": {
   "file": "lm_props_lamps.webp",
-  "scale": 3.718302011489868,
-  "mean": 0.2810612916946411
+  "scale": 3.7191455364227295,
+  "mean": 0.2811124622821808
  },
  "room_accent": {
   "file": "lm_room_accent.webp",
-  "scale": 3.7570879459381104,
-  "mean": 0.1462462693452835
+  "scale": 3.7573351860046387,
+  "mean": 0.14624528586864471
  },
  "props_accent": {
   "file": "lm_props_accent.webp",
-  "scale": 0.07546485215425491,
-  "mean": 0.004704812075942755
+  "scale": 0.07549057900905609,
+  "mean": 0.00470436317846179
  },
  "room_head": {
   "file": "lm_room_head.webp",
-  "scale": 32.1448974609375,
-  "mean": 0.987732470035553
+  "scale": 32.147769927978516,
+  "mean": 0.9877259135246277
  },
  "props_head": {
   "file": "lm_props_head.webp",
-  "scale": 0.11666302382946014,
-  "mean": 0.006216899957507849
+  "scale": 0.11661237478256226,
+  "mean": 0.006239896174520254
  },
  "materials": {
   "bartop": {

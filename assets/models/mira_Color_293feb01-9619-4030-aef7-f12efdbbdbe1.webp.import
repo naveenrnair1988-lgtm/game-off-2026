@@ -2,19 +2,19 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bwak263ku2wnb"
-path="res://.godot/imported/connie_Image_0.webp-3fa79651f855836cea151b1c7b59d25b.ctex"
+uid="uid://brljxvl8gxorj"
+path="res://.godot/imported/mira_Color_293feb01-9619-4030-aef7-f12efdbbdbe1.webp-79adc9c47de82bc0aa9e3eb4523a565e.ctex"
 metadata={
 "vram_texture": false
 }
 generator_parameters={
-"md5": "abaa36fb73facbc5228e2ff3056cadfe"
+"md5": "eef2034c9256267be0861224013891fc"
 }
 
 [deps]
 
-source_file="res://assets/models/connie_Image_0.webp"
-dest_files=["res://.godot/imported/connie_Image_0.webp-3fa79651f855836cea151b1c7b59d25b.ctex"]
+source_file="res://assets/models/mira_Color_293feb01-9619-4030-aef7-f12efdbbdbe1.webp"
+dest_files=["res://.godot/imported/mira_Color_293feb01-9619-4030-aef7-f12efdbbdbe1.webp-79adc9c47de82bc0aa9e3eb4523a565e.ctex"]
 
 [params]
 

@@ -2,19 +2,19 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://rsjsbqqt1m1b"
-path="res://.godot/imported/theo_Image_0.webp-5cd61033ef82cce4f02dd6ee424e033b.ctex"
+uid="uid://blqgpqlpwwg81"
+path="res://.godot/imported/connie_ORM_1cedb777-9cf9-4975-bfb5-b33efd4cc008.webp-d106034577f31d9cc9e85ef8985daa41.ctex"
 metadata={
 "vram_texture": false
 }
 generator_parameters={
-"md5": "5b4b0824720073fdfc3bf6e111ebec8c"
+"md5": "eedab375c9f5c126735752ae3d2599d6"
 }
 
 [deps]
 
-source_file="res://assets/models/theo_Image_0.webp"
-dest_files=["res://.godot/imported/theo_Image_0.webp-5cd61033ef82cce4f02dd6ee424e033b.ctex"]
+source_file="res://assets/models/connie_ORM_1cedb777-9cf9-4975-bfb5-b33efd4cc008.webp"
+dest_files=["res://.godot/imported/connie_ORM_1cedb777-9cf9-4975-bfb5-b33efd4cc008.webp-d106034577f31d9cc9e85ef8985daa41.ctex"]
 
 [params]
 

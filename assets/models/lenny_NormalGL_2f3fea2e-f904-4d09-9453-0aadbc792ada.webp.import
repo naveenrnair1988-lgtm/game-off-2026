@@ -2,19 +2,19 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://gpn45c4a5kyk"
-path="res://.godot/imported/lenny_normal.webp-e01b93bfaa80900a14117c4a47c99261.ctex"
+uid="uid://dqhuvnkyaw1vp"
+path="res://.godot/imported/lenny_NormalGL_2f3fea2e-f904-4d09-9453-0aadbc792ada.webp-37efdcae0da90353bef891eb50d21e8d.ctex"
 metadata={
 "vram_texture": false
 }
 generator_parameters={
-"md5": "757cf5df02696121c2dae1605ecf3a71"
+"md5": "529c4ede62848aa240628be195092f72"
 }
 
 [deps]
 
-source_file="res://assets/models/lenny_normal.webp"
-dest_files=["res://.godot/imported/lenny_normal.webp-e01b93bfaa80900a14117c4a47c99261.ctex"]
+source_file="res://assets/models/lenny_NormalGL_2f3fea2e-f904-4d09-9453-0aadbc792ada.webp"
+dest_files=["res://.godot/imported/lenny_NormalGL_2f3fea2e-f904-4d09-9453-0aadbc792ada.webp-37efdcae0da90353bef891eb50d21e8d.ctex"]
 
 [params]
 

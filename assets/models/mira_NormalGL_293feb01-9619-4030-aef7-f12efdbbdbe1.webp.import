@@ -2,19 +2,19 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cwx1wag36dwtc"
-path="res://.godot/imported/mira_Image_0.webp-a4d24709db3f63cdc36d8e371dabe1a3.ctex"
+uid="uid://ql04xxcbjfvf"
+path="res://.godot/imported/mira_NormalGL_293feb01-9619-4030-aef7-f12efdbbdbe1.webp-f11248a98af495cbb43cc420be9f00ac.ctex"
 metadata={
 "vram_texture": false
 }
 generator_parameters={
-"md5": "274692b4f05bc14c2e3a2fd76366f968"
+"md5": "0079f36e34de7a681c93e1af223513c8"
 }
 
 [deps]
 
-source_file="res://assets/models/mira_Image_0.webp"
-dest_files=["res://.godot/imported/mira_Image_0.webp-a4d24709db3f63cdc36d8e371dabe1a3.ctex"]
+source_file="res://assets/models/mira_NormalGL_293feb01-9619-4030-aef7-f12efdbbdbe1.webp"
+dest_files=["res://.godot/imported/mira_NormalGL_293feb01-9619-4030-aef7-f12efdbbdbe1.webp-f11248a98af495cbb43cc420be9f00ac.ctex"]
 
 [params]
 

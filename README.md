@@ -17,7 +17,7 @@ The truth needs both.
 - **Structure:** Six chapters and seven endings. The true ending needs three confessions, one witness, and the night laid out in order.
 - **Fully voiced** (27 minutes of recorded dialogue), including Frank's inner monologue and The Voice.
 - **Choices are remembered:** how you treat the people who confess, and whether you answer the phone, change what Connie tells you and how the true ending plays.
-- **Characters move:** they breathe, blink, turn to whoever is speaking, raise or knit their brows, flinch when caught, and their mouths follow the recorded voice. Theo talks with his hands.
+- **Characters move:** they breathe, blink, turn to whoever is speaking, raise or knit their brows, flinch when caught, and their mouths follow the recorded voice.
 - **Length:** about 27 minutes for a careful first run to the true ending (measured from the recorded lines); seven endings.
 
 ## Play
@@ -76,7 +76,7 @@ LICENSE              MIT for code; story, characters and art are CC BY-NC 4.0
 
 **Pre-existing material.** Frank Sable and The Voice are characters from the author's unreleased whodunnit series *On the Rocks*. The character concept predates the jam. Everything in this repository — the game, the case, the dialogue, the puzzle design, the code — was created during the Game Off 2026 submission window (Nov 1 – Dec 1, 2026). No prose from the series was imported.
 
-**AI use.** Code (GDScript, Godot scene construction), dialogue drafting and design iteration were done with Claude (Anthropic). Character, furniture and prop 3D models were generated with Higgsfield (reference images, then image-to-3D). Room lighting is baked with Blender's Cycles renderer through a script written with Claude. The title theme was generated with ElevenLabs Music (via Higgsfield). Dialogue portraits, environment textures and sound effects were generated with Higgsfield. Every voice line was checked by machine transcription against the script and level-matched (docs/voice-check.json). Character voices are synthetic (ElevenLabs preset voices via Higgsfield); no real person's voice was cloned. Direction, story, puzzle logic, editing and all decisions are the author's.
+**AI use.** Code (GDScript, Godot scene construction), dialogue drafting and design iteration were done with Claude (Anthropic). Character, furniture and prop 3D models were generated with Higgsfield (reference images, then image-to-3D; the four suspects use photoreal references and Tripo H3.1, cleaned up in Blender with tools/prep_character.py and tools/trim_character.py). Room lighting is baked with Blender's Cycles renderer through a script written with Claude. The title theme was generated with ElevenLabs Music (via Higgsfield). Dialogue portraits (cropped from the character reference images), environment textures and sound effects were generated with Higgsfield. Every voice line was checked by machine transcription against the script and level-matched (docs/voice-check.json). Character voices are synthetic (ElevenLabs preset voices via Higgsfield); no real person's voice was cloned. Direction, story, puzzle logic, editing and all decisions are the author's.
 
 **Content.** The protagonist's drinking is the game's central mechanic and is treated as a cost, not a power-up. Mild language, implied violence, no gore.
 

@@ -44,7 +44,8 @@ uniform vec3 head_rot = vec3(0.0);
 uniform float jaw = 0.0;              // 0..1
 uniform float breathe = 0.0;          // -1..1
 
-varying float gap;
+uniform float mouth_w = 0.022;     // half the width of the mouth, / h
+varying vec3 orig;                // x off the centre line / h, normalised height, front-of-head mask
 
 mat3 euler(vec3 r) {
 	float cx = cos(r.x), sx = sin(r.x), cy = cos(r.y), sy = sin(r.y), cz = cos(r.z), sz = sin(r.z);
@@ -60,19 +61,21 @@ void vertex() {
 	float hn = (p.y - y0) / h;
 
 	// jaw: the band between chin and lips, on the front of the head, drops
-	float ws = 1.0 - smoothstep(mouth - 0.005, mouth + 0.001, hn);
+	float ws = 1.0 - smoothstep(mouth - 0.003, mouth + 0.0005, hn);
 	float depth = face_z - head_c.y;
 	float mask0 = smoothstep(depth * 0.25, depth * 0.7, p.z - head_c.y) * smoothstep(neck, neck + 0.02, hn);
 	float mask = smoothstep(depth * 0.25, depth * 0.7, p.z - head_c.y);
-	mask *= 1.0 - smoothstep(depth * 0.40, depth * 0.85, abs(p.x - head_c.x));
+	float mx = abs(p.x - head_c.x) / h;
+	// the lower lip drops most in the middle and not at all at the corners; the chin below moves as one
+	float td = clamp((mouth - hn) / max(mouth - chin, 0.001), 0.0, 1.0);
+	mask *= 1.0 - smoothstep(mix(mouth_w * 0.30, mouth_w * 1.3, td), mix(mouth_w * 1.08, mouth_w * 2.6, td), mx);
 	mask *= smoothstep(chin - 0.02, chin - 0.004, hn);
 	float wj = ws * mask;
-	float amp = (1.0 - neck) * h * 0.027;
+	float amp = (1.0 - neck) * h * 0.034;
 	p.y -= wj * jaw * amp;
 	p.z -= wj * jaw * amp * 0.3;
-	// the stretched strip between the lips reads as the inside of the mouth
-	float inner = 1.0 - smoothstep(depth * 0.12, depth * 0.32, abs(p.x - head_c.x));
-	gap = 4.0 * ws * (1.0 - ws) * mask * inner * jaw;
+	// the strip between the lips is shaded per pixel as the inside of the mouth
+	orig = vec3(mx, hn, mask);
 
 	// eyelids: the skin above each eye comes down over it; brows ride up or down
 	float head_u = (1.0 - neck) * h;
@@ -132,10 +135,12 @@ void vertex() {
 
 void fragment() {
 	vec4 a = texture(albedo_tex, UV);
-	ALBEDO = mix(a.rgb * tint, vec3(0.09, 0.03, 0.03), clamp(gap * 1.5, 0.0, 0.85));
+	float fs = 1.0 - smoothstep(mouth - 0.003, mouth + 0.0005, orig.y);
+	float gap = smoothstep(0.08, 0.45, 4.0 * fs * (1.0 - fs)) * smoothstep(0.12, 0.55, orig.z) * smoothstep(0.08, 0.6, jaw);
+	ALBEDO = mix(a.rgb * tint, vec3(0.09, 0.03, 0.028), clamp(gap, 0.0, 0.82));
 	if (use_orm) {
 		vec3 o = texture(orm_tex, UV).rgb;
-		ROUGHNESS = o.g * rough;
+		ROUGHNESS = max(o.g * rough, 0.55);   // generated skin maps come out glossy
 		METALLIC = o.b * metal;
 	} else {
 		ROUGHNESS = rough;

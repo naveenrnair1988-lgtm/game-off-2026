@@ -88,15 +88,14 @@ const SCENE_STATION := {
 ## Shader-rig settings per character, as fractions of the model's height:
 ## waist, neck, mouth line, neck pivot (x, z), face surface z. See shaders/puppet.gdshader.
 const RIG := {
-	"mira":   {"waist": 0.45, "neck": 0.768, "mouth": 0.826, "chin": 0.786, "c": Vector2(0.0, 0.0), "face": 0.105,
-		"eye": 0.888, "eye_dx": 0.026, "eye_cx": 0.0},
-	"theo":   {"waist": 0.55, "neck": 0.872, "mouth": 0.888, "chin": 0.872, "c": Vector2(0.0, 0.005), "face": 0.058,
-		"eye": 0.922, "eye_dx": 0.017, "eye_cx": 0.0,
-		"arms": {"b": Vector2(0.122, 0.085), "h": Vector2(0.56, 0.80), "shoulder": Vector2(0.10, 0.80), "elbow": 0.62, "low": 0.40, "gesture": 1.0, "lead_right": true}},
-	"lenny":  {"waist": 0.55, "neck": 0.890, "mouth": 0.886, "chin": 0.863, "c": Vector2(0.005, 0.02), "face": 0.100,
-		"eye": 0.932, "eye_dx": 0.021, "eye_cx": 0.004},   # no arm bones: his coat cannot be told apart from his sleeves
-	"connie": {"waist": 0.50, "neck": 0.838, "mouth": 0.880, "chin": 0.858, "c": Vector2(-0.007, -0.087), "face": -0.008,
-		"eye": 0.9266, "eye_dx": 0.017, "eye_cx": 0.005},
+	"mira":   {"waist": 0.45, "neck": 0.765, "mouth": 0.818, "chin": 0.787, "c": Vector2(0.003, 0.02), "face": 0.135,
+		"eye": 0.883, "eye_dx": 0.033, "eye_cx": -0.003, "mouth_w": 0.030},
+	"theo":   {"waist": 0.55, "neck": 0.848, "mouth": 0.882, "chin": 0.860, "c": Vector2(0.0, -0.018), "face": 0.068,
+		"eye": 0.921, "eye_dx": 0.0195, "eye_cx": -0.0015, "mouth_w": 0.020},   # no arm bones: his sleeves touch his sides
+	"lenny":  {"waist": 0.55, "neck": 0.855, "mouth": 0.886, "chin": 0.862, "c": Vector2(0.007, -0.005), "face": 0.072,
+		"eye": 0.927, "eye_dx": 0.025, "eye_cx": -0.005, "mouth_w": 0.024},   # no arm bones: his coat tears
+	"connie": {"waist": 0.50, "neck": 0.825, "mouth": 0.862, "chin": 0.838, "c": Vector2(-0.005, -0.085), "face": 0.005,
+		"eye": 0.905, "eye_dx": 0.0225, "eye_cx": -0.0025, "mouth_w": 0.024, "tint": 0.6},   # pale hair and wool under a bar lamp
 }
 var puppets: Dictionary = {}       # name -> Puppet
 var speaker: String = ""           # who is talking right now
@@ -953,7 +952,8 @@ func _make_puppet(slot: String, pivot: Node3D, inst: Node3D, height: float) -> v
 	var src := mi.get_active_material(0) as BaseMaterial3D
 	if src:
 		sm.set_shader_parameter("albedo_tex", src.albedo_texture)
-		sm.set_shader_parameter("tint", Vector3(src.albedo_color.r, src.albedo_color.g, src.albedo_color.b))
+		var tn: float = rig.get("tint", 1.0)
+		sm.set_shader_parameter("tint", Vector3(src.albedo_color.r, src.albedo_color.g, src.albedo_color.b) * tn)
 		if src.normal_enabled and src.normal_texture:
 			sm.set_shader_parameter("normal_tex", src.normal_texture)
 			sm.set_shader_parameter("use_normal", true)
@@ -977,6 +977,7 @@ func _make_puppet(slot: String, pivot: Node3D, inst: Node3D, height: float) -> v
 	sm.set_shader_parameter("eye", rig["eye"])
 	sm.set_shader_parameter("eye_dx", rig["eye_dx"])
 	sm.set_shader_parameter("eye_cx", rig["eye_cx"])
+	sm.set_shader_parameter("mouth_w", rig.get("mouth_w", 0.022))
 	if rig.has("arms"):
 		var ar: Dictionary = rig["arms"]
 		sm.set_shader_parameter("arms", true)

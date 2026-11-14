@@ -2,19 +2,19 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c86fovvnihovn"
-path="res://.godot/imported/connie_normal.webp-f4de2cd0f3783d41c853bf0bdfedb3f4.ctex"
+uid="uid://4e2dp6j6dvd3"
+path="res://.godot/imported/connie_Color_1cedb777-9cf9-4975-bfb5-b33efd4cc008.webp-b3c8375785367631cc195d6c4dc2741a.ctex"
 metadata={
 "vram_texture": false
 }
 generator_parameters={
-"md5": "577e0ec72d4376ae9776de19df4f1783"
+"md5": "461cce8dd04c588b68bdc60d12a86a7b"
 }
 
 [deps]
 
-source_file="res://assets/models/connie_normal.webp"
-dest_files=["res://.godot/imported/connie_normal.webp-f4de2cd0f3783d41c853bf0bdfedb3f4.ctex"]
+source_file="res://assets/models/connie_Color_1cedb777-9cf9-4975-bfb5-b33efd4cc008.webp"
+dest_files=["res://.godot/imported/connie_Color_1cedb777-9cf9-4975-bfb5-b33efd4cc008.webp-b3c8375785367631cc195d6c4dc2741a.ctex"]
 
 [params]
 

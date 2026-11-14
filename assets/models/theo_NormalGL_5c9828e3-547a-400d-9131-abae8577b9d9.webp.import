@@ -2,19 +2,19 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b02yje5sy13ta"
-path="res://.godot/imported/theo_normal.webp-b02ccce7c19f88354f0c716a78f95768.ctex"
+uid="uid://rmnuaxguen56"
+path="res://.godot/imported/theo_NormalGL_5c9828e3-547a-400d-9131-abae8577b9d9.webp-c466f6af3f945334ad7214b51b927747.ctex"
 metadata={
 "vram_texture": false
 }
 generator_parameters={
-"md5": "da43c64d22cd06b5337286c7d9b11a5a"
+"md5": "136cb3ab5d5ab9cb8b83a82790e594be"
 }
 
 [deps]
 
-source_file="res://assets/models/theo_normal.webp"
-dest_files=["res://.godot/imported/theo_normal.webp-b02ccce7c19f88354f0c716a78f95768.ctex"]
+source_file="res://assets/models/theo_NormalGL_5c9828e3-547a-400d-9131-abae8577b9d9.webp"
+dest_files=["res://.godot/imported/theo_NormalGL_5c9828e3-547a-400d-9131-abae8577b9d9.webp-c466f6af3f945334ad7214b51b927747.ctex"]
 
 [params]
 
