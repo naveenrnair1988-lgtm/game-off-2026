@@ -1,0 +1,23 @@
+# Maintenance: pull a generated asset bundle into the build pipeline as a run artifact.
+name: fetch-asset
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: Public URL of the bundle
+        required: true
+      name:
+        description: File name to store it under
+        required: true
+        default: bundle.zip
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - run: curl -fL --retry 3 -o "${{ inputs.name }}" "${{ inputs.url }}" && ls -la
+      - uses: actions/upload-artifact@v4
+        with:
+          name: asset
+          path: ${{ inputs.name }}
+          retention-days: 1
+          compression-level: 0
