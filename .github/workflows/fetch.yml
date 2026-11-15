@@ -1,4 +1,5 @@
-# Maintenance: pull a generated asset bundle into the build pipeline as a run artifact.
+# Maintenance: pull a generated asset bundle onto a throwaway branch (asset-drop) so the
+# build environment can pick it up with git. The branch is deleted once the assets are processed.
 name: fetch-asset
 on:
   workflow_dispatch:
@@ -10,14 +11,18 @@ on:
         description: File name to store it under
         required: true
         default: bundle.zip
+permissions:
+  contents: write
 jobs:
   fetch:
     runs-on: ubuntu-latest
     steps:
-      - run: curl -fL --retry 3 -o "${{ inputs.name }}" "${{ inputs.url }}" && ls -la
-      - uses: actions/upload-artifact@v4
-        with:
-          name: asset
-          path: ${{ inputs.name }}
-          retention-days: 1
-          compression-level: 0
+      - run: |
+          mkdir drop && cd drop
+          curl -fL --retry 3 -o "${{ inputs.name }}" "${{ inputs.url }}"
+          ls -la
+          git init -q -b asset-drop
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A && git commit -q -m "asset drop: ${{ inputs.name }}"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" asset-drop
