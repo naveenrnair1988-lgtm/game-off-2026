@@ -1,28 +1,28 @@
-# Maintenance: pull a generated asset bundle onto a throwaway branch (asset-drop) so the
-# build environment can pick it up with git. The branch is deleted once the assets are processed.
+# Maintenance: pull generated asset files onto a throwaway branch (asset-drop) so the build
+# environment can pick them up with git. The branch is deleted once the assets are processed.
 name: fetch-asset
 on:
   workflow_dispatch:
     inputs:
-      url:
-        description: Public URL of the bundle
+      files:
+        description: Space-separated name=url pairs
         required: true
-      name:
-        description: File name to store it under
-        required: true
-        default: bundle.zip
 permissions:
   contents: write
 jobs:
   fetch:
     runs-on: ubuntu-latest
     steps:
-      - run: |
+      - env:
+          FILES: ${{ inputs.files }}
+        run: |
           mkdir drop && cd drop
-          curl -fL --retry 3 -o "${{ inputs.name }}" "${{ inputs.url }}"
+          for pair in $FILES; do
+            curl -fL --retry 3 -o "${pair%%=*}" "${pair#*=}"
+          done
           ls -la
           git init -q -b asset-drop
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A && git commit -q -m "asset drop: ${{ inputs.name }}"
+          git add -A && git commit -q -m "asset drop"
           git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" asset-drop
