@@ -11,6 +11,8 @@ signal line_voice(stem: String)
 signal line_who(who: String)
 signal present_picked(evidence_id: String)
 signal present_requested
+signal spot_mode(scene_id: String)     # the scene is waiting for you to look at something
+signal spot_picked(spot_id: String)
 
 const WHO := {"frank": "FRANK", "mira": "MIRA ROARKE", "theo": "THEO PIKE", "lenny": "LENNY BAPTISTE", "connie": "CONNIE VALE", "disp": "COUNTY DISPATCH · ON THE PHONE"}
 const AMBER := Color(0.85, 0.64, 0.25)
@@ -40,6 +42,16 @@ var timer_left: float = 0.0
 var timer_total: float = 0.0
 var timer_default: int = -1
 var override_lines: Array = []
+var spot_id: String = ""               # the thing being examined, if any
+var reveal: Tween                      # the current line being typed out
+var card: PanelContainer               # "new evidence" slide-in
+var card_text: Label
+var card_tween: Tween
+var pause: PanelContainer
+var current_line: Dictionary = {}
+var photo: TextureRect                 # the picture of what you just found
+var photo_tween: Tween
+var photo_cache: Dictionary = {}
 var lbl_more: Label
 var lbl_loc: Label
 var text: RichTextLabel
@@ -53,8 +65,8 @@ var portrait: TextureRect
 var portrait_cache: Dictionary = {}
 var font_serif: Font
 var tl: PanelContainer
-var tl_pool: VBoxContainer
-var tl_line: VBoxContainer
+var tl_pool: Container
+var tl_line: Container
 var tl_msg: Label
 var tl_order: Array = []
 
@@ -74,6 +86,9 @@ func _ready() -> void:
 	_build_timeline()
 	_build_title()
 	_build_feedback()
+	_build_card()
+	_build_pause()
+	Story.evidence_found.connect(_on_evidence_card)
 	Story.clock_changed.connect(_update_clock)
 	Story.flasks_changed.connect(_update_flasks)
 	Story.state_changed.connect(_update_state)
@@ -83,6 +98,8 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if pause.visible and not event.is_action_pressed("ui_cancel"):
+		return
 	if event.is_action_pressed("shift"):
 		if not title_visible and Story.can_shift():
 			shift_requested.emit()
@@ -90,6 +107,12 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event.is_action_pressed("board"):
 		if not title_visible:
 			_toggle_board()
+	elif event.is_action_pressed("ui_cancel"):
+		if board.visible:
+			board.visible = false
+		elif not title_visible:
+			_toggle_pause()
+		get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("advance"):
 		if tl.visible:
 			return
@@ -97,6 +120,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			board.visible = false
 		elif title_visible:
 			_start()
+		elif _finish_reveal():
+			pass
 		elif line_idx < lines.size():
 			_next_line()
 		else:
@@ -275,6 +300,8 @@ func _panel_style(state: String) -> StyleBoxFlat:
 
 func _on_panel_input(event: InputEvent) -> void:
 	var click: bool = (event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT) or (event is InputEventScreenTouch and event.pressed)
+	if click and _finish_reveal():
+		return
 	if click and line_idx < lines.size():
 		_next_line()
 
@@ -311,45 +338,46 @@ func _build_board() -> void:
 
 
 func _build_timeline() -> void:
+	# The night laid out on Danny's desk: a spread of photographs to put in order.
 	tl = PanelContainer.new()
 	tl.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	tl.offset_left = 60
-	tl.offset_right = -60
-	tl.offset_top = 50
-	tl.offset_bottom = -50
-	tl.add_theme_stylebox_override("panel", _style(Color(0.05, 0.04, 0.035, 0.97), Color(0.3, 0.24, 0.16)))
+	tl.offset_left = 50
+	tl.offset_right = -50
+	tl.offset_top = 46
+	tl.offset_bottom = -40
+	var sb := _style(Color(0.045, 0.036, 0.03, 0.96), Color(0.3, 0.24, 0.16))
+	sb.set_content_margin_all(18)
+	tl.add_theme_stylebox_override("panel", sb)
 	add_child(tl)
 	var v := VBoxContainer.new()
 	v.add_theme_constant_override("separation", 10)
 	tl.add_child(v)
 	var h := Label.new()
-	h.text = "THE TIMELINE  —  click the events in the order they happened"
-	h.add_theme_color_override("font_color", MUTED)
+	h.text = "THE NIGHT, IN ORDER   —   pick what happened first, then next. Get it wrong and someone will tell you."
+	h.add_theme_font_override("font", font_ui)
+	h.add_theme_font_size_override("font_size", 13)
+	h.add_theme_color_override("font_color", AMBER)
 	v.add_child(h)
-	var cols := HBoxContainer.new()
-	cols.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	cols.add_theme_constant_override("separation", 20)
-	v.add_child(cols)
-	var sc1 := ScrollContainer.new()
-	sc1.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	sc1.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	cols.add_child(sc1)
-	tl_pool = VBoxContainer.new()
-	tl_pool.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	tl_pool.add_theme_constant_override("separation", 6)
-	sc1.add_child(tl_pool)
-	var sc2 := ScrollContainer.new()
-	sc2.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	sc2.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	cols.add_child(sc2)
-	tl_line = VBoxContainer.new()
-	tl_line.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	tl_line.add_theme_constant_override("separation", 6)
-	sc2.add_child(tl_line)
+	var grid := GridContainer.new()
+	grid.columns = 3
+	grid.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	grid.add_theme_constant_override("h_separation", 14)
+	grid.add_theme_constant_override("v_separation", 12)
+	v.add_child(grid)
+	tl_pool = grid
 	tl_msg = Label.new()
 	tl_msg.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	tl_msg.custom_minimum_size = Vector2(0, 26)
+	tl_msg.add_theme_font_override("font", font_serif_italic)
+	tl_msg.add_theme_font_size_override("font_size", 18)
 	tl_msg.add_theme_color_override("font_color", CYAN)
 	v.add_child(tl_msg)
+	var strip := HBoxContainer.new()
+	strip.custom_minimum_size = Vector2(0, 118)
+	strip.add_theme_constant_override("separation", 10)
+	v.add_child(strip)
+	tl_line = strip
 	tl.visible = false
 
 
@@ -364,34 +392,91 @@ func show_timeline() -> void:
 
 func _tl_refresh() -> void:
 	for c in tl_pool.get_children():
+		tl_pool.remove_child(c)
 		c.queue_free()
 	for c in tl_line.get_children():
+		tl_line.remove_child(c)
 		c.queue_free()
 	var events: Array = Story.timeline["events"]
-	# pool: shuffled deterministically by id so the order on screen is not the answer
+	# the spread is ordered by length of caption, so the order on the desk is not the answer
 	var pool: Array = events.duplicate()
 	pool.sort_custom(func(a, b): return a["text"].length() < b["text"].length())
 	for ev in pool:
-		if tl_order.has(ev["id"]):
-			continue
 		var b := Button.new()
-		b.text = ev["text"]
-		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		b.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		b.add_theme_stylebox_override("normal", _style(Color(0.10, 0.08, 0.065), Color(0.22, 0.18, 0.13)))
-		b.add_theme_stylebox_override("hover", _style(Color(0.13, 0.10, 0.08), AMBER))
+		b.custom_minimum_size = Vector2(0, 150)
+		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		b.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		var n := _style(Color(0.09, 0.075, 0.06), Color(0.24, 0.20, 0.14))
+		var hv := _style(Color(0.14, 0.11, 0.08), AMBER)
+		for st in [n, hv]:
+			st.set_corner_radius_all(3)
+		b.add_theme_stylebox_override("normal", n)
+		b.add_theme_stylebox_override("hover", hv)
+		b.add_theme_stylebox_override("pressed", hv)
+		b.add_theme_stylebox_override("disabled", _style(Color(0.05, 0.045, 0.04, 0.5), Color(0.12, 0.10, 0.08, 0.5)))
+		b.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
+		var used: bool = tl_order.has(ev["id"])
+		b.disabled = used
+		var row := HBoxContainer.new()
+		row.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		row.offset_left = 10
+		row.offset_right = -10
+		row.offset_top = 10
+		row.offset_bottom = -10
+		row.add_theme_constant_override("separation", 12)
+		row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		b.add_child(row)
+		var tex := evidence_texture(str(ev.get("needs", ""))) if Story.evidence.has(str(ev.get("needs", ""))) else null
+		if tex:
+			var ph := TextureRect.new()
+			ph.texture = tex
+			ph.custom_minimum_size = Vector2(170, 0)
+			ph.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			ph.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+			ph.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			row.add_child(ph)
+		var cap := Label.new()
+		cap.text = str(ev["text"])
+		cap.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		cap.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		cap.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		cap.add_theme_font_override("font", font_serif)
+		cap.add_theme_font_size_override("font_size", 16)
+		cap.add_theme_color_override("font_color", TEXT)
+		cap.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		row.add_child(cap)
+		row.modulate.a = 0.25 if used else 1.0
 		b.pressed.connect(_tl_pick.bind(ev["id"]))
 		tl_pool.add_child(b)
+	# the line so far: small prints, each with the time it happened
 	var i := 1
 	for id in tl_order:
 		for ev in events:
 			if ev["id"] == id:
-				var l := Label.new()
-				l.text = "%d.  %s   %s" % [i, ev["time"], ev["text"]]
-				l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-				l.add_theme_color_override("font_color", TEXT)
-				tl_line.add_child(l)
+				var cell := VBoxContainer.new()
+				cell.add_theme_constant_override("separation", 3)
+				var tex2 := evidence_texture(str(ev.get("needs", ""))) if Story.evidence.has(str(ev.get("needs", ""))) else null
+				var ph2 := TextureRect.new()
+				ph2.texture = tex2
+				ph2.custom_minimum_size = Vector2(120, 90)
+				ph2.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+				ph2.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+				cell.add_child(ph2)
+				var tm := Label.new()
+				tm.text = "%d.   %s" % [i, ev["time"]]
+				tm.add_theme_font_override("font", font_ui)
+				tm.add_theme_font_size_override("font_size", 13)
+				tm.add_theme_color_override("font_color", AMBER)
+				cell.add_child(tm)
+				tl_line.add_child(cell)
 				i += 1
+	if tl_order.is_empty():
+		var hint := Label.new()
+		hint.text = "Nothing on the line yet."
+		hint.add_theme_font_override("font", font_ui)
+		hint.add_theme_font_size_override("font_size", 13)
+		hint.add_theme_color_override("font_color", MUTED)
+		tl_line.add_child(hint)
 
 
 func _tl_pick(id: String) -> void:
@@ -550,6 +635,7 @@ func _start() -> void:
 
 func show_scene(id: String) -> void:
 	scene_id = id
+	spot_id = ""
 	lines = Story.visible_lines(id)
 	override_lines = []
 	line_idx = 0
@@ -567,6 +653,7 @@ func _next_line() -> void:
 		return
 	if line_idx < lines.size():
 		var l: Dictionary = lines[line_idx]
+		current_line = l
 		line_idx += 1
 		panel.visible = true
 		_show_line(l)
@@ -605,6 +692,9 @@ func _show_line(l: Dictionary) -> void:
 		lbl_loc.text = ""
 		lbl_loc.visible = false
 		text.append_text("[center][font_size=30]%s[/font_size][/center]" % t)
+		if reveal:
+			reveal.kill()
+		text.visible_ratio = 1.0
 		return
 	lbl_loc.visible = true
 	match who:
@@ -623,6 +713,21 @@ func _show_line(l: Dictionary) -> void:
 			lbl_loc.text = WHO.get(who, who.to_upper())
 			lbl_loc.add_theme_color_override("font_color", AMBER)
 			text.append_text(t)
+	# the line is typed out; a click or SPACE finishes it, the next one moves on
+	if reveal:
+		reveal.kill()
+	text.visible_ratio = 0.0
+	reveal = create_tween()
+	reveal.tween_property(text, "visible_ratio", 1.0, clampf(float(t.length()) / 70.0, 0.25, 3.0))
+
+
+## If a line is still being typed, show all of it. Returns true if it did.
+func _finish_reveal() -> bool:
+	if reveal and reveal.is_running():
+		reveal.kill()
+		text.visible_ratio = 1.0
+		return true
+	return false
 
 
 func _show_hub() -> void:
@@ -633,7 +738,7 @@ func _show_hub() -> void:
 	bar.add_theme_constant_override("separation", 16)
 	choices.add_child(bar)
 	var hint := Label.new()
-	hint.text = ("The Voice sees what they hide." if Story.state == "V" else "Sober, they will talk to you.") + "   Confessions %d/3.   Each stop costs ten minutes." % Story.cracked_count()
+	hint.text = Story.objective() + "   Confessions %d/3.   Each stop costs ten minutes." % Story.cracked_count()
 	hint.add_theme_font_override("font", font_ui)
 	hint.add_theme_color_override("font_color", TEXT)
 	hint.add_theme_font_size_override("font_size", 14)
@@ -646,8 +751,77 @@ func _show_hub() -> void:
 	acc.pressed.connect(func(): choice_made.emit({"next": "accuse", "shiftTo": ""}))
 
 
+## Looking at one thing in a room: its lines, then what it turned up.
+func show_spot(id: String) -> void:
+	spot_id = id
+	override_lines = []
+	lines = Story.spot_lines(scene_id, id)
+	line_idx = 0
+	dock.visible = true
+	_next_line()
+
+
+## The room is waiting: list what this Frank can look at.
+func _show_spots() -> void:
+	spot_id = ""
+	lines = []
+	line_idx = 0
+	panel.visible = false
+	lbl_more.visible = false
+	line_voice.emit("")
+	_clear_choices()
+	var prog: Array = Story.spot_progress(scene_id)
+	var hint := Label.new()
+	var t := "Look closer.   %d of %d examined." % [prog[0], prog[1]]
+	if prog[1] == 0:
+		t = "Nothing here for this Frank."
+	if prog[0] >= prog[1]:
+		var other := 0
+		for sp in Story.scenes[scene_id].get("spots", []):
+			if str(sp["state"]) != Story.state and not Story.spot_examined(scene_id, str(sp["id"])):
+				other += 1
+		if other > 0:
+			t += "   The Voice would see more here." if Story.state == "S" else "   Sober, you would see it differently."
+	hint.text = t
+	hint.add_theme_font_override("font", font_ui)
+	hint.add_theme_color_override("font_color", TEXT)
+	hint.add_theme_font_size_override("font_size", 14)
+	hint.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.9))
+	hint.add_theme_constant_override("shadow_outline_size", 6)
+	choices.add_child(hint)
+	var i := 1
+	for sp in Story.spots(scene_id):
+		var done: bool = Story.spot_examined(scene_id, str(sp["id"]))
+		var b := _choice_button("%d   %s%s" % [i, sp["label"], "   ·   looked" if done else ""], done)
+		b.pressed.connect(func(): spot_picked.emit(str(sp["id"])))
+		i += 1
+	for c in Story.visible_choices(scene_id):
+		var b2 := _choice_button("%d   %s" % [i, c["label"]], true)
+		b2.pressed.connect(_choose.bind(c))
+		i += 1
+	spot_mode.emit(scene_id)
+
+
+func _finish_spot() -> void:
+	var sp: Dictionary = Story.spot(scene_id, spot_id)
+	Story.examine(scene_id, spot_id)
+	_flush_cards()
+	for e in sp.get("grant", []):
+		text.append_text("\n[color=#e0aa45][font_size=14][font=res://assets/fonts/Inter.ttf]◆[/font] EVIDENCE   %s[/font_size][/color]" % str(Story.evidence[e]["t"]).replace("[", "[lb]"))
+	_clear_choices()
+	var b := _choice_button("1   Keep looking")
+	b.pressed.connect(_show_spots)
+
+
 func _finish_scene() -> void:
 	var sc: Dictionary = Story.scenes[scene_id]
+	_flush_cards()
+	if spot_id != "":
+		_finish_spot()
+		return
+	if override_lines.is_empty() and Story.has_spots(scene_id):
+		_show_spots()
+		return
 	var ev: Array = [] if not override_lines.is_empty() else Story.scene_evidence(scene_id)
 	for e in ev:
 		text.append_text("\n[color=#e0aa45][font_size=14][font=res://assets/fonts/Inter.ttf]◆[/font] EVIDENCE   %s[/font_size][/color]" % str(Story.evidence[e]["t"]).replace("[", "[lb]"))
@@ -746,6 +920,14 @@ func _clear_choices() -> void:
 
 func _update_clock(_m: int) -> void:
 	lbl_clock.text = Story.fmt_clock()
+	# the last half hour: the clock goes red, and beats
+	var late: bool = Story.minutes >= Story.END_MINUTES - 30 and not Story.over
+	lbl_clock.add_theme_color_override("font_color", Color(0.95, 0.32, 0.36) if late else (CYAN if Story.state == "V" else AMBER))
+	if late:
+		var tw := lbl_clock.create_tween()
+		lbl_clock.pivot_offset = lbl_clock.size * 0.5
+		tw.tween_property(lbl_clock, "scale", Vector2(1.25, 1.25), 0.12)
+		tw.tween_property(lbl_clock, "scale", Vector2(1.0, 1.0), 0.35)
 
 
 func _update_flasks(n: int) -> void:
@@ -795,16 +977,30 @@ func _refresh_board() -> void:
 			b.pressed.connect(_on_pick.bind(k))
 			board_list.add_child(b)
 			continue
+		var row: Control = board_list
+		var tex := evidence_texture(k) if have else null
+		if tex:
+			var hb := HBoxContainer.new()
+			hb.add_theme_constant_override("separation", 12)
+			board_list.add_child(hb)
+			var th := TextureRect.new()
+			th.texture = tex
+			th.custom_minimum_size = Vector2(88, 66)
+			th.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			th.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+			hb.add_child(th)
+			row = hb
 		var l := RichTextLabel.new()
 		l.bbcode_enabled = true
 		l.fit_content = true
 		l.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		l.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 		l.add_theme_font_override("normal_font", font_serif)
 		l.add_theme_font_size_override("normal_font_size", 17)
 		var body := str(e["t"]).replace("[", "[lb]") if have else "— — —"
 		l.append_text("[font_size=11]%s[/font_size]   %s" % [tags.get(e["s"], ""), body])
 		l.modulate = Color(1, 1, 1, 1.0 if have else 0.3)
-		board_list.add_child(l)
+		row.add_child(l)
 	if pick_mode and board_list.get_child_count() == 0:
 		var none := Label.new()
 		none.text = "You have nothing to show anyone yet. Look around first."
@@ -827,6 +1023,179 @@ func show_interject(l: Dictionary) -> void:
 	line_idx = 0
 	dock.visible = true
 	_next_line()
+
+
+# ---------------------------------------------------------------- evidence card and pause
+
+func _build_card() -> void:
+	card = PanelContainer.new()
+	card.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
+	card.offset_top = 70
+	card.offset_left = -460
+	card.offset_right = -24
+	card.grow_horizontal = Control.GROW_DIRECTION_BEGIN
+	card.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var sb := _style(Color(0.05, 0.04, 0.03, 0.92), Color(AMBER, 0.9))
+	sb.border_width_left = 4
+	sb.content_margin_left = 16
+	sb.content_margin_right = 16
+	sb.content_margin_top = 10
+	sb.content_margin_bottom = 10
+	card.add_theme_stylebox_override("panel", sb)
+	var v := VBoxContainer.new()
+	v.add_theme_constant_override("separation", 3)
+	card.add_child(v)
+	var h := Label.new()
+	h.text = "ON THE BOARD"
+	h.add_theme_font_override("font", font_ui)
+	h.add_theme_font_size_override("font_size", 11)
+	h.add_theme_color_override("font_color", AMBER)
+	v.add_child(h)
+	card_text = Label.new()
+	card_text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	card_text.custom_minimum_size = Vector2(400, 0)
+	card_text.add_theme_font_override("font", font_serif)
+	card_text.add_theme_font_size_override("font_size", 16)
+	card_text.add_theme_color_override("font_color", TEXT)
+	v.add_child(card_text)
+	card.modulate.a = 0.0
+	add_child(card)
+	photo = TextureRect.new()
+	photo.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
+	photo.offset_top = 150
+	photo.offset_left = -404
+	photo.offset_right = -44
+	photo.offset_bottom = 420
+	photo.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	photo.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	photo.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	photo.modulate.a = 0.0
+	photo.rotation_degrees = 2.0
+	add_child(photo)
+
+
+## assets/evidence/<name>.jpg, if this piece of evidence has a picture
+func evidence_texture(id: String) -> Texture2D:
+	var n := str(Story.evidence[id].get("img", ""))
+	if n == "":
+		return null
+	if not photo_cache.has(n):
+		var path := "res://assets/evidence/%s.jpg" % n
+		photo_cache[n] = load(path) if ResourceLoader.exists(path) else null
+	return photo_cache[n]
+
+
+var pending_cards: Array = []
+
+func _on_evidence_card(id: String) -> void:
+	if title_visible:
+		return
+	# the card waits until whoever is describing the thing has finished
+	if line_idx < lines.size() or (reveal and reveal.is_running()):
+		pending_cards.append(id)
+		return
+	_show_card(id)
+
+
+func _flush_cards() -> void:
+	if pending_cards.is_empty():
+		return
+	# several things can turn up at once; show the one with a picture, or the last
+	var pick: String = pending_cards[-1]
+	for id in pending_cards:
+		if evidence_texture(id) != null:
+			pick = id
+	pending_cards.clear()
+	_show_card(pick)
+
+
+func _show_card(id: String) -> void:
+	card_text.text = str(Story.evidence[id]["t"])
+	var sb: StyleBoxFlat = card.get_theme_stylebox("panel")
+	sb.border_color = Color(CYAN if str(Story.evidence[id]["s"]) == "V" else AMBER, 0.9)
+	if card_tween:
+		card_tween.kill()
+	card.position.x += 0.0
+	card_tween = create_tween()
+	card_tween.tween_property(card, "modulate:a", 1.0, 0.25)
+	card_tween.tween_interval(4.0)
+	card_tween.tween_property(card, "modulate:a", 0.0, 0.8)
+	var tex := evidence_texture(id)
+	if tex:
+		photo.texture = tex
+		if photo_tween:
+			photo_tween.kill()
+		photo.pivot_offset = Vector2(180, 135)
+		photo.scale = Vector2(0.9, 0.9)
+		photo_tween = create_tween()
+		photo_tween.tween_property(photo, "modulate:a", 1.0, 0.3)
+		photo_tween.parallel().tween_property(photo, "scale", Vector2(1, 1), 0.45).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		photo_tween.tween_interval(6.0)
+		photo_tween.tween_property(photo, "modulate:a", 0.0, 0.8)
+
+
+func _build_pause() -> void:
+	pause = PanelContainer.new()
+	pause.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	pause.add_theme_stylebox_override("panel", _style(Color(0.01, 0.01, 0.015, 0.86), Color(0, 0, 0, 0)))
+	pause.visible = false
+	add_child(pause)
+	var c := CenterContainer.new()
+	pause.add_child(c)
+	var v := VBoxContainer.new()
+	v.add_theme_constant_override("separation", 10)
+	v.custom_minimum_size = Vector2(360, 0)
+	c.add_child(v)
+	var t := Label.new()
+	t.text = "Paused"
+	t.add_theme_font_override("font", font_serif)
+	t.add_theme_font_size_override("font_size", 40)
+	t.add_theme_color_override("font_color", TEXT)
+	v.add_child(t)
+	var vl := Label.new()
+	vl.text = "VOLUME"
+	vl.add_theme_font_override("font", font_ui)
+	vl.add_theme_font_size_override("font_size", 11)
+	vl.add_theme_color_override("font_color", MUTED)
+	v.add_child(vl)
+	var sl := HSlider.new()
+	sl.min_value = 0.0
+	sl.max_value = 1.0
+	sl.step = 0.05
+	sl.value = 1.0
+	sl.value_changed.connect(func(x: float):
+		AudioServer.set_bus_mute(0, x <= 0.01)
+		AudioServer.set_bus_volume_db(0, linear_to_db(maxf(x, 0.01))))
+	v.add_child(sl)
+	for def in [["Resume", "resume"], ["Fullscreen on / off", "full"], ["Back to the title", "title"]]:
+		var b := _choice_button(str(def[0]))
+		choices.remove_child(b)
+		v.add_child(b)
+		b.pressed.connect(_pause_action.bind(str(def[1])))
+	var k := Label.new()
+	k.text = "SPACE advance   ·   1–9 choose   ·   SHIFT drink / sober up   ·   E evidence board   ·   ESC pause"
+	k.add_theme_font_override("font", font_ui)
+	k.add_theme_font_size_override("font_size", 11)
+	k.add_theme_color_override("font_color", MUTED)
+	v.add_child(k)
+
+
+func _toggle_pause() -> void:
+	pause.visible = not pause.visible
+	get_tree().paused = false   # audio keeps its place; only input is held
+	AudioServer.set_bus_volume_db(0, AudioServer.get_bus_volume_db(0))
+
+
+func _pause_action(what: String) -> void:
+	match what:
+		"resume":
+			pause.visible = false
+		"full":
+			var w := get_window()
+			w.mode = Window.MODE_WINDOWED if w.mode == Window.MODE_FULLSCREEN else Window.MODE_FULLSCREEN
+		"title":
+			pause.visible = false
+			restart_requested.emit()
 
 
 # ---------------------------------------------------------------- toast and timer
@@ -860,7 +1229,7 @@ func show_toast(t: String) -> void:
 func _process(delta: float) -> void:
 	if timer_left <= 0.0 or timer_bar == null or not is_instance_valid(timer_bar):
 		return
-	if board.visible or tl.visible:
+	if board.visible or tl.visible or pause.visible:
 		return   # the clock on a decision stops while you look at the board
 	timer_left -= delta
 	timer_bar.value = maxf(timer_left, 0.0) / timer_total

@@ -37,6 +37,7 @@ var minutes: int = START_MINUTES
 var flasks: int = FLASKS
 var found: Dictionary = {}     # evidence id -> true
 var visited: Dictionary = {}   # scene id + state -> true
+var examined: Dictionary = {}  # scene id + "/" + spot id -> true
 var over: bool = false
 var current_no_shift: bool = false
 
@@ -60,6 +61,7 @@ func reset() -> void:
 	flasks = FLASKS
 	found = {}
 	visited = {}
+	examined = {}
 	flags = {}
 	stats = {"drinks": 0, "stops": 0, "wrong": 0}
 	over = false
@@ -229,6 +231,28 @@ func recap() -> String:
 	return "Your night:  " + "   ·   ".join(parts)
 
 
+## What the night is asking for right now, said plainly. Shown in the room view.
+func objective() -> String:
+	if found.has(WITNESS):
+		return "You know what everyone did. Lay it out, or point at someone."
+	if cracked_count() >= 3:
+		return "Three confessions. Go and sit with Connie." if has_flag("connie_admits") else "Three confessions. Connie is still pretending she went home."
+	var has_voice := false
+	for e in found.keys():
+		if str(evidence[e]["s"]) == "V":
+			has_voice = true
+	if not has_voice:
+		return "Sober, you only see the surface. Drink, and look again."
+	for sid in present_cfg.keys():
+		var cfg: Dictionary = present_cfg[sid]
+		if has_flag(str(cfg["flag"])):
+			continue
+		for e in cfg["breaks"]:
+			if found.has(e):
+				return "You are holding something one of them cannot explain. Show it to them."
+	return "Somebody here is still lying comfortably. Keep looking."
+
+
 func endings_total() -> int:
 	var n := 0
 	for id in scenes.keys():
@@ -264,11 +288,75 @@ func line_available(l: Dictionary) -> bool:
 
 
 func visible_lines(id: String) -> Array:
+	var claimed := {}
+	for sp in scenes[id].get("spots", []):
+		for v in sp["vo"]:
+			claimed[v] = true
 	var out: Array = []
 	for l in scenes[id]["lines"]:
+		if claimed.has(str(l.get("vo", ""))):
+			continue   # belongs to something you have to look at (see spots)
 		if (l["state"] == "B" or l["state"] == state) and line_available(l):
 			out.append(l)
 	return out
+
+
+## Things to look at in this scene, for whoever is looking: sober Frank and the Voice see different ones.
+func spots(id: String) -> Array:
+	var out: Array = []
+	for sp in scenes[id].get("spots", []):
+		if str(sp["state"]) == state:
+			out.append(sp)
+	return out
+
+
+func has_spots(id: String) -> bool:
+	return not scenes[id].get("spots", []).is_empty()
+
+
+func spot(id: String, spot_id: String) -> Dictionary:
+	for sp in scenes[id].get("spots", []):
+		if str(sp["id"]) == spot_id:
+			return sp
+	return {}
+
+
+func spot_examined(id: String, spot_id: String) -> bool:
+	return examined.has(id + "/" + spot_id)
+
+
+func spot_lines(id: String, spot_id: String) -> Array:
+	var sp := spot(id, spot_id)
+	var out: Array = []
+	for l in scenes[id]["lines"]:
+		if sp["vo"].has(str(l.get("vo", ""))) and line_available(l):
+			out.append(l)
+	return out
+
+
+## Look at one thing. Returns the evidence ids it newly turned up.
+func examine(id: String, spot_id: String) -> Array[String]:
+	var newly: Array[String] = []
+	var sp := spot(id, spot_id)
+	if sp.is_empty():
+		return newly
+	examined[id + "/" + spot_id] = true
+	for e in sp.get("grant", []):
+		if not found.has(e):
+			found[e] = true
+			newly.append(e)
+			evidence_found.emit(e)
+	return newly
+
+
+## How much of the room each Frank has looked at: [examined, total] for the current state.
+func spot_progress(id: String) -> Array:
+	var n := 0
+	var sps := spots(id)
+	for sp in sps:
+		if spot_examined(id, str(sp["id"])):
+			n += 1
+	return [n, sps.size()]
 
 
 func visible_choices(id: String) -> Array:
@@ -282,6 +370,8 @@ func visible_choices(id: String) -> Array:
 ## Grants evidence for the current state. Returns the ids newly granted.
 func grant_evidence(id: String) -> Array[String]:
 	var newly: Array[String] = []
+	if has_spots(id):
+		return newly   # found by looking, not by walking in
 	for e in scenes[id].get("grant", []):
 		if (evidence[e]["s"] == state or evidence[e]["s"] == "C") and not found.has(e):
 			found[e] = true
@@ -293,6 +383,8 @@ func grant_evidence(id: String) -> Array[String]:
 ## Evidence items for this scene in the current state (granted or already held).
 func scene_evidence(id: String) -> Array[String]:
 	var out: Array[String] = []
+	if has_spots(id):
+		return out
 	for e in scenes[id].get("grant", []):
 		if evidence[e]["s"] == state or evidence[e]["s"] == "C":
 			out.append(e)

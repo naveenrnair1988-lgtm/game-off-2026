@@ -204,7 +204,8 @@
      "who": "narr",
      "text": "And at the end of the bar, on the last stool, Connie Vale. Seventy-one. Cardigan. Handbag on her knees. I didn't see her come in.",
      "state": "S",
-     "vo": "n07"
+     "vo": "n07",
+     "cam": "connie"
     },
     {
      "who": "connie",
@@ -216,7 +217,8 @@
      "who": "narr",
      "text": "Four people. At least one of them is lying. I can feel the shape of it and I can't see it. Like a word I've forgotten.",
      "state": "S",
-     "vo": "n08"
+     "vo": "n08",
+     "cam": "hub"
     },
     {
      "who": "frank",
@@ -314,13 +316,15 @@
      "who": "voice",
      "text": "And the old woman's glass is sweating.",
      "state": "V",
-     "vo": "ch1_voice_03"
+     "vo": "ch1_voice_03",
+     "cam": "connie"
     },
     {
      "who": "frank",
      "text": "What does that —",
      "state": "V",
-     "vo": "ch1_voice_04"
+     "vo": "ch1_voice_04",
+     "cam": "hub"
     },
     {
      "who": "voice",
@@ -380,7 +384,8 @@
      "who": "voice",
      "text": "Except the partner. He only respects a harder man. Him, you leave to me.",
      "state": "V",
-     "vo": "v16"
+     "vo": "v16",
+     "cam": "lenny"
     }
    ],
    "choices": [
@@ -489,7 +494,71 @@
    "noShift": false,
    "timer": 0,
    "timerDefault": 0,
-   "toast": ""
+   "toast": "",
+   "spots": [
+    {
+     "id": "coat",
+     "label": "My coat",
+     "state": "S",
+     "pos": [
+      -4.15,
+      0.8,
+      1.05
+     ],
+     "vo": [
+      "n12",
+      "loc_booth_03",
+      "n13"
+     ],
+     "grant": [
+      "E02"
+     ],
+     "cam": [
+      [
+       -3.0,
+       1.35,
+       1.9
+      ],
+      [
+       -4.15,
+       0.72,
+       1.1
+      ],
+      40
+     ]
+    },
+    {
+     "id": "hand",
+     "label": "Your right hand",
+     "state": "V",
+     "pos": [
+      -3.95,
+      0.8,
+      0.8
+     ],
+     "vo": [
+      "loc_booth_05",
+      "v02",
+      "loc_booth_07"
+     ],
+     "grant": [
+      "E03"
+     ],
+     "cam": [
+      [
+       -3.1,
+       1.25,
+       1.5
+      ],
+      [
+       -3.95,
+       0.75,
+       0.8
+      ],
+      36
+     ]
+    }
+   ]
   },
   "loc_bar": {
    "loc": "Danny",
@@ -570,7 +639,102 @@
    "noShift": false,
    "timer": 0,
    "timerDefault": 0,
-   "toast": ""
+   "toast": "",
+   "spots": [
+    {
+     "id": "floor",
+     "label": "The floor around him",
+     "state": "S",
+     "pos": [
+      -3.25,
+      0.08,
+      -2.5
+     ],
+     "vo": [
+      "n14",
+      "loc_bar_01"
+     ],
+     "grant": [
+      "E01",
+      "E04"
+     ],
+     "cam": [
+      [
+       -2.4,
+       1.6,
+       -1.4
+      ],
+      [
+       -3.4,
+       0.0,
+       -2.7
+      ],
+      46
+     ]
+    },
+    {
+     "id": "bottle",
+     "label": "The bottle",
+     "state": "V",
+     "pos": [
+      -3.15,
+      0.08,
+      -2.5
+     ],
+     "vo": [
+      "loc_bar_02",
+      "v03",
+      "loc_bar_04"
+     ],
+     "grant": [
+      "E01v"
+     ],
+     "cam": [
+      [
+       -2.6,
+       0.8,
+       -1.8
+      ],
+      [
+       -3.15,
+       0.03,
+       -2.5
+      ],
+      36
+     ]
+    },
+    {
+     "id": "charger",
+     "label": "Behind the register",
+     "state": "V",
+     "pos": [
+      1.2,
+      1.08,
+      -3.8
+     ],
+     "vo": [
+      "loc_bar_05",
+      "v04",
+      "loc_bar_07"
+     ],
+     "grant": [
+      "E04v"
+     ],
+     "cam": [
+      [
+       0.55,
+       1.5,
+       -2.0
+      ],
+      [
+       1.2,
+       1.0,
+       -3.8
+      ],
+      34
+     ]
+    }
+   ]
   },
   "loc_floor": {
    "loc": "The rail",
@@ -651,7 +815,129 @@
    "noShift": false,
    "timer": 0,
    "timerDefault": 0,
-   "toast": ""
+   "toast": "",
+   "spots": [
+    {
+     "id": "rail",
+     "label": "The brass rail",
+     "state": "S",
+     "pos": [
+      1.6,
+      0.32,
+      -2.08
+     ],
+     "vo": [
+      "n15",
+      "loc_floor_01"
+     ],
+     "grant": [
+      "E06"
+     ],
+     "cam": [
+      [
+       0.9,
+       0.9,
+       -0.9
+      ],
+      [
+       1.9,
+       0.25,
+       -2.08
+      ],
+      46
+     ]
+    },
+    {
+     "id": "stool",
+     "label": "Connie's stool",
+     "state": "S",
+     "pos": [
+      3.0,
+      0.95,
+      -1.9
+     ],
+     "vo": [
+      "n16"
+     ],
+     "grant": [
+      "E07"
+     ],
+     "cam": [
+      [
+       1.6,
+       1.4,
+       -0.6
+      ],
+      [
+       3.0,
+       0.9,
+       -1.95
+      ],
+      46
+     ]
+    },
+    {
+     "id": "print",
+     "label": "The end of the rail",
+     "state": "V",
+     "pos": [
+      3.3,
+      0.34,
+      -2.08
+     ],
+     "vo": [
+      "loc_floor_03",
+      "v05",
+      "loc_floor_05",
+      "v06"
+     ],
+     "grant": [
+      "E06v"
+     ],
+     "cam": [
+      [
+       4.1,
+       0.7,
+       -1.4
+      ],
+      [
+       3.3,
+       0.26,
+       -2.08
+      ],
+      30
+     ]
+    },
+    {
+     "id": "glass",
+     "label": "Her glass",
+     "state": "V",
+     "pos": [
+      3.0,
+      1.3,
+      -2.4
+     ],
+     "vo": [
+      "loc_floor_07"
+     ],
+     "grant": [
+      "E07v"
+     ],
+     "cam": [
+      [
+       2.2,
+       1.55,
+       -1.3
+      ],
+      [
+       3.0,
+       1.2,
+       -2.4
+      ],
+      32
+     ]
+    }
+   ]
   },
   "loc_office": {
    "loc": "The office",
@@ -712,7 +998,70 @@
    "noShift": false,
    "timer": 0,
    "timerDefault": 0,
-   "toast": ""
+   "toast": "",
+   "spots": [
+    {
+     "id": "desk",
+     "label": "The desk",
+     "state": "S",
+     "pos": [
+      7.25,
+      0.95,
+      -1.75
+     ],
+     "vo": [
+      "n17",
+      "loc_office_01"
+     ],
+     "grant": [
+      "E05"
+     ],
+     "cam": [
+      [
+       6.1,
+       1.6,
+       -0.2
+      ],
+      [
+       7.3,
+       0.7,
+       -1.7
+      ],
+      50
+     ]
+    },
+    {
+     "id": "ash",
+     "label": "The carpet",
+     "state": "V",
+     "pos": [
+      6.55,
+      0.08,
+      -1.05
+     ],
+     "vo": [
+      "loc_office_02",
+      "v07",
+      "loc_office_04"
+     ],
+     "grant": [
+      "E05v"
+     ],
+     "cam": [
+      [
+       5.9,
+       0.9,
+       -0.2
+      ],
+      [
+       6.55,
+       0.0,
+       -1.05
+      ],
+      36
+     ]
+    }
+   ]
   },
   "int_mira": {
    "loc": "Mira Roarke",
@@ -837,7 +1186,8 @@
      "who": "voice",
      "text": "He grabbed his phone. The one that's on the charger. Behind the register. Right now.",
      "state": "V",
-     "vo": "int_theo_03"
+     "vo": "int_theo_03",
+     "cam": "phone"
     },
     {
      "who": "frank",
@@ -1019,7 +1369,8 @@
      "who": "voice",
      "text": "Her glass is sweating. Her stool is warm. She hasn't been anywhere.",
      "state": "V",
-     "vo": "int_connie_04"
+     "vo": "int_connie_04",
+     "cam": "rail"
     }
    ],
    "choices": [
@@ -1606,25 +1957,29 @@
      "who": "connie",
      "text": "The boy came in at ten past and Danny was sitting on the floor again by then, and he said, 'Not now, Theo.' The boy took money from the till. Danny watched him do it and didn't say a word. The boy ran.",
      "state": "B",
-     "vo": "ch4_connie_05"
+     "vo": "ch4_connie_05",
+     "cam": "theo"
     },
     {
      "who": "connie",
      "text": "Lenny came at half past. Danny was lying down. Lenny stepped over him into the office. He came out with the green book and a folder and he lit a cigar in the doorway and looked at Danny for a long time and went home.",
      "state": "B",
-     "vo": "ch4_connie_06"
+     "vo": "ch4_connie_06",
+     "cam": "lenny"
     },
     {
      "who": "connie",
      "text": "Mira came down at quarter to one. She knelt. She stayed a while. Then she stood up and went and got the bottle from the top shelf and broke it beside him. She took a cloth to the rail. She went upstairs and washed, and she came back and sat with him until half past one, and then she rang.",
      "state": "B",
-     "vo": "ch4_connie_07"
+     "vo": "ch4_connie_07",
+     "cam": "mira"
     },
     {
      "who": "frank",
      "text": "And you —",
      "state": "B",
-     "vo": "ch4_connie_08"
+     "vo": "ch4_connie_08",
+     "cam": "connie"
     },
     {
      "who": "connie",
@@ -1938,25 +2293,29 @@
      "who": "voice",
      "text": "…You told him his wife only came downstairs to count the till. You told him that's why she lived upstairs. He put a hand on your collar and you put two on his chest.",
      "state": "B",
-     "vo": "end_true_06"
+     "vo": "end_true_06",
+     "cam": "rail"
     },
     {
      "who": "voice",
      "text": "He went over the rail. He hit his head. He sat down and said get out of my bar, Frank, and you went to your booth and you slept, and he died over the next hour and a half in front of four people and one of them was you.",
      "state": "B",
-     "vo": "end_true_07"
+     "vo": "end_true_07",
+     "cam": "booth"
     },
     {
      "who": "voice",
      "text": "I didn't tell you because I'm the part of you that's supposed to be useful. There's nothing useful in it. There's just a dead friend and a man who can't hold his drink.",
      "state": "B",
-     "vo": "end_true_08"
+     "vo": "end_true_08",
+     "cam": "bar"
     },
     {
      "who": "narr",
      "text": "The front door opens. The uniforms come in blinking. Mira stands. Theo backs into the wall. Lenny puts his cigar out on his own shoe. Connie doesn't move. One sentence.",
      "state": "B",
-     "vo": "n32"
+     "vo": "n32",
+     "cam": "hub"
     }
    ],
    "choices": [
@@ -2011,7 +2370,8 @@
      "vo": "n56",
      "ifAll": [
       "theo_kind"
-     ]
+     ],
+     "cam": "theo"
     },
     {
      "who": "narr",
@@ -2020,7 +2380,8 @@
      "vo": "n57",
      "ifAll": [
       "theo_hard"
-     ]
+     ],
+     "cam": "theo"
     },
     {
      "who": "narr",
@@ -2029,26 +2390,30 @@
      "vo": "n58",
      "ifAll": [
       "lenny_ledger"
-     ]
+     ],
+     "cam": "lenny"
     },
     {
      "who": "narr",
      "text": "And Connie tells them about the telephone. Eleven seconds. Nobody asks her why. I already know.",
      "state": "B",
      "vo": "n59",
-     "ifFound": "E12"
+     "ifFound": "E12",
+     "cam": "connie"
     },
     {
      "who": "narr",
      "text": "Mira looks at me, and for the first time tonight her face does something. It isn't forgiveness. It's worse. It's relief.",
      "state": "B",
-     "vo": "n34"
+     "vo": "n34",
+     "cam": "mira"
     },
     {
      "who": "narr",
      "text": "On the way out, I stop at the bar and pour the flask into the sink. It takes longer than you'd think.",
      "state": "B",
-     "vo": "n35"
+     "vo": "n35",
+     "cam": "phone"
     },
     {
      "who": "voice",
@@ -2546,7 +2911,8 @@
      "who": "narr",
      "text": "I look at the four of them. Nobody looks back.",
      "state": "S",
-     "vo": "n52"
+     "vo": "n52",
+     "cam": "hub"
     },
     {
      "who": "narr",
@@ -2587,7 +2953,8 @@
      "who": "narr",
      "text": "It rings nine times. I count. Then it stops, and the room breathes out, all at once, like it's been caught.",
      "state": "B",
-     "vo": "n53"
+     "vo": "n53",
+     "cam": "hub"
     },
     {
      "who": "voice",
@@ -2676,6 +3043,68 @@
      "requiresAll": [],
      "hideIfFlag": "",
      "setsFlag": ""
+    }
+   ],
+   "spots": [
+    {
+     "id": "box",
+     "label": "The jukebox",
+     "state": "S",
+     "pos": [
+      -4.55,
+      0.95,
+      -1.0
+     ],
+     "vo": [
+      "n55",
+      "f12"
+     ],
+     "grant": [
+      "E14"
+     ],
+     "cam": [
+      [
+       -3.1,
+       1.3,
+       -0.4
+      ],
+      [
+       -4.7,
+       0.9,
+       -1.0
+      ],
+      42
+     ]
+    },
+    {
+     "id": "counter",
+     "label": "The play counter",
+     "state": "V",
+     "pos": [
+      -4.5,
+      1.2,
+      -1.0
+     ],
+     "vo": [
+      "v23",
+      "v24"
+     ],
+     "grant": [
+      "E14v"
+     ],
+     "cam": [
+      [
+       -3.5,
+       1.35,
+       -0.6
+      ],
+      [
+       -4.7,
+       1.1,
+       -1.0
+      ],
+      32
+     ]
     }
    ]
   },
@@ -2891,15 +3320,18 @@
   },
   "E01v": {
    "s": "V",
-   "t": "The bottle is the top-shelf one. Danny never served it. Somebody brought it down."
+   "t": "The bottle is the top-shelf one. Danny never served it. Somebody brought it down.",
+   "img": "bottle"
   },
   "E02": {
    "s": "S",
-   "t": "A receipt in Frank's pocket, in Danny's hand: \"11:47 — CUT OFF. — D.\""
+   "t": "A receipt in Frank's pocket, in Danny's hand: \"11:47 — CUT OFF. — D.\"",
+   "img": "receipt"
   },
   "E03": {
    "s": "V",
-   "t": "Frank's right knuckles are bruised. He hit something. Or someone."
+   "t": "Frank's right knuckles are bruised. He hit something. Or someone.",
+   "img": "knuckles"
   },
   "E04": {
    "s": "S",
@@ -2907,7 +3339,8 @@
   },
   "E04v": {
    "s": "V",
-   "t": "Theo's phone is still on the charger behind the bar. He didn't come back for it."
+   "t": "Theo's phone is still on the charger behind the bar. He didn't come back for it.",
+   "img": "phone"
   },
   "E05": {
    "s": "S",
@@ -2915,7 +3348,8 @@
   },
   "E05v": {
    "s": "V",
-   "t": "Cigar ash on the office carpet. And Lenny said \"was\" before anyone told him Danny was dead."
+   "t": "Cigar ash on the office carpet. And Lenny said \"was\" before anyone told him Danny was dead.",
+   "img": "ash"
   },
   "E06": {
    "s": "S",
@@ -2923,7 +3357,8 @@
   },
   "E06v": {
    "s": "V",
-   "t": "Wiped clean — except one handprint at the end. Frank-sized."
+   "t": "Wiped clean — except one handprint at the end. Frank-sized.",
+   "img": "handprint"
   },
   "E07": {
    "s": "S",
@@ -2931,7 +3366,8 @@
   },
   "E07v": {
    "s": "V",
-   "t": "Her glass is still sweating. She never left."
+   "t": "Her glass is still sweating. She never left.",
+   "img": "glass"
   },
   "E08": {
    "s": "C",
@@ -2943,11 +3379,13 @@
   },
   "E10": {
    "s": "S",
-   "t": "A bar cloth in the office sink, still wet, pink at the edges. Mira washed something."
+   "t": "A bar cloth in the office sink, still wet, pink at the edges. Mira washed something.",
+   "img": "cloth"
   },
   "E11": {
    "s": "S",
-   "t": "The carbon under the last page of Danny's tab book: '11:47 — CUT OFF. — D.' and under it, '11:52 — F. put hands on me. Went down. I'm OK. Sat him in his booth.'"
+   "t": "The carbon under the last page of Danny's tab book: '11:47 — CUT OFF. — D.' and under it, '11:52 — F. put hands on me. Went down. I'm OK. Sat him in his booth.'",
+   "img": "carbon"
   },
   "C1": {
    "s": "C",
@@ -2971,7 +3409,8 @@
   },
   "E14v": {
    "s": "V",
-   "t": "The jukebox has been skipping since 11:50. Something hit the floor hard enough to jump the needle."
+   "t": "The jukebox has been skipping since 11:50. Something hit the floor hard enough to jump the needle.",
+   "img": "counter"
   }
  },
  "timeline": {

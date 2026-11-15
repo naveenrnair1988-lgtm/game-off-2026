@@ -14,6 +14,10 @@ var env: Environment
 var lights: Array[Light3D] = []
 var cam_tween: Tween
 var clue_meshes: Array[MeshInstance3D] = []   # props that glow in Voice state
+var spot_marks: Array[Area3D] = []            # things to look at in the current room
+var examining: String = ""                    # the spot the camera is on, if any
+var mira_kneeling: bool = false
+var key_lights: Array[OmniLight3D] = []       # live lights that only the characters feel
 var post_mat: ShaderMaterial
 var headlight: OmniLight3D
 var headlights_on: bool = false
@@ -42,11 +46,11 @@ var cam_station: String = ""
 const MODEL_SLOTS := {
 	"jukebox":  [[Vector3(-4.72, 0.0, -1.0), 90.0, 1.5, "y"]],
 	"body":     [[Vector3(-4.1, 0.0, -3.1), 0.0, 1.8, "long"]],
-	"mira":     [[Vector3(-3.5, 0.0, -2.2), 25.0, 1.2, "y"]],
+	"mira":     [[Vector3(-4.7, 0.0, -2.1), 62.0, 1.66, "y"]],
 	"theo":     [[Vector3(4.3, 0.0, 2.4), -90.0, 1.78, "y"]],
 	"lenny":    [[Vector3(-0.7, 0.0, 0.2), -55.0, 1.75, "y"]],
-	"connie":   [[Vector3(3.0, 0.0, -1.9), -45.0, 1.45, "y"]],
-	"stool":    [[Vector3(-2.0, 0.0, -1.9), 0.0, 0.8, "y"], [Vector3(-0.75, 0.0, -1.9), 40.0, 0.8, "y"], [Vector3(0.5, 0.0, -1.9), 110.0, 0.8, "y"], [Vector3(1.75, 0.0, -1.9), 200.0, 0.8, "y"]],
+	"connie":   [[Vector3(3.0, 0.0, -1.9), -45.0, 1.58, "y"]],
+	"stool":    [[Vector3(-2.0, 0.0, -1.9), 0.0, 0.8, "y"], [Vector3(-0.75, 0.0, -1.9), 40.0, 0.8, "y"], [Vector3(0.5, 0.0, -1.9), 110.0, 0.8, "y"], [Vector3(1.75, 0.0, -1.9), 200.0, 0.8, "y"], [Vector3(3.0, 0.0, -1.9), 70.0, 0.8, "y"]],
 	"booth":    [[Vector3(-4.25, 0.0, 0.9), 90.0, 2.3, "long"]],
 	"register": [[Vector3(0.7, 0.95, -3.72), 0.0, 0.5, "y"]],
 	"desk":     [[Vector3(7.25, 0.0, -1.75), 0.0, 2.0, "long"]],
@@ -62,13 +66,14 @@ const STATIONS := {
 	"bar":    [Vector3(-2.5, 2.2, -0.9), Vector3(-4.0, 0.0, -3.0), 58.0],
 	"floor":  [Vector3(1.5, 1.3, -0.5), Vector3(3.0, 0.35, -2.2), 58.0],
 	"office": [Vector3(5.75, 1.65, 0.3), Vector3(7.3, 0.55, -1.6), 62.0],
-	"mira":   [Vector3(-2.1, 1.25, -0.7), Vector3(-3.5, 0.75, -2.2), 50.0],
-	"theo":   [Vector3(2.5, 1.5, 1.7),  Vector3(4.4, 1.0, 2.45), 54.0],
-	"lenny":  [Vector3(-2.2, 1.5, 1.7), Vector3(-0.65, 0.95, 0.2), 54.0],
-	"connie": [Vector3(1.5, 1.45, -0.6), Vector3(3.0, 0.85, -1.95), 54.0],
+	"mira":   [Vector3(-3.0, 1.52, -0.95), Vector3(-4.7, 1.40, -2.1), 42.0],
+	"theo":   [Vector3(2.55, 1.58, 1.75),  Vector3(4.35, 1.45, 2.42), 44.0],
+	"lenny":  [Vector3(-2.15, 1.58, 1.65), Vector3(-0.68, 1.42, 0.2), 44.0],
+	"connie": [Vector3(1.65, 1.5, -0.7), Vector3(3.0, 1.27, -1.92), 44.0],
 	"phone":  [Vector3(-0.45, 1.5, -1.9), Vector3(0.25, 1.05, -3.72), 42.0],
 	"jukebox": [Vector3(-2.9, 1.35, -0.2), Vector3(-4.7, 0.85, -1.0), 50.0],
-	"rail":   [Vector3(0.9, 0.5, -1.45), Vector3(3.3, 0.3, -2.1), 46.0],
+	"rail":   [Vector3(4.35, 1.05, -1.05), Vector3(3.3, 0.26, -2.08), 38.0],
+	"mira_low": [Vector3(-3.3, 0.9, -1.05), Vector3(-4.7, 0.92, -2.1), 42.0],   # while she kneels
 }
 const SCENE_STATION := {
 	"ch1_wake": "booth", "ch1_body": "bar", "ch1_mira1": "mira", "ch1_others": "hub",
@@ -88,14 +93,12 @@ const SCENE_STATION := {
 ## Shader-rig settings per character, as fractions of the model's height:
 ## waist, neck, mouth line, neck pivot (x, z), face surface z. See shaders/puppet.gdshader.
 const RIG := {
-	"mira":   {"waist": 0.45, "neck": 0.765, "mouth": 0.818, "chin": 0.787, "c": Vector2(0.003, 0.02), "face": 0.135,
-		"eye": 0.883, "eye_dx": 0.033, "eye_cx": -0.003, "mouth_w": 0.030},
-	"theo":   {"waist": 0.55, "neck": 0.848, "mouth": 0.882, "chin": 0.860, "c": Vector2(0.0, -0.018), "face": 0.068,
-		"eye": 0.921, "eye_dx": 0.0195, "eye_cx": -0.0015, "mouth_w": 0.020},   # no arm bones: his sleeves touch his sides
-	"lenny":  {"waist": 0.55, "neck": 0.855, "mouth": 0.886, "chin": 0.862, "c": Vector2(0.007, -0.005), "face": 0.072,
-		"eye": 0.927, "eye_dx": 0.025, "eye_cx": -0.005, "mouth_w": 0.024},   # no arm bones: his coat tears
-	"connie": {"waist": 0.50, "neck": 0.825, "mouth": 0.862, "chin": 0.838, "c": Vector2(-0.005, -0.085), "face": 0.005,
-		"eye": 0.905, "eye_dx": 0.0225, "eye_cx": -0.0025, "mouth_w": 0.024, "tint": 0.6},   # pale hair and wool under a bar lamp
+	# skinned characters: lip line and eye line as fractions of the figure's height (for the mouth
+	# shading and the head height), the height the model was authored at, and a lift for sitting
+	"mira":   {"mouth": 0.880, "eye": 0.9233, "h": 1.66, "tint": 1.2},   # she stands in the darkest corner
+	"theo":   {"mouth": 0.8835, "eye": 0.9213, "h": 1.78},
+	"lenny":  {"mouth": 0.8855, "eye": 0.9317, "h": 1.75, "tint": 0.72},
+	"connie": {"mouth": 0.8646, "eye": 0.9057, "h": 1.58, "lift": 0.30, "head_h": 0.80, "tint": 0.6, "idle_len": 3.4, "seat": true},
 }
 var puppets: Dictionary = {}       # name -> Puppet
 var speaker: String = ""           # who is talking right now
@@ -109,7 +112,7 @@ const HOTSPOTS := [
 	["The rail", "loc_floor", Vector3(1.3, 0.35, -2.1), Vector3(2.2, 0.7, 0.5)],
 	["The office", "loc_office", Vector3(5.1, 1.05, -0.8), Vector3(0.5, 2.1, 1.0)],
 	["The jukebox", "loc_jukebox", Vector3(-4.6, 0.8, -1.0), Vector3(0.9, 1.6, 1.0)],
-	["Mira", "int_mira", Vector3(-3.5, 0.6, -2.2), Vector3(0.7, 1.2, 0.7)],
+	["Mira", "int_mira", Vector3(-4.7, 0.9, -2.1), Vector3(0.7, 1.8, 0.7)],
 	["Theo", "int_theo", Vector3(4.3, 0.9, 2.4), Vector3(0.7, 1.8, 0.7)],
 	["Lenny", "int_lenny", Vector3(-0.7, 0.9, 0.2), Vector3(0.9, 1.8, 0.9)],
 	["Connie", "int_connie", Vector3(3.0, 0.9, -1.9), Vector3(0.7, 1.8, 0.7)],
@@ -128,8 +131,8 @@ const TITLE := {
 	"light": Color(1.0, 0.70, 0.42), "light_energy": 0.5,
 }
 const VOICE := {
-	"bg": Color(0.01, 0.025, 0.04), "ambient": Color(0.16, 0.34, 0.42), "ambient_energy": 1.0,
-	"fog": Color(0.03, 0.09, 0.13), "fog_density": 0.04,
+	"bg": Color(0.01, 0.025, 0.04), "ambient": Color(0.16, 0.34, 0.42), "ambient_energy": 1.3,
+	"fog": Color(0.03, 0.09, 0.13), "fog_density": 0.03,
 	"light": Color(0.50, 0.86, 1.0), "light_energy": 2.2,
 }
 
@@ -163,6 +166,8 @@ func _ready() -> void:
 	ui.present_requested.connect(func(): ui.open_present())
 	ui.present_picked.connect(_on_present)
 	ui.line_advanced.connect(func(): _play("page"))
+	ui.spot_mode.connect(_on_spot_mode)
+	ui.spot_picked.connect(_on_spot_picked)
 	Story.evidence_found.connect(_on_evidence_sfx)
 	_enter_title()
 
@@ -535,12 +540,22 @@ func go(id: String) -> void:
 		return  # the night is over; only endings may play
 	if not Story.enter_scene(id):
 		return  # timed_out signal routes to end_timeout
+	_clear_spots()
 	current_scene = id
+	# Mira is on her knees by the body until the others walk in
+	if puppets.has("mira") and puppets["mira"] is Actor:
+		var kneel: bool = id in ["ch1_wake", "ch1_body", "ch1_mira1"]
+		if kneel != mira_kneeling:
+			mira_kneeling = kneel
+			(puppets["mira"] as Actor).hold("kneel" if kneel else "", 0.0)
 	var sc: Dictionary = Story.scenes[id]
 	Story.current_no_shift = bool(sc.get("noShift", false))
 	_set_headlights(id == "accuse" or id == "end_true" or id == "end_timeout")
 	_set_hub(bool(sc.get("hub", false)))
-	_move_camera(SCENE_STATION.get(id, "hub"))
+	var station: String = SCENE_STATION.get(id, "hub")
+	if station == "mira" and mira_kneeling:
+		station = "mira_low"
+	_move_camera(station)
 	if id == "ch3_phone":
 		_play("phone")
 	else:
@@ -554,6 +569,13 @@ func _on_line_who(who: String) -> void:
 	if in_title or current_scene == "":
 		return
 	var target: String = SPEAKER_STATION.get(who, SCENE_STATION.get(current_scene, "hub"))
+	if target == "mira" and mira_kneeling:
+		target = "mira_low"
+	var want := str(ui.current_line.get("cam", ""))
+	if want != "" and STATIONS.has(want):
+		target = want   # the line asks to be looked at from somewhere in particular
+	if examining != "":
+		target = cam_station   # the camera stays on what you are looking at
 	if target != cam_station:
 		_move_camera(target, 0.7)
 	_direct_cast(who)
@@ -620,6 +642,18 @@ func _move_camera(station: String, dur: float = 1.2) -> void:
 	cam_tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT).set_parallel(true)
 	cam_tween.tween_property(cam, "transform", target, dur)
 	cam_tween.tween_property(cam, "fov", float(st[2]), dur)
+
+
+func _move_camera_to(pos: Vector3, look: Vector3, fov: float, dur: float = 1.0) -> void:
+	cam_station = "_spot"
+	if cam_tween:
+		cam_tween.kill()
+	var target := Transform3D().looking_at(look - pos, Vector3.UP)
+	target.origin = pos
+	cam_base = target
+	cam_tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT).set_parallel(true)
+	cam_tween.tween_property(cam, "transform", target, dur)
+	cam_tween.tween_property(cam, "fov", fov, dur)
 
 
 func _snap_camera(station: String) -> void:
@@ -919,10 +953,19 @@ func _load_models() -> void:
 			pivot.position = cfg[0]
 			pivot.rotation_degrees.y = cfg[1]
 			pivot.add_child(inst)
-			_fit_model(inst, float(cfg[2]), str(cfg[3]))
+			var skinned := not inst.find_children("*", "Skeleton3D", true, false).is_empty()
+			if skinned and RIG.has(slot):
+				# a rigged figure is authored in metres, feet on the origin: scale it, do not re-fit it
+				inst.scale = Vector3.ONE * (float(cfg[2]) / float(RIG[slot]["h"]))
+				inst.position.y = float(RIG[slot].get("lift", 0.0))
+			else:
+				_fit_model(inst, float(cfg[2]), str(cfg[3]))
 			add_child(pivot)
 			if RIG.has(slot) and i == 0:
-				_make_puppet(str(slot), pivot, inst, float(cfg[2]))
+				if skinned:
+					_make_actor(str(slot), pivot, inst, float(cfg[2]))
+				else:
+					_make_puppet(str(slot), pivot, inst, float(cfg[2]))
 			i += 1
 		# hide the primitive placeholder(s) for this slot
 		for c in get_children():
@@ -1002,6 +1045,41 @@ func _make_puppet(slot: String, pivot: Node3D, inst: Node3D, height: float) -> v
 	puppets[slot] = pp
 
 
+## A skinned character: shade it with the character shader and give it an Actor to drive it.
+func _make_actor(slot: String, pivot: Node3D, inst: Node3D, height: float) -> void:
+	var mi := _find_mesh(inst)
+	if mi == null or mi.mesh == null:
+		return
+	var rig: Dictionary = RIG[slot]
+	var sm := ShaderMaterial.new()
+	sm.shader = load("res://shaders/character.gdshader")
+	var src := mi.get_active_material(0) as BaseMaterial3D
+	if src:
+		var tn: float = rig.get("tint", 1.0)
+		sm.set_shader_parameter("albedo_tex", src.albedo_texture)
+		sm.set_shader_parameter("tint", Vector3(src.albedo_color.r, src.albedo_color.g, src.albedo_color.b) * tn)
+		if src.normal_enabled and src.normal_texture:
+			sm.set_shader_parameter("normal_tex", src.normal_texture)
+			sm.set_shader_parameter("use_normal", true)
+		if src.roughness_texture:
+			sm.set_shader_parameter("orm_tex", src.roughness_texture)
+			sm.set_shader_parameter("use_orm", true)
+		sm.set_shader_parameter("rough", src.roughness)
+	sm.set_shader_parameter("mouth", rig["mouth"])
+	for si in mi.mesh.get_surface_count():
+		mi.set_surface_override_material(si, sm)
+	mi.extra_cull_margin = 1.0
+	var a := Actor.new()
+	a.name = "Puppet_" + slot
+	a.clip_idle = str(rig.get("idle", "idle"))
+	a.clip_talk = str(rig.get("talk", "talk"))
+	a.idle_len = float(rig.get("idle_len", 0.0))
+	a.seat = bool(rig.get("seat", false))
+	add_child(a)
+	a.setup_actor(pivot, inst, sm, height * float(rig.get("head_h", 0.93)) + float(rig.get("lift", 0.0)), slot.hash())
+	puppets[slot] = a
+
+
 func _head_pos(slot: String) -> Vector3:
 	var pp: Puppet = puppets[slot]
 	return pp.pivot.global_position + Vector3(0, pp.head_height, 0)
@@ -1073,7 +1151,7 @@ func _build_hotspots() -> void:
 		var lbl := Label3D.new()
 		lbl.name = "Label"
 		lbl.text = "◆  " + str(h[0]).to_upper()
-		var lift: float = {"loc_bar": 0.25, "loc_booth": 0.1, "loc_floor": -0.1, "loc_office": 0.5, "int_mira": 0.55, "int_connie": -0.2, "int_lenny": 0.3, "int_theo": 0.3}.get(str(h[1]), 0.25)
+		var lift: float = {"loc_bar": 0.25, "loc_booth": 0.1, "loc_floor": -0.1, "loc_office": 0.5, "int_mira": 0.3, "int_connie": -0.2, "int_lenny": 0.3, "int_theo": 0.3}.get(str(h[1]), 0.25)
 		lbl.position = Vector3(0, h[3].y * 0.5 + lift, 0)
 		lbl.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 		lbl.font = load("res://assets/fonts/Inter.ttf")
@@ -1122,6 +1200,76 @@ func _label_color() -> Color:
 func _refresh_hotspot_labels() -> void:
 	for a in hotspots:
 		a.get_node("Label").modulate = _label_color()
+
+
+# ---------------------------------------------------------------- looking closer
+
+func _clear_spots() -> void:
+	examining = ""
+	for a in spot_marks:
+		a.queue_free()
+	spot_marks.clear()
+
+
+## The room is waiting for you to look at something: put a marker on each thing this Frank can see.
+func _on_spot_mode(id: String) -> void:
+	_clear_spots()
+	if cam_station != SCENE_STATION.get(id, "hub"):
+		_move_camera(SCENE_STATION.get(id, "hub"), 0.9)
+	for sp in Story.spots(id):
+		var a := Area3D.new()
+		var p: Array = sp["pos"]
+		a.position = Vector3(p[0], p[1], p[2])
+		var cs := CollisionShape3D.new()
+		var sh := SphereShape3D.new()
+		sh.radius = 0.28
+		cs.shape = sh
+		a.add_child(cs)
+		var done: bool = Story.spot_examined(id, str(sp["id"]))
+		var lbl := Label3D.new()
+		lbl.name = "Label"
+		lbl.text = "◆  " + str(sp["label"]).to_upper()
+		lbl.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+		lbl.font = load("res://assets/fonts/Inter.ttf")
+		lbl.font_size = 34
+		lbl.fixed_size = true
+		lbl.pixel_size = 0.00085
+		lbl.outline_size = 10
+		lbl.outline_modulate = Color(0, 0, 0, 0.85)
+		lbl.no_depth_test = true
+		lbl.modulate = _label_color() * (Color(1, 1, 1, 0.45) if done else Color(1, 1, 1, 1))
+		a.add_child(lbl)
+		if not done:
+			# an unexamined thing breathes, so the eye finds it
+			var tw := lbl.create_tween().set_loops()
+			tw.tween_property(lbl, "modulate:a", 0.55, 0.9).set_trans(Tween.TRANS_SINE)
+			tw.tween_property(lbl, "modulate:a", 1.0, 0.9).set_trans(Tween.TRANS_SINE)
+		var sid := str(sp["id"])
+		a.input_event.connect(func(_c, ev, _p, _n, _i):
+			if (ev is InputEventMouseButton and ev.pressed and ev.button_index == MOUSE_BUTTON_LEFT) or (ev is InputEventScreenTouch and ev.pressed):
+				_on_spot_picked(sid))
+		add_child(a)
+		spot_marks.append(a)
+
+
+func _on_spot_picked(spot_id: String) -> void:
+	var sp: Dictionary = Story.spot(current_scene, spot_id)
+	if sp.is_empty():
+		return
+	for a in spot_marks:
+		a.queue_free()
+	spot_marks.clear()
+	examining = spot_id
+	if sp.has("cam"):
+		var c: Array = sp["cam"]
+		_move_camera_to(Vector3(c[0][0], c[0][1], c[0][2]), Vector3(c[1][0], c[1][1], c[1][2]), float(c[2]), 1.0)
+	ui.show_spot(spot_id)
+
+
+## For the scripted tests: look at everything this Frank can see here.
+func examine_all() -> void:
+	for sp in Story.spots(current_scene):
+		Story.examine(current_scene, str(sp["id"]))
 
 
 # ---------------------------------------------------------------- lighting
@@ -1196,6 +1344,26 @@ func _build_lighting() -> void:
 	desk.shadow_enabled = false
 	add_child(desk)
 	lights.append(desk)
+	# The room's light is baked, so live lights only reach the people. Each of the two who stand in
+	# dark corners gets a soft key from the camera side and a cool rim from behind.
+	for cfg in [
+		[Vector3(-3.5, 2.0, -1.2), 1.5, 3.4, Color(1.0, 0.90, 0.78)],   # Mira: key
+		[Vector3(-5.05, 1.9, -2.9), 0.9, 2.6, Color(0.70, 0.82, 1.0)],  # Mira: rim
+		[Vector3(3.3, 2.1, 1.4), 0.9, 3.2, Color(1.0, 0.90, 0.78)],     # Theo: key
+		[Vector3(5.0, 2.0, 3.3), 0.8, 2.6, Color(0.70, 0.82, 1.0)],     # Theo: rim
+		[Vector3(-1.6, 2.0, -0.6), 0.5, 2.6, Color(0.70, 0.82, 1.0)],   # Lenny: rim
+	]:
+		var kl := OmniLight3D.new()
+		kl.position = cfg[0]
+		kl.omni_range = cfg[2]
+		kl.omni_attenuation = 1.0
+		kl.shadow_enabled = false
+		kl.light_color = cfg[3]
+		kl.light_energy = cfg[1]
+		kl.set_meta("energy", cfg[1])
+		kl.set_meta("color", cfg[3])
+		add_child(kl)
+		key_lights.append(kl)
 
 
 func _apply_palette(p: Dictionary, dur: float) -> void:
@@ -1208,6 +1376,8 @@ func _apply_palette(p: Dictionary, dur: float) -> void:
 		for l in lights:
 			l.light_color = p["light"]
 			l.light_energy = p["light_energy"]
+		for kl in key_lights:
+			kl.light_color = (kl.get_meta("color") as Color).lerp(p["light"], 0.6)
 		return
 	var t := create_tween().set_parallel(true)
 	t.tween_property(env, "background_color", p["bg"], dur)
@@ -1218,6 +1388,8 @@ func _apply_palette(p: Dictionary, dur: float) -> void:
 	for l in lights:
 		t.tween_property(l, "light_color", p["light"], dur)
 		t.tween_property(l, "light_energy", p["light_energy"], dur)
+	for kl in key_lights:
+		t.tween_property(kl, "light_color", (kl.get_meta("color") as Color).lerp(p["light"], 0.6), dur)
 
 
 # ---------------------------------------------------------------- clue glow
@@ -1560,6 +1732,8 @@ func _build_room() -> void:
 	rng.seed = 77
 	_cyl(Vector3(-3.05, 0.03, -2.55), 0.016, 0.11, Color(0.30, 0.16, 0.05), 0.08, 0.0, PI * 0.5)
 	_cyl(Vector3(-3.25, 0.03, -2.45), 0.042, 0.06, Color(0.30, 0.16, 0.05), 0.08)
+	var tag := _clue(_box(Vector3(-3.0, 0.012, -2.62), Vector3(0.07, 0.004, 0.045), Color(0.85, 0.80, 0.66), 0.9))
+	tag.rotation_degrees.y = 28.0
 	for i in range(9):
 		var sh := _box(Vector3(-3.2 + rng.randf_range(-0.3, 0.3), 0.006, -2.5 + rng.randf_range(-0.2, 0.2)), Vector3(rng.randf_range(0.02, 0.06), 0.008, rng.randf_range(0.02, 0.05)), Color(0.36, 0.20, 0.07), 0.06)
 		sh.rotation_degrees.y = rng.randf_range(0, 180)

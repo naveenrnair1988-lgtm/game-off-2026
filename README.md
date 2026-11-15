@@ -11,18 +11,21 @@ The truth needs both.
 ## The SHIFT
 
 - **Mechanic:** Frank shifts between two states, *Sober* and *The Voice*. Every scene has two scripts. The Voice finds what people are hiding — but nobody confesses to the Voice. They confess to sober Frank. So you shift to look, and shift back to be heard. (One suspect works the other way round.)
+- **Looking closer:** each part of the bar holds things to examine, and the two Franks do not see the same ones. Sober, the floor by the body is a broken bottle and an empty till; drunk, the same floor shows which bottle it was and whose phone is still on the charger. You find evidence by looking at it, not by walking in.
 - **Confrontations:** show a suspect the right piece of evidence, as the right Frank, and they break. The wrong piece costs you five minutes.
 - **The clock:** 1:40 AM to 4:00 AM. Every stop costs ten minutes, sobering up costs twenty, and you have three drinks. Some decisions are timed — saying nothing is an answer.
 - **Setting:** The night shift at a bar after last call. One body, four people who stayed, one detective who may not remember why he's there.
 - **Structure:** Six chapters and seven endings. The true ending needs three confessions, one witness, and the night laid out in order.
 - **Fully voiced** (27 minutes of recorded dialogue), including Frank's inner monologue and The Voice.
 - **Choices are remembered:** how you treat the people who confess, and whether you answer the phone, change what Connie tells you and how the true ending plays.
-- **Characters move:** they breathe, blink, turn to whoever is speaking, raise or knit their brows, flinch when caught, and their mouths follow the recorded voice.
+- **Characters move:** the four suspects are fully rigged. They stand, shift their weight and talk with their hands, turn their heads to whoever is speaking, blink, raise or knit their brows, flinch when caught, and their mouths follow the recorded voice. Mira is on her knees by the body when you wake, and gets up when the others come in.
 - **Length:** about 27 minutes for a careful first run to the true ending (measured from the recorded lines); seven endings.
 
 ## Play
 
-**Browser build:** published to GitHub Pages on every push to `main` (see Actions). Also uploaded to itch.io.
+**Browser build:** https://naveenrnair1988-lgtm.github.io/game-off-2026/ (published on every push to `main`).
+
+**Desktop builds (Windows, Linux):** on the repository's [latest release](https://github.com/naveenrnair1988-lgtm/game-off-2026/releases/tag/latest). They run at full resolution and are the best way to see it.
 
 **From source:** open the project in [Godot 4.7.2](https://godotengine.org/download) and press Play.
 
@@ -39,7 +42,7 @@ Set `LS_NOBAKE=1` to run with live lights only.
 **Performance.** The game measures its own frame rate and steps down quality until it holds about 42 fps. In the browser that means drawing fewer lines and letting the page stretch them (1440, 1080, 810 or 630 lines; it starts at 1080); on desktop it scales the 3D view. Press `F3` to see the frame rate and tier. To pin a level, add `?tier=0` (best) to `?tier=3` (fastest) to the page address. On a laptop with two graphics chips, browsers usually pick the slow one: in Windows, Settings → System → Display → Graphics lets you set your browser to High performance.
 
 **Controls**
-- Keyboard: `Space`/`Enter` advance, `1–9` choose, **`Shift`** shifts between Sober and The Voice, `E` evidence board
+- Keyboard: `Space`/`Enter` advance (a first press finishes the line being typed), `1–9` choose, **`Shift`** shifts between Sober and The Voice, `E` evidence board, `Esc` pause (volume, fullscreen)
 - In the room: click or tap what you want to look at — the booth, the rail, the body, the office, a person
 - Touch: tap to advance, tap choices, HUD buttons for Shift and Board
 
@@ -51,13 +54,15 @@ scenes/Main.tscn     root scene: camera + UI layer
 scripts/Main.gd      builds THE LAST CALL in 3D, camera stations, hotspots, Shift lighting
 scripts/Story.gd     autoload: story data, state, clock, flasks, evidence
 scripts/UI.gd        HUD, dialogue panel, choices, evidence board, title
-scripts/Puppet.gd    per-character animation: look-at, idle, speech, reactions
+scripts/Puppet.gd    shared character behaviour: look-at, speech envelope, blinks, reactions
+scripts/Actor.gd     skinned characters: body clips, head turn over the clip, face shape keys
 shaders/baked.gdshader    the baked room: lightmaps x palette, triplanar surfaces, lamp highlights
 shaders/glow.gdshader     light cones and halos
 tools/export_scene.gd     bake step 1: export the static room for Blender
 tools/bake_room.py        bake step 2: Blender (bpy) unwraps, path-traces and writes assets/baked/
 assets/baked/        room.glb + lightmaps (generated)
-shaders/puppet.gdshader   two-bone vertex-shader rig (torso, head, jaw) for the scanned characters
+shaders/character.gdshader  skinned characters; draws the inside of the mouth per pixel
+shaders/puppet.gdshader   fallback vertex-shader rig for unrigged scanned characters
 data/lipsync.json    loudness envelope per voice line, drives the jaw
 docs/voice-check.json    speech-recognition transcript, pace and level of every voice line
 docs/voice-prosody.json  pitch and pitch variation of every voice line
@@ -76,7 +81,7 @@ LICENSE              MIT for code; story, characters and art are CC BY-NC 4.0
 
 **Pre-existing material.** Frank Sable and The Voice are characters from the author's unreleased whodunnit series *On the Rocks*. The character concept predates the jam. Everything in this repository — the game, the case, the dialogue, the puzzle design, the code — was created during the Game Off 2026 submission window (Nov 1 – Dec 1, 2026). No prose from the series was imported.
 
-**AI use.** Code (GDScript, Godot scene construction), dialogue drafting and design iteration were done with Claude (Anthropic). Character, furniture and prop 3D models were generated with Higgsfield (reference images, then image-to-3D; the four suspects use photoreal references and Tripo H3.1, cleaned up in Blender with tools/prep_character.py and tools/trim_character.py). Room lighting is baked with Blender's Cycles renderer through a script written with Claude. The title theme was generated with ElevenLabs Music (via Higgsfield). Dialogue portraits (cropped from the character reference images), environment textures and sound effects were generated with Higgsfield. Every voice line was checked by machine transcription against the script and level-matched (docs/voice-check.json). Character voices are synthetic (ElevenLabs preset voices via Higgsfield); no real person's voice was cloned. Direction, story, puzzle logic, editing and all decisions are the author's.
+**AI use.** Code (GDScript, Godot scene construction), dialogue drafting and design iteration were done with Claude (Anthropic). Character, furniture and prop 3D models were generated with Higgsfield (reference images, then image-to-3D; the four suspects use photoreal A-pose references and Tripo H3.1, were auto-rigged with Meshy and given clips from its stock animation library, and were assembled in Blender with tools/rig_character.py, which also builds their face shape keys). Room lighting is baked with Blender's Cycles renderer through a script written with Claude. The title theme was generated with ElevenLabs Music (via Higgsfield). Dialogue portraits (cropped from the character reference images), environment textures and sound effects were generated with Higgsfield. Every voice line was checked by machine transcription against the script and level-matched (docs/voice-check.json). Character voices are synthetic (ElevenLabs preset voices via Higgsfield); no real person's voice was cloned. Direction, story, puzzle logic, editing and all decisions are the author's.
 
 **Content.** The protagonist's drinking is the game's central mechanic and is treated as a cost, not a power-up. Mild language, implied violence, no gore.
 

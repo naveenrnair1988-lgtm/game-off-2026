@@ -45,11 +45,35 @@ func _write_mesh(mi: MeshInstance3D, role: String, key: String, extra: Dictionar
 	var xf := mi.global_transform
 	var nb := xf.basis.inverse().transposed()
 	var flip := xf.basis.determinant() < 0.0
-	for si in mi.mesh.get_surface_count():
-		var arr := mi.mesh.surface_get_arrays(si)
+	var src: Mesh = mi.mesh
+	for si in src.get_surface_count():
+		var arr := src.surface_get_arrays(si)
 		var v: PackedVector3Array = arr[Mesh.ARRAY_VERTEX]
 		if v.is_empty():
 			continue
+		if mi.skin != null and arr[Mesh.ARRAY_BONES] != null:
+			# a skinned character casts the shadow of the pose it is standing in, not of its rest pose
+			var skel := mi.get_node(mi.skeleton) as Skeleton3D
+			var mats: Array[Transform3D] = []
+			for b in mi.skin.get_bind_count():
+				var bone := mi.skin.get_bind_bone(b)
+				if bone < 0:
+					bone = skel.find_bone(mi.skin.get_bind_name(b))
+				mats.append(skel.get_bone_global_pose(bone) * mi.skin.get_bind_pose(b))
+			var bones: PackedInt32Array = arr[Mesh.ARRAY_BONES]
+			var wts: PackedFloat32Array = arr[Mesh.ARRAY_WEIGHTS]
+			var per := bones.size() / v.size()
+			var posed := PackedVector3Array()
+			posed.resize(v.size())
+			for i in v.size():
+				var acc := Vector3.ZERO
+				for k in per:
+					var w := wts[i * per + k]
+					if w > 0.0:
+						acc += (mats[bones[i * per + k]] * v[i]) * w
+				posed[i] = acc
+			v = posed
+			xf = skel.global_transform
 		var nrm: PackedVector3Array = arr[Mesh.ARRAY_NORMAL] if arr[Mesh.ARRAY_NORMAL] != null else PackedVector3Array()
 		var uv: PackedVector2Array = arr[Mesh.ARRAY_TEX_UV] if arr[Mesh.ARRAY_TEX_UV] != null else PackedVector2Array()
 		var idx: PackedInt32Array = arr[Mesh.ARRAY_INDEX] if arr[Mesh.ARRAY_INDEX] != null else PackedInt32Array()
@@ -105,8 +129,11 @@ func _run() -> void:
 	for i in 4:
 		await process_frame
 	main.ui._start()
-	for i in 3:
-		await process_frame
+	for pp in main.puppets.values():
+		if pp.has_method("hold"):
+			pp.hold("")          # everyone in their usual standing or sitting pose
+	for i in 90:
+		await process_frame   # let the characters settle into their idle poses
 	for c in main.get_children():
 		if c is MeshInstance3D:
 			var mi := c as MeshInstance3D

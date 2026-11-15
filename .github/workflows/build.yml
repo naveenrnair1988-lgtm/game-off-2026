@@ -4,7 +4,7 @@ on:
     branches: [main]
   pull_request:
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 jobs:
@@ -34,6 +34,23 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: build/web
+      - name: Export desktop builds
+        run: |
+          mkdir -p build/windows build/linux
+          godot --headless --path . --export-release "Windows Desktop" build/windows/LastShift.exe
+          godot --headless --path . --export-release "Linux" build/linux/LastShift.x86_64
+          cd build && zip -r last-shift-windows.zip windows && zip -r last-shift-linux.zip linux
+      - name: Publish downloads
+        if: github.ref == 'refs/heads/main'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: On the Rocks — The Last Shift (latest build)
+          body: Desktop and web builds of the current main branch. The browser version is at https://naveenrnair1988-lgtm.github.io/game-off-2026/
+          files: |
+            build/last-shift-windows.zip
+            build/last-shift-linux.zip
+            build/last-shift-web.zip
   deploy-pages:
     needs: test-and-export
     if: github.ref == 'refs/heads/main'

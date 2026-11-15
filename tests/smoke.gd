@@ -24,6 +24,12 @@ func visit(id: String) -> void:
 	await process_frame
 	while ui.line_idx < ui.lines.size():
 		ui._next_line()
+	# look at everything this Frank can see here, through the same path a click takes
+	for sp in st.spots(id):
+		main._on_spot_picked(str(sp["id"]))
+		while ui.line_idx < ui.lines.size():
+			ui._next_line()
+		ui._show_spots()
 
 
 func _run() -> void:
@@ -43,6 +49,19 @@ func _run() -> void:
 		for l in st.scenes[id]["lines"]:
 			if str(l.get("vo", "")) != "":
 				check(ResourceLoader.exists("res://assets/voice/%s.ogg" % l["vo"]), "missing voice file " + str(l["vo"]))
+		for l in st.scenes[id]["lines"]:
+			if str(l.get("cam", "")) != "":
+				check(main.STATIONS.has(str(l["cam"])), "%s: line asks for unknown camera %s" % [id, l["cam"]])
+		# things to look at: every one has lines and evidence that exist, and between them they cover the scene's grants
+		var covered := {}
+		for sp in st.scenes[id].get("spots", []):
+			check(not st.spot_lines(id, str(sp["id"])).is_empty(), "%s/%s has nothing to say" % [id, sp["id"]])
+			for e in sp["grant"]:
+				check(st.evidence.has(e) and str(st.evidence[e]["s"]) == str(sp["state"]), "%s/%s grants %s to the wrong Frank" % [id, sp["id"], e])
+				covered[e] = true
+		if st.has_spots(id):
+			for e in st.scenes[id].get("grant", []):
+				check(covered.has(e), "%s: nothing to look at turns up %s" % [id, e])
 		check(main.SCENE_STATION.has(id), "no camera station for scene " + id)
 		check(main.STATIONS.has(main.SCENE_STATION.get(id, "")), "unknown camera station for scene " + id)
 	for stem in st.scenes.keys():
@@ -50,6 +69,16 @@ func _run() -> void:
 			if str(l.get("vo", "")) != "":
 				check(main.lipsync.has(l["vo"]), "no lip-sync data for " + str(l["vo"]))
 	check(main.puppets.size() == 4, "four characters are rigged")
+	for who in main.puppets.keys():
+		var a = main.puppets[who]
+		check(a is Actor and a.skel != null and a.anim != null, who + " has a skeleton and clips")
+		if a is Actor:
+			check(a.anim.has_animation(a.clip_idle) and a.anim.has_animation(a.clip_talk), who + " has idle and talk clips")
+			for k in ["jaw", "blink", "brow_up", "brow_dn"]:
+				check(a.bs.has(k), who + " has the face shape " + k)
+	for e in st.evidence.keys():
+		if str(st.evidence[e].get("img", "")) != "":
+			check(ResourceLoader.exists("res://assets/evidence/%s.jpg" % st.evidence[e]["img"]), "missing picture for " + e)
 	for sid in st.present_cfg.keys():
 		var cfg: Dictionary = st.present_cfg[sid]
 		check(st.scenes.has(sid) and st.scenes.has(cfg["crack"]), "confrontation scenes exist for " + sid)
