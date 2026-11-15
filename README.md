@@ -8,6 +8,8 @@ Frank Sable is a detective who is useless sober and brilliant drunk. Every ninet
 
 The truth needs both.
 
+![Lenny Baptiste, seen by the Voice](docs/screenshots/05_lenny.jpg)
+
 ## The SHIFT
 
 - **Mechanic:** Frank shifts between two states, *Sober* and *The Voice*. Every scene has two scripts. The Voice finds what people are hiding — but nobody confesses to the Voice. They confess to sober Frank. So you shift to look, and shift back to be heard. (One suspect works the other way round.)
@@ -81,7 +83,7 @@ LICENSE              MIT for code; story, characters and art are CC BY-NC 4.0
 
 **Pre-existing material.** Frank Sable and The Voice are characters from the author's unreleased whodunnit series *On the Rocks*. The character concept predates the jam. Everything in this repository — the game, the case, the dialogue, the puzzle design, the code — was created during the Game Off 2026 submission window (Nov 1 – Dec 1, 2026). No prose from the series was imported.
 
-**AI use.** Code (GDScript, Godot scene construction), dialogue drafting and design iteration were done with Claude (Anthropic). Character, furniture and prop 3D models were generated with Higgsfield (reference images, then image-to-3D; the four suspects use photoreal A-pose references and Tripo H3.1, were auto-rigged with Meshy and given clips from its stock animation library, and were assembled in Blender with tools/rig_character.py, which also builds their face shape keys). Room lighting is baked with Blender's Cycles renderer through a script written with Claude. The title theme was generated with ElevenLabs Music (via Higgsfield). Dialogue portraits (cropped from the character reference images), environment textures and sound effects were generated with Higgsfield. Every voice line was checked by machine transcription against the script and level-matched (docs/voice-check.json). Character voices are synthetic (ElevenLabs preset voices via Higgsfield); no real person's voice was cloned. Direction, story, puzzle logic, editing and all decisions are the author's.
+**AI use.** Code (GDScript, Godot scene construction), dialogue drafting and design iteration were done with Claude (Anthropic). Character, furniture and prop 3D models were generated with Higgsfield (reference images, then image-to-3D; the four suspects use photoreal A-pose references and Tripo H3.1, were auto-rigged with Meshy and given clips from its stock animation library, and were assembled in Blender with tools/rig_character.py, which also builds their face shape keys). Room lighting is baked with Blender's Cycles renderer through a script written with Claude. The title theme was generated with ElevenLabs Music (via Higgsfield). Dialogue portraits (cropped from the character reference images), the evidence photographs, environment textures and sound effects were generated with Higgsfield. Every voice line was checked by machine transcription against the script and level-matched (docs/voice-check.json). Character voices are synthetic (ElevenLabs preset voices via Higgsfield); no real person's voice was cloned. Direction, story, puzzle logic, editing and all decisions are the author's.
 
 **Content.** The protagonist's drinking is the game's central mechanic and is treated as a cost, not a power-up. Mild language, implied violence, no gore.
 

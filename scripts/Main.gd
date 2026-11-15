@@ -138,6 +138,8 @@ const VOICE := {
 
 
 func _ready() -> void:
+	if OS.has_feature("template") and not OS.has_feature("web"):
+		get_window().mode = Window.MODE_FULLSCREEN   # exported desktop builds open full screen (Esc: pause, windowed)
 	_build_textures()
 	_build_room()
 	_load_models()
